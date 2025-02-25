@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energiefeld-Animationen</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQxIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzJiNTc5NztzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNGRhYmY3O3N0b3Atb3BhY2l0eToxIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgcnk9IjYiIGZpbGw9InVybCgjZ3JhZDEpIiAvPgogIDxjaXJjbGUgY3g9IjE2IiBjeT0iMTEiIHI9IjQiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjciIC8+CiAgPHBhdGggZD0iTTgsMjAgUTE2LDE1IDI0LDIwIFExNiwyNSA4LDIwIiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iMC45IiAvPgo8L3N2Zz4K">
+    <meta name="description" content="Eine Sammlung interaktiver Canvas-Animationen für Webprojekte">
+    <meta name="theme-color" content="#2b5797">
+</head>
+<body>
+    <header>
+        <h1>Energiefeld-Animationen</h1>
+        <p>Eine Sammlung interaktiver Canvas-Animationen für Ihre Webprojekte</p>
+    </header>
+
+    <main>
+        <section class="animation-container" id="energy-field-section">
+            <h2>Freude und Energie</h2>
+            <div class="canvas-wrapper">
+                <canvas id="energy-field-canvas"></canvas>
+            </div>
+            <div class="controls">
+                <div class="control-group">
+                    <label for="energy-particles">Partikelanzahl</label>
+                    <input type="range" id="energy-particles" min="50" max="500" value="200">
+                </div>
+                <div class="control-group">
+                    <label for="energy-speed">Geschwindigkeit</label>
+                    <input type="range" id="energy-speed" min="1" max="10" value="5">
+                </div>
+                <div class="control-group">
+                    <label for="energy-color">Farbe</label>
+                    <input type="color" id="energy-color" value="#ff6b6b">
+                </div>
+                <button class="copy-code-btn" data-animation="energy-field">Code kopieren</button>
+            </div>
+        </section>
+
+        <section class="animation-container" id="blue-sky-section">
+            <h2>Blauer Himmel</h2>
+            <div class="canvas-wrapper">
+                <canvas id="blue-sky-canvas"></canvas>
+            </div>
+            <div class="controls">
+                <div class="control-group">
+                    <label for="sky-clouds">Wolkendichte</label>
+                    <input type="range" id="sky-clouds" min="5" max="30" value="15">
+                </div>
+                <div class="control-group">
+                    <label for="sky-speed">Windgeschwindigkeit</label>
+                    <input type="range" id="sky-speed" min="1" max="10" value="3">
+                </div>
+                <div class="control-group">
+                    <label for="sky-color">Himmelsfarbe</label>
+                    <input type="color" id="sky-color" value="#4dabf7">
+                </div>
+                <button class="copy-code-btn" data-animation="blue-sky">Code kopieren</button>
+            </div>
+        </section>
+
+        <section class="animation-container" id="firework-section">
+            <h2>Feuerwerk</h2>
+            <div class="canvas-wrapper">
+                <canvas id="firework-canvas"></canvas>
+            </div>
+            <div class="controls">
+                <div class="control-group">
+                    <label for="firework-frequency">Häufigkeit</label>
+                    <input type="range" id="firework-frequency" min="1" max="10" value="3">
+                </div>
+                <div class="control-group">
+                    <label for="firework-particles">Partikelgröße</label>
+                    <input type="range" id="firework-particles" min="20" max="200" value="100">
+                </div>
+                <div class="control-group">
+                    <label for="firework-color">Grundfarbe</label>
+                    <input type="color" id="firework-color" value="#cc5de8">
+                </div>
+                <button class="copy-code-btn" data-animation="firework">Code kopieren</button>
+            </div>
+        </section>
+
+        <section class="animation-container" id="water-waves-section">
+            <h2>Wasserwellen</h2>
+            <div class="canvas-wrapper">
+                <canvas id="water-waves-canvas"></canvas>
+            </div>
+            <div class="controls">
+                <div class="control-group">
+                    <label for="waves-height">Wellenhöhe</label>
+                    <input type="range" id="waves-height" min="1" max="50" value="20">
+                </div>
+                <div class="control-group">
+                    <label for="waves-speed">Wellengeschwindigkeit</label>
+                    <input type="range" id="waves-speed" min="1" max="10" value="4">
+                </div>
+                <div class="control-group">
+                    <label for="waves-color">Wasserfarbe</label>
+                    <input type="color" id="waves-color" value="#15aabf">
+                </div>
+                <button class="copy-code-btn" data-animation="water-waves">Code kopieren</button>
+            </div>
+        </section>
+
+        <section class="embed-section">
+            <h2>Einbetten in Ihre Webseite</h2>
+            <div class="embed-info">
+                <p>Sie können jede Animation als Iframe in Ihre Webseite einbetten:</p>
+                <pre><code>&lt;iframe src="https://ihre-domain.com/energiefeld-animationen/embed.html?animation=energy-field&param1=value1" width="500" height="300"&gt;&lt;/iframe&gt;</code></pre>
+                <p>Parameter können über die URL angepasst werden. Vollständige Dokumentation finden Sie unten.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Entwickelt mit ❤️ für kreative Webprojekte</p>
+        <p>© 2025 Energiefeld-Animationen</p>
+    </footer>
+
+    <div id="code-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Animation einbinden</h3>
+            <div class="code-tabs">
+                <button class="tab-btn active" data-tab="html">HTML</button>
+                <button class="tab-btn" data-tab="js">JavaScript</button>
+                <button class="tab-btn" data-tab="iframe">iFrame</button>
+            </div>
+            <div class="tab-content">
+                <pre id="code-display"></pre>
+                <button id="copy-to-clipboard">In die Zwischenablage kopieren</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Hilfsfunktion für Canvas-Größen
+        function resizeCanvases() {
+            document.querySelectorAll('.canvas-wrapper canvas').forEach(canvas => {
+                const parent = canvas.parentElement;
+                canvas.width = parent.clientWidth;
+                canvas.height = parent.clientHeight;
+            });
+        }
+        
+        // Initial Größen setzen
+        window.addEventListener('load', resizeCanvases);
+        window.addEventListener('resize', resizeCanvases);
+    </script>
+    <script src="energy-field.js"></script>
+    <script src="blue-sky.js"></script>
+    <script src="firework.js"></script>
+    <script src="water-waves.js"></script>
+    <script>
+        // Gemeinsamer Code für Modals und Kopier-Funktionalität
+        document.addEventListener('DOMContentLoaded', function() {
+            // Stellt sicher, dass die Canvases korrekte Größen haben
+            resizeCanvases();
+            const modal = document.getElementById('code-modal');
+            const closeBtn = document.querySelector('.close-modal');
+            const copyButtons = document.querySelectorAll('.copy-code-btn');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const copyToClipboardBtn = document.getElementById('copy-to-clipboard');
+            const codeDisplay = document.getElementById('code-display');
+            
+            let currentAnimation = '';
+            
+            // Modal öffnen/schließen
+            copyButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    currentAnimation = this.dataset.animation;
+                    updateCodeDisplay('html');
+                    modal.style.display = 'block';
+                });
+            });
+            
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            window.addEventListener('click', function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // Tab-Wechsel
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    updateCodeDisplay(this.dataset.tab);
+                });
+            });
+            
+            function updateCodeDisplay(tabType) {
+                let codeToDisplay = '';
+                
+                switch(tabType) {
+                    case 'html':
+                        codeToDisplay = `&lt;canvas id="${currentAnimation}-canvas" width="500" height="300"&gt;&lt;/canvas&gt;`;
+                        break;
+                    case 'js':
+                        codeToDisplay = `// ${currentAnimation}.js muss eingebunden sein\ndocument.addEventListener('DOMContentLoaded', function() {\n    initAnimation('${currentAnimation}-canvas');\n});`;
+                        break;
+                    case 'iframe':
+                        codeToDisplay = `&lt;iframe src="https://ihre-domain.com/energiefeld-animationen/embed.html?animation=${currentAnimation}" width="500" height="300" frameborder="0"&gt;&lt;/iframe&gt;`;
+                        break;
+                }
+                
+                codeDisplay.textContent = codeToDisplay;
+            }
+            
+            // In Zwischenablage kopieren
+            copyToClipboardBtn.addEventListener('click', function() {
+                const textArea = document.createElement('textarea');
+                textArea.value = codeDisplay.textContent;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                this.textContent = 'Kopiert!';
+                setTimeout(() => {
+                    this.textContent = 'In die Zwischenablage kopieren';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>

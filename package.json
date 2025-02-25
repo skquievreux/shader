@@ -1,0 +1,12 @@
+{
+    "name": "energiefeld-animierung",
+    "version": "1.0.0",
+    "description": "Eine Sammlung von HTML5-Canvas-Animationen",
+    "main": "index.html",
+    "scripts": {
+        "start": "open index.html"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT"
+}
