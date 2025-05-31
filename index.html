@@ -104,6 +104,28 @@
             </div>
         </section>
 
+        <section class="animation-container" id="aurora-section">
+            <h2>Aurora Borealis</h2>
+            <div class="canvas-wrapper">
+                <canvas id="aurora-canvas"></canvas>
+            </div>
+            <div class="controls">
+                <div class="control-group">
+                    <label for="aurora-intensity">Intensität</label>
+                    <input type="range" id="aurora-intensity" min="1" max="10" value="5">
+                </div>
+                <div class="control-group">
+                    <label for="aurora-speed">Bewegungsgeschwindigkeit</label>
+                    <input type="range" id="aurora-speed" min="1" max="10" value="3">
+                </div>
+                <div class="control-group">
+                    <label for="aurora-color">Grundfarbe</label>
+                    <input type="color" id="aurora-color" value="#00ff88">
+                </div>
+                <button class="copy-code-btn" data-animation="aurora">Code kopieren</button>
+            </div>
+        </section>
+
         <section class="embed-section">
             <h2>Einbetten in Ihre Webseite</h2>
             <div class="embed-info">
@@ -153,6 +175,7 @@
     <script src="blue-sky.js"></script>
     <script src="firework.js"></script>
     <script src="water-waves.js"></script>
+    <script src="aurora.js"></script>
     <script>
         // Gemeinsamer Code für Modals und Kopier-Funktionalität
         document.addEventListener('DOMContentLoaded', function() {

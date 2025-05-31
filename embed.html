@@ -73,6 +73,7 @@
     <script src="blue-sky.js"></script>
     <script src="firework.js"></script>
     <script src="water-waves.js"></script>
+    <script src="aurora.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // URL-Parameter analysieren
@@ -153,6 +154,24 @@
                     
                     if (params.has('color')) {
                         activeAnimation.waterColor = '#' + params.get('color');
+                    }
+                    break;
+
+                case 'aurora':
+                    activeAnimation = initAurora(canvas.id);
+                    
+                    if (params.has('intensity')) {
+                        activeAnimation.intensity = parseInt(params.get('intensity'));
+                        activeAnimation.updateIntensity();
+                    }
+                    
+                    if (params.has('speed')) {
+                        activeAnimation.speed = parseInt(params.get('speed'));
+                    }
+                    
+                    if (params.has('color')) {
+                        activeAnimation.baseColor = '#' + params.get('color');
+                        activeAnimation.updateBaseColor();
                     }
                     break;
                     
@@ -238,6 +257,22 @@
                                 
                                 if (data.color) {
                                     activeAnimation.waterColor = data.color;
+                                }
+                                break;
+
+                            case 'aurora':
+                                if (data.intensity) {
+                                    activeAnimation.intensity = parseInt(data.intensity);
+                                    activeAnimation.updateIntensity();
+                                }
+                                
+                                if (data.speed) {
+                                    activeAnimation.speed = parseInt(data.speed);
+                                }
+                                
+                                if (data.color) {
+                                    activeAnimation.baseColor = data.color;
+                                    activeAnimation.updateBaseColor();
                                 }
                                 break;
                         }

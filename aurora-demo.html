@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora Demo - Energiefeld-Animationen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, #00ff88, #00bfff, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+        
+        .demo-container {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .canvas-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+        
+        .canvas-wrapper {
+            height: 500px;
+            position: relative;
+        }
+        
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        
+        .controls-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: fit-content;
+        }
+        
+        .controls-panel h3 {
+            margin-bottom: 1.5rem;
+            color: #00ff88;
+            text-align: center;
+        }
+        
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #e0e0e0;
+        }
+        
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #333;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #00ff88;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+        
+        .control-group input[type="color"] {
+            width: 100%;
+            height: 40px;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            cursor: pointer;
+        }
+        
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .preset-btn {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 6px;
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .preset-btn:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .info-panel {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 3px solid #00ff88;
+        }
+        
+        .info-panel h4 {
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-panel p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            opacity: 0.8;
+        }
+        
+        .embed-code {
+            background: #1a1a1a;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            border: 1px solid #333;
+            overflow-x: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .demo-container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .canvas-wrapper {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌌 Aurora Borealis Demo</h1>
+        <p>Erleben Sie die neue Aurora-Animation mit interaktiven Steuerelementen</p>
+    </div>
+    
+    <div class="demo-container">
+        <div class="canvas-section">
+            <div class="canvas-wrapper">
+                <canvas id="aurora-canvas"></canvas>
+            </div>
+        </div>
+        
+        <div class="controls-panel">
+            <h3>🎛️ Steuerelemente</h3>
+            
+            <div class="control-group">
+                <label for="aurora-intensity">Intensität: <span id="intensity-value">5</span></label>
+                <input type="range" id="aurora-intensity" min="1" max="10" value="5">
+            </div>
+            
+            <div class="control-group">
+                <label for="aurora-speed">Geschwindigkeit: <span id="speed-value">3</span></label>
+                <input type="range" id="aurora-speed" min="1" max="10" value="3">
+            </div>
+            
+            <div class="control-group">
+                <label for="aurora-color">Grundfarbe</label>
+                <input type="color" id="aurora-color" value="#00ff88">
+            </div>
+            
+            <div class="preset-buttons">
+                <button class="preset-btn" onclick="setPreset('classic')">🟢 Klassisch</button>
+                <button class="preset-btn" onclick="setPreset('arctic')">🔵 Arktisch</button>
+                <button class="preset-btn" onclick="setPreset('purple')">🟣 Violett</button>
+                <button class="preset-btn" onclick="setPreset('rainbow')">🌈 Regenbogen</button>
+            </div>
+            
+            <div class="info-panel">
+                <h4>💡 Interaktion</h4>
+                <p>Bewegen Sie die Maus über die Animation, um dynamische Effekte zu erzeugen!</p>
+            </div>
+            
+            <div class="info-panel">
+                <h4>🔗 Einbettung</h4>
+                <p>Aktuelle Konfiguration:</p>
+                <div class="embed-code" id="embed-code">
+                    &lt;iframe src="embed.html?animation=aurora&intensity=5&speed=3&color=00ff88" width="800" height="400"&gt;&lt;/iframe&gt;
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="aurora.js"></script>
+    <script>
+        // Aurora-Animation initialisieren
+        let auroraAnimation;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            auroraAnimation = new Aurora('aurora-canvas');
+            
+            // Event-Listener für Kontrollelemente
+            const intensitySlider = document.getElementById('aurora-intensity');
+            const speedSlider = document.getElementById('aurora-speed');
+            const colorPicker = document.getElementById('aurora-color');
+            
+            const intensityValue = document.getElementById('intensity-value');
+            const speedValue = document.getElementById('speed-value');
+            const embedCode = document.getElementById('embed-code');
+            
+            function updateEmbedCode() {
+                const intensity = intensitySlider.value;
+                const speed = speedSlider.value;
+                const color = colorPicker.value.replace('#', '');
+                
+                embedCode.innerHTML = `&lt;iframe src="embed.html?animation=aurora&intensity=${intensity}&speed=${speed}&color=${color}" width="800" height="400"&gt;&lt;/iframe&gt;`;
+            }
+            
+            intensitySlider.addEventListener('input', function() {
+                intensityValue.textContent = this.value;
+                auroraAnimation.intensity = parseInt(this.value);
+                auroraAnimation.updateIntensity();
+                updateEmbedCode();
+            });
+            
+            speedSlider.addEventListener('input', function() {
+                speedValue.textContent = this.value;
+                auroraAnimation.speed = parseInt(this.value);
+                updateEmbedCode();
+            });
+            
+            colorPicker.addEventListener('input', function() {
+                auroraAnimation.baseColor = this.value;
+                auroraAnimation.updateBaseColor();
+                updateEmbedCode();
+            });
+            
+            // Initiale Embed-Code-Generierung
+            updateEmbedCode();
+        });
+        
+        // Preset-Funktionen
+        function setPreset(presetName) {
+            const intensitySlider = document.getElementById('aurora-intensity');
+            const speedSlider = document.getElementById('aurora-speed');
+            const colorPicker = document.getElementById('aurora-color');
+            
+            switch(presetName) {
+                case 'classic':
+                    intensitySlider.value = 6;
+                    speedSlider.value = 4;
+                    colorPicker.value = '#00ff88';
+                    break;
+                case 'arctic':
+                    intensitySlider.value = 8;
+                    speedSlider.value = 2;
+                    colorPicker.value = '#00bfff';
+                    break;
+                case 'purple':
+                    intensitySlider.value = 7;
+                    speedSlider.value = 5;
+                    colorPicker.value = '#8a2be2';
+                    break;
+                case 'rainbow':
+                    intensitySlider.value = 10;
+                    speedSlider.value = 6;
+                    colorPicker.value = '#ff69b4';
+                    break;
+            }
+            
+            // Events auslösen
+            intensitySlider.dispatchEvent(new Event('input'));
+            speedSlider.dispatchEvent(new Event('input'));
+            colorPicker.dispatchEvent(new Event('input'));
+        }
+        
+        // Keyboard-Shortcuts
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case '1':
+                    setPreset('classic');
+                    break;
+                case '2':
+                    setPreset('arctic');
+                    break;
+                case '3':
+                    setPreset('purple');
+                    break;
+                case '4':
+                    setPreset('rainbow');
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>
