@@ -1,6 +1,6 @@
 {
     "name": "energiefeld-animationen",
-    "version": "2.1.2",
+    "version": "2.2.0",
     "description": "Eine erweiterte Sammlung von HTML5-Canvas-Animationen mit Aurora Borealis",
     "main": "index.html",
     "scripts": {
