@@ -1,6 +1,6 @@
 # Energiefeld-Animationen
 
-Eine Sammlung interaktiver Canvas-Animationen für Webprojekte. Diese Bibliothek bietet fünf verschiedene Animationen, die einfach in jede Webseite eingebunden werden können.
+Eine Sammlung interaktiver Canvas-Animationen für Webprojekte. Diese Bibliothek bietet vierzehn verschiedene Animationen, die einfach in jede Webseite eingebunden werden können.
 
 > **Version 2.1.2** - Structure Fix Release mit HTML-Validierung und JSON-Bereinigung
 
@@ -14,11 +14,30 @@ Eine Sammlung interaktiver Canvas-Animationen für Webprojekte. Diese Bibliothek
 - **Wasserwellen**: Eine beruhigende Wellenanimation mit interaktiven Splash-Effekten
 - **Aurora Borealis**: Eine faszinierende Nordlicht-Animation mit fließenden Lichtbändern und pulsierenden Partikeln
 
+### 🌟 Neue Animationen (v2.2.0)
+- **Star Field**: Kosmisches Sternenfeld mit Parallax-Effekt und Sternschnuppen
+- **Rain**: Realistischer Regen mit Splash-Effekten und Pfützenbildung
+- **Lightning**: Dynamische Blitzelektrische Entladungen mit Verzweigungen
+- **Smoke**: Realistische Rauchsimulation mit Turbulenzen und Windeinfluss
+- **Fractal Tree**: Organische Wachstumsanimationen mit rekursiver Baumgenerierung
+- **Kaleidoscope**: Geometrische Symmetriemuster mit interaktiver Mustererzeugung
+- **Plasma**: Elektrische Energieeffekte mit mathematischen Plasma-Funktionen
+- **Matrix Rain**: Cyberpunk-ähnliche digitale Regeneffekte mit Zeichenfällen
+
 Alle Animationen sind vollständig anpassbar über eine intuitive Benutzeroberfläche und können als Iframe in andere Webseiten eingebettet werden.
+
+### 🎨 Neue Landing Page
+- **Interaktive Galerie** mit Vorschaubildern und Filterfunktionen
+- **Kategorien-System** für einfache Navigation (Particles, Nature, Weather, Cosmic, Organic, Geometric, Abstract)
+- **Suchfunktion** für schnelle Animationssuche
+- **Live-Vorschau** mit Steuerelementen und Embed-Optionen
 
 ## Demo
 
 Eine Live-Demo ist verfügbar unter: [https://shader.runitfast.xyz](https://shader.runitfast.xyz)
+
+### 🖥️ Landing Page
+Entdecken Sie alle Animationen in unserer interaktiven Galerie: [https://shader.runitfast.xyz/landing.html](https://shader.runitfast.xyz/landing.html)
 
 ### Embed Testseite
 Testen Sie die Einbettungsfunktionalität: [https://shader.runitfast.xyz/embed-test.html](https://shader.runitfast.xyz/embed-test.html)
@@ -99,13 +118,24 @@ Zusätzliche Parameter je nach Animation:
 ## Projektstruktur
 
 - **index.html**: Die Hauptseite mit allen Animationen
+- **landing.html**: Neue interaktive Galerie mit allen Animationen
 - **embed.html**: Seite für die Einbettung einzelner Animationen
 - **styles.css**: Styling für die Benutzeroberfläche
+- **landing-styles.css**: Styling für die Landing Page
+- **animation-registry.js**: Zentrale Verwaltung aller Animationen
 - **energy-field.js**: Implementierung der "Freude und Energie"-Animation
 - **blue-sky.js**: Implementierung der "Blauer Himmel"-Animation
 - **firework.js**: Implementierung der "Feuerwerk"-Animation
 - **water-waves.js**: Implementierung der "Wasserwellen"-Animation
 - **aurora.js**: Implementierung der "Aurora Borealis"-Animation
+- **star-field.js**: Kosmisches Sternenfeld mit Parallax-Effekten
+- **rain.js**: Realistischer Regen mit Splash-Effekten
+- **lightning.js**: Dynamische Blitzelektrische Entladungen
+- **smoke.js**: Rauchsimulation mit Turbulenzen
+- **fractal-tree.js**: Organische Wachstumsanimationen
+- **kaleidoscope.js**: Geometrische Symmetriemuster
+- **plasma.js**: Elektrische Energieeffekte
+- **matrix-rain.js**: Cyberpunk-ähnliche digitale Regeneffekte
 
 ## Technologien
 
@@ -219,7 +249,7 @@ Die `environment-config.js` erkennt automatisch die korrekte Umgebung.
 
 ## Changelog
 
-### Version 2.1.2
+### Version 2.2.0
 - 🔧 **HTML-Struktur-Reparatur**: Korrigierte fehlende schließende div-Tags und entfernte doppelte Footer
 - 🧹 **JSON-Bereinigung**: Konsolidierte duplizierte Sektionen in package.json
 - ✅ **Validierung**: HTML-Struktur und JSON-Syntax validiert
@@ -231,7 +261,7 @@ Die `environment-config.js` erkennt automatisch die korrekte Umgebung.
 - 📄 **Copyright**: Aktualisierte Copyright-Informationen
 - 🐛 **Bugfix**: Kleinere Fehler behoben
 
-### Version 2.0.0
+### Version 2.2.0
 - ✨ **Neue Animation**: Aurora Borealis mit realistischen Nordlichteffekten
 - 🔧 **Verbesserte Performance**: Optimierte Rendering-Algorithmen mit Gradient-Caching und Spatial Grid
 - 📱 **Mobile Unterstützung**: Touch-Events für alle Animationen
