@@ -13,7 +13,7 @@ class StarField {
         this.gradientCache = new Map();
         this.frameSkip = 0;
         this.lastMeteorUpdate = 0;
-        this.adaptiveQuality = new AdaptiveQuality();
+        this.adaptiveQuality = window.enhancedAdaptiveQuality || new AdaptiveQuality();
         
         // Parameter mit Standardwerten
         this.stars = [];
