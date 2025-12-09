@@ -10,6 +10,21 @@
     <meta name="description" content="Eine beeindruckende Galerie interaktiver Canvas-Animationen. Entdecken Sie Particle-Systeme, Natur-Phänomene, kosmische Effekte und mehr.">
     <meta name="theme-color" content="#2b5797">
     
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered:', registration);
+                    })
+                    .catch((error) => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+    
     <!-- Performance Systems -->
     <script src="performance-monitor.js"></script>
     <script src="enhanced-adaptive-quality.js"></script>
@@ -17,6 +32,23 @@
     <script src="progressive-loader.js"></script>
     <script src="user-count-detector.js"></script>
     <script src="emergency-mode.js"></script>
+    
+    <script>
+        // Global performance systems initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            // Initialize enhanced adaptive quality globally
+            if (typeof EnhancedAdaptiveQuality !== 'undefined') {
+                window.enhancedAdaptiveQuality = new EnhancedAdaptiveQuality();
+                console.log('Enhanced Adaptive Quality initialized');
+            }
+            
+            // Initialize performance monitor
+            if (typeof PerformanceMonitor !== 'undefined') {
+                window.performanceMonitor = new PerformanceMonitor();
+                console.log('Performance Monitor initialized');
+            }
+        });
+    </script>
 </head>
 <body>
     <!-- Loading Screen -->
