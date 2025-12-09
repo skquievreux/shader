@@ -187,7 +187,7 @@ class Aurora {
         if (!this.gradientCache.has(key)) {
             const gradient = type === 'linear' 
                 ? this.ctx.createLinearGradient(x1, y1, x2, y2)
-                : this.ctx.createRadialGradient(x1, y1, colors[0].radius || 0, x2, y2, colors[0].radius || 100);
+                : this.ctx.createRadialGradient(x1, y1, 0, x2, y2, Math.abs(x2 - x1) || 100);
             
             colors.forEach((color, index) => {
                 gradient.addColorStop(index / (colors.length - 1), color.color);
@@ -379,7 +379,7 @@ class Aurora {
             this.ctx.beginPath();
             this.ctx.arc(particle.x, particle.y, particle.radius * 3, 0, Math.PI * 2);
             const particleGradient = this.getCachedGradient('radial', 
-                particle.x, particle.y, particle.x, particle.y, particle.radius * 3,
+                particle.x, particle.y, particle.x, particle.y,
                 [
                     { color: `rgba(${color.r}, ${color.g}, ${color.b}, ${particle.currentOpacity})` },
                     { color: `rgba(${color.r}, ${color.g}, ${color.b}, 0)` }
