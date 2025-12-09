@@ -1,69 +1,69 @@
 {
-    "name": "energiefeld-animationen",
-    "version": "2.2.1",
-    "description": "Eine umfassende Sammlung von 14 interaktiven Canvas-Animationen mit Landing Page und Gallery",
-    "main": "landing.html",
-    "scripts": {
-        "start": "start landing.html",
-        "dev": "python -m http.server 8000",
-        "demo": "start landing.html",
-        "test": "start landing.html",
-        "version:patch": "npm version patch",
-        "version:minor": "npm version minor",
-        "version:major": "npm version major",
-        "release": "npm version patch && git push && git push --tags"
-    },
-    "keywords": [
-        "canvas",
-        "animation",
-        "javascript",
-        "webgl",
-        "particles",
-        "aurora",
-        "nordlicht",
-        "visual-effects",
-        "web-animations",
-        "star-field",
-        "rain",
-        "lightning",
-        "smoke",
-        "fractal-tree",
-        "kaleidoscope",
-        "plasma",
-        "matrix-rain",
-        "landing-page",
-        "gallery",
-        "interactive",
-        "responsive",
-        "cosmic",
-        "weather",
-        "organic",
-        "geometric",
-        "abstract",
-        "cyberpunk"
-    ],
-    "author": "Quievreux Consulting",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/skquievreux/shader.git"
-    },
-    "homepage": "https://github.com/skquievreux/shader#readme",
-    "files": [
-        "*.html",
-        "*.css",
-        "*.js",
-        "*.md",
-        "LICENSE"
-    ],
-    "engines": {
-        "node": ">=14.0.0"
-    },
-    "browserslist": [
-        "> 1%",
-        "last 2 versions",
-        "not dead"
-    ],
-    "devDependencies": {},
-    "dependencies": {}
+  "name": "energiefeld-animationen",
+  "version": "2.2.1",
+  "description": "Eine umfassende Sammlung von 14 interaktiven Canvas-Animationen mit Landing Page und Gallery",
+  "main": "landing.html",
+  "scripts": {
+    "start": "start landing.html",
+    "dev": "python -m http.server 8000",
+    "demo": "start landing.html",
+    "test": "start landing.html",
+    "version:patch": "npm version patch",
+    "version:minor": "npm version minor",
+    "version:major": "npm version major",
+    "release": "npm version patch && git push && git push --tags"
+  },
+  "keywords": [
+    "canvas",
+    "animation",
+    "javascript",
+    "webgl",
+    "particles",
+    "aurora",
+    "nordlicht",
+    "visual-effects",
+    "web-animations",
+    "star-field",
+    "rain",
+    "lightning",
+    "smoke",
+    "fractal-tree",
+    "kaleidoscope",
+    "plasma",
+    "matrix-rain",
+    "landing-page",
+    "gallery",
+    "interactive",
+    "responsive",
+    "cosmic",
+    "weather",
+    "organic",
+    "geometric",
+    "abstract",
+    "cyberpunk"
+  ],
+  "author": "Quievreux Consulting",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skquievreux/shader.git"
+  },
+  "homepage": "https://github.com/skquievreux/shader#readme",
+  "files": [
+    "*.html",
+    "*.css",
+    "*.js",
+    "*.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "devDependencies": {},
+  "dependencies": {}
 }
