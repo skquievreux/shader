@@ -3,11 +3,59 @@
  * Erzeugt ein dynamisches Energiefeld mit bewegenden Partikeln
  */
 
+// Spatial Grid für Performance-Optimierung
+class SpatialGrid {
+    constructor(cellSize) {
+        this.cellSize = cellSize;
+        this.grid = new Map();
+    }
+    
+    getCellKey(x, y) {
+        return `${Math.floor(x/this.cellSize)},${Math.floor(y/this.cellSize)}`;
+    }
+    
+    clear() {
+        this.grid.clear();
+    }
+    
+    addParticle(particle) {
+        const key = this.getCellKey(particle.x, particle.y);
+        if (!this.grid.has(key)) {
+            this.grid.set(key, []);
+        }
+        this.grid.get(key).push(particle);
+    }
+    
+    getNearbyParticles(particle, maxDistance) {
+        const nearby = [];
+        const cellRadius = Math.ceil(maxDistance / this.cellSize);
+        const particleCell = this.getCellKey(particle.x, particle.y);
+        const [px, py] = particleCell.split(',').map(Number);
+        
+        for (let dx = -cellRadius; dx <= cellRadius; dx++) {
+            for (let dy = -cellRadius; dy <= cellRadius; dy++) {
+                const key = `${px + dx},${py + dy}`;
+                const cellParticles = this.grid.get(key);
+                if (cellParticles) {
+                    nearby.push(...cellParticles);
+                }
+            }
+        }
+        
+        return nearby.filter(p => p !== particle);
+    }
+}
+
 class EnergyField {
     constructor(canvasId) {
         // Canvas einrichten
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d', { willReadFrequently: true });
+        
+        // Performance-Optimierungen
+        this.spatialGrid = new SpatialGrid(70);
+        this.gradientCache = new Map();
+        this.adaptiveQuality = new AdaptiveQuality();
         
         // Parameter mit Standardwerten
         this.particles = [];
@@ -46,11 +94,13 @@ class EnergyField {
         }
     }
     
-    init() {
-        // Partikel erstellen
+init() {
+        // Partikel erstellen (adaptive Anzahl)
         this.particles = [];
-        for (let i = 0; i < this.particleCount; i++) {
+        const adaptiveCount = Math.floor(this.particleCount * this.adaptiveQuality.getParticleMultiplier());
+        for (let i = 0; i < adaptiveCount; i++) {
             this.particles.push({
+                id: i, // Eindeutige ID für Spatial Grid
                 x: Math.random() * this.canvas.width,
                 y: Math.random() * this.canvas.height,
                 radius: Math.random() * 3 + 1,
@@ -105,6 +155,29 @@ class EnergyField {
         }
     }
     
+// Gradient-Caching für Performance
+    getCachedGradient(type, x1, y1, x2, y2, colors) {
+        const key = `${type}-${x1}-${y1}-${x2}-${y2}-${JSON.stringify(colors)}`;
+        if (!this.gradientCache.has(key)) {
+            const gradient = type === 'linear' 
+                ? this.ctx.createLinearGradient(x1, y1, x2, y2)
+                : this.ctx.createRadialGradient(x1, y1, colors[0].radius || 0, x2, y2, colors[0].radius || 100);
+            
+            colors.forEach((color, index) => {
+                gradient.addColorStop(index / (colors.length - 1), color.color);
+            });
+            
+            this.gradientCache.set(key, gradient);
+            
+            // Cache begrenzen
+            if (this.gradientCache.size > 30) {
+                const firstKey = this.gradientCache.keys().next().value;
+                this.gradientCache.delete(firstKey);
+            }
+        }
+        return this.gradientCache.get(key);
+    }
+
     // Hilfsfunktion für Farbmanipulation mit Transparenz
     getColor(opacity) {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.baseColor);
@@ -117,9 +190,22 @@ class EnergyField {
         return `rgba(${r}, ${g}, ${b}, ${opacity})`;
     }
     
-    draw() {
+draw() {
+        this.adaptiveQuality.update();
+        
+        // Frame überspringen bei niedriger Qualität
+        if (this.adaptiveQuality.shouldSkipFrame()) return;
+        
+        this.ctx.save();
+        
         // Canvas löschen
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Spatial Grid aktualisieren
+        this.spatialGrid.clear();
+        this.particles.forEach(particle => {
+            this.spatialGrid.addParticle(particle);
+        });
         
         // Jedes Partikel zeichnen
         this.particles.forEach(particle => {
@@ -185,40 +271,55 @@ class EnergyField {
         
         // Verbindungen zwischen nahe gelegenen Partikeln zeichnen
         this.drawConnections();
+        
+        this.ctx.restore();
     }
     
-    drawConnections() {
+drawConnections() {
         // Maximale Distanz für Verbindungen
         const maxDistance = 70;
         
-        for (let i = 0; i < this.particles.length; i++) {
-            for (let j = i + 1; j < this.particles.length; j++) {
-                const p1 = this.particles[i];
-                const p2 = this.particles[j];
-                
-                const dx = p1.x - p2.x;
-                const dy = p1.y - p2.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance < maxDistance) {
-                    // Transparenz basierend auf Distanz
-                    const opacity = (1 - distance / maxDistance) * 0.3;
+        // Spatial Grid für Performance verwenden
+        this.particles.forEach(particle => {
+            const nearbyParticles = this.spatialGrid.getNearbyParticles(particle, maxDistance);
+            
+            nearbyParticles.forEach(otherParticle => {
+                // Vermeide doppelte Verbindungen
+                if (particle.id < otherParticle.id) {
+                    const dx = particle.x - otherParticle.x;
+                    const dy = particle.y - otherParticle.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
                     
-                    // Linie zeichnen
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(p1.x, p1.y);
-                    this.ctx.lineTo(p2.x, p2.y);
-                    this.ctx.strokeStyle = this.getColor(opacity);
-                    this.ctx.lineWidth = 0.5;
-                    this.ctx.stroke();
+                    if (distance < maxDistance) {
+                        // Transparenz basierend auf Distanz
+                        const opacity = (1 - distance / maxDistance) * 0.3;
+                        
+                        // Linie zeichnen
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(particle.x, particle.y);
+                        this.ctx.lineTo(otherParticle.x, otherParticle.y);
+                        this.ctx.strokeStyle = this.getColor(opacity);
+                        this.ctx.lineWidth = 0.5;
+                        this.ctx.stroke();
+                    }
                 }
-            }
-        }
+            });
+        });
     }
     
-    animate() {
+animate() {
         this.draw();
-        requestAnimationFrame(() => this.animate());
+        this.animationId = requestAnimationFrame(() => this.animate());
+    }
+    
+    // Cleanup Methode für Memory Management
+    destroy() {
+        cancelAnimationFrame(this.animationId);
+        this.gradientCache.clear();
+        this.spatialGrid.clear();
+        window.removeEventListener('resize', () => this.resize());
+        this.canvas.removeEventListener('mousemove', (e) => this.handleMouseMove(e));
+        this.canvas.removeEventListener('touchmove', (e) => this.handleTouchMove(e));
     }
 }
 

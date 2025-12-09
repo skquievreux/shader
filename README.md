@@ -16,7 +16,10 @@ Alle Animationen sind vollständig anpassbar über eine intuitive Benutzeroberfl
 
 ## Demo
 
-Eine Live-Demo ist verfügbar unter: [https://ihre-demo-url.com](https://ihre-demo-url.com)
+Eine Live-Demo ist verfügbar unter: [https://shader.runitfast.xyz](https://shader.runitfast.xyz)
+
+### Embed Testseite
+Testen Sie die Einbettungsfunktionalität: [https://shader.runitfast.xyz/embed-test.html](https://shader.runitfast.xyz/embed-test.html)
 
 ## Installation
 
@@ -79,15 +82,15 @@ Zusätzliche Parameter je nach Animation:
 
 ```html
 <!-- Aurora mit maximaler Intensität -->
-<iframe src="embed.html?animation=aurora&intensity=10&speed=5&color=00ff88" 
+<iframe src="https://shader.runitfast.xyz/embed.html?animation=aurora&intensity=10&speed=5&color=00ff88" 
         width="800" height="400" frameborder="0"></iframe>
 
 <!-- Energiefeld mit vielen roten Partikeln -->
-<iframe src="embed.html?animation=energy-field&particles=400&speed=7&color=ff0000" 
+<iframe src="https://shader.runitfast.xyz/embed.html?animation=energy-field&particles=400&speed=7&color=ff0000" 
         width="600" height="300" frameborder="0"></iframe>
 
 <!-- Sanfte blaue Wasserwellen -->
-<iframe src="embed.html?animation=water-waves&height=10&speed=2&color=0088ff" 
+<iframe src="https://shader.runitfast.xyz/embed.html?animation=water-waves&height=10&speed=2&color=0088ff" 
         width="500" height="200" frameborder="0"></iframe>
 ```
 
@@ -155,6 +158,16 @@ npx http-server
 Live Server Extension verwenden
 ```
 
+### Environment Konfiguration
+
+Das Projekt verwendet eine automatische Environment-Konfiguration:
+
+- **Production**: `https://shader.runitfast.xyz`
+- **Development**: Automatische Erkennung der localhost URL
+- **Vercel Integration**: Unterstützt Environment Variables
+
+Die `environment-config.js` Datei sorgt für korrekte URLs in allen Umgebungen.
+
 ### Neue Animation hinzufügen
 
 1. Erstellen Sie eine neue `.js`-Datei nach dem Muster der bestehenden Animationen
@@ -174,11 +187,38 @@ Ihr Name - [Ihre Website](https://ihre-website.com)
 
 Beiträge sind willkommen! Bitte lesen Sie [CONTRIBUTING.md](CONTRIBUTING.md) für Details zum Prozess für Pull Requests.
 
+## Hosting & Deployment
+
+### Vercel Deployment
+
+Für das Deployment auf Vercel können Sie folgende Environment Variables verwenden:
+
+- `BASE_URL`: https://shader.runitfast.xyz
+- `IS_PRODUCTION`: true
+
+Die `environment-config.js` erkennt automatisch die korrekte Umgebung.
+
+### Datei-Struktur für Hosting
+
+```
+├── index.html              # Hauptseite
+├── embed.html              # Embed-Seite
+├── embed-test.html         # Testseite für Embeds
+├── environment-config.js   # Environment-Konfiguration
+├── adaptive-quality.js     # Performance-Optimierung
+├── *.js                    # Animationsdateien
+├── styles.css              # Stylesheets
+└── assets/                 # Statische Ressourcen
+```
+
 ## Changelog
 
 ### Version 2.0.0
 - ✨ **Neue Animation**: Aurora Borealis mit realistischen Nordlichteffekten
-- 🔧 **Verbesserte Performance**: Optimierte Rendering-Algorithmen
+- 🔧 **Verbesserte Performance**: Optimierte Rendering-Algorithmen mit Gradient-Caching und Spatial Grid
 - 📱 **Mobile Unterstützung**: Touch-Events für alle Animationen
 - 🎨 **Erweiterte Farbpaletten**: Dynamische Farbsysteme
-- 📚 **Erweiterte Dokumentation**: Vollständige API-Referenz
+- 🌐 **Environment-Konfiguration**: Automatische URL-Anpassung für Development/Production
+- 📊 **Adaptive Quality**: Performance-basierte Qualitätsoptimierung
+- 🧪 **Embed-Testseite**: Komplette Testumgebung für Einbettungen
+- 📚 **Erweiterte Dokumentation**: Vollständige API-Referenz und Hosting-Anleitung

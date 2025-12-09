@@ -171,6 +171,8 @@
         window.addEventListener('load', resizeCanvases);
         window.addEventListener('resize', resizeCanvases);
     </script>
+    <script src="environment-config.js"></script>
+    <script src="adaptive-quality.js"></script>
     <script src="energy-field.js"></script>
     <script src="blue-sky.js"></script>
     <script src="firework.js"></script>
@@ -229,7 +231,8 @@
                         codeToDisplay = `// ${currentAnimation}.js muss eingebunden sein\ndocument.addEventListener('DOMContentLoaded', function() {\n    initAnimation('${currentAnimation}-canvas');\n});`;
                         break;
                     case 'iframe':
-                        codeToDisplay = `&lt;iframe src="https://ihre-domain.com/energiefeld-animationen/embed.html?animation=${currentAnimation}" width="500" height="300" frameborder="0"&gt;&lt;/iframe&gt;`;
+                        const embedUrl = window.ShaderConfig.getEmbedUrl(currentAnimation);
+                        codeToDisplay = `&lt;iframe src="${embedUrl}" width="500" height="300" frameborder="0"&gt;&lt;/iframe&gt;`;
                         break;
                 }
                 

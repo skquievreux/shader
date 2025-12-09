@@ -9,6 +9,12 @@ class Aurora {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d', { willReadFrequently: true });
         
+        // Performance-Optimierungen
+        this.gradientCache = new Map();
+        this.frameSkip = 0;
+        this.lastWaveUpdate = 0;
+        this.adaptiveQuality = new AdaptiveQuality();
+        
         // Parameter mit Standardwerten
         this.waves = [];
         this.particles = [];
@@ -74,9 +80,10 @@ class Aurora {
             });
         }
         
-        // Partikel für zusätzliche Effekte
+        // Partikel für zusätzliche Effekte (adaptive Anzahl)
         this.particles = [];
-        for (let i = 0; i < 50; i++) {
+        const particleCount = Math.floor(50 * this.adaptiveQuality.getParticleMultiplier());
+        for (let i = 0; i < particleCount; i++) {
             this.particles.push({
                 x: Math.random() * this.canvas.width,
                 y: Math.random() * this.canvas.height * 0.7,
@@ -174,52 +181,86 @@ class Aurora {
         return t * t * (3 - 2 * t);
     }
     
+    // Gradient-Caching für Performance
+    getCachedGradient(type, x1, y1, x2, y2, colors) {
+        const key = `${type}-${x1}-${y1}-${x2}-${y2}-${JSON.stringify(colors)}`;
+        if (!this.gradientCache.has(key)) {
+            const gradient = type === 'linear' 
+                ? this.ctx.createLinearGradient(x1, y1, x2, y2)
+                : this.ctx.createRadialGradient(x1, y1, colors[0].radius || 0, x2, y2, colors[0].radius || 100);
+            
+            colors.forEach((color, index) => {
+                gradient.addColorStop(index / (colors.length - 1), color.color);
+            });
+            
+            this.gradientCache.set(key, gradient);
+            
+            // Cache begrenzen
+            if (this.gradientCache.size > 50) {
+                const firstKey = this.gradientCache.keys().next().value;
+                this.gradientCache.delete(firstKey);
+            }
+        }
+        return this.gradientCache.get(key);
+    }
+
     // Rauschen-Funktion für organische Bewegungen
     noise(x, y, time) {
         return Math.sin(x * 0.01 + time) * Math.cos(y * 0.008 + time * 0.7) * 0.5 + 0.5;
     }
     
     update() {
+        this.adaptiveQuality.update();
+        
+        // Frame überspringen bei niedriger Qualität
+        if (this.adaptiveQuality.shouldSkipFrame()) return;
+        
         this.time += this.speed * 0.01;
         
         // Mauseinfluss verringern
         this.mouseInfluence *= 0.95;
         
-        // Wellen aktualisieren
-        this.waves.forEach((wave, index) => {
-            wave.phase += wave.speed * this.speed * 0.1;
+        // Adaptive Frame-Skip basierend auf Qualität
+        const frameSkipInterval = this.adaptiveQuality.getDetailLevel() > 0.7 ? 2 : 3;
+        this.frameSkip++;
+        if (this.frameSkip % frameSkipInterval === 0) {
+            this.lastWaveUpdate = this.time;
             
-            // Wellenpunkte berechnen
-            wave.points = [];
-            const segments = Math.floor(this.canvas.width / 8);
-            
-            for (let i = 0; i <= segments; i++) {
-                const x = (i / segments) * this.canvas.width;
-                const baseY = wave.baseY;
+            this.waves.forEach((wave, index) => {
+                wave.phase += wave.speed * this.speed * 0.1;
                 
-                // Mehrere Sinus-Wellen für komplexere Form
-                let y = baseY;
-                y += Math.sin(x * wave.frequency + wave.phase) * wave.amplitude * 0.6;
-                y += Math.sin(x * wave.frequency * 2.1 + wave.phase * 1.3) * wave.amplitude * 0.3;
-                y += Math.sin(x * wave.frequency * 0.7 + wave.phase * 0.8) * wave.amplitude * 0.4;
+                // Wellenpunkte berechnen
+                wave.points = [];
+                const segments = Math.floor(this.canvas.width / 8);
                 
-                // Rauschen hinzufügen
-                y += this.noise(x, index * 100, this.time) * 30;
-                
-                // Mauseinfluss
-                if (this.mouseInfluence > 0.1) {
-                    const mouseDistance = Math.sqrt(
-                        Math.pow(x - this.mouseX, 2) + Math.pow(y - this.mouseY, 2)
-                    );
-                    if (mouseDistance < 150) {
-                        const influence = (1 - mouseDistance / 150) * this.mouseInfluence;
-                        y += Math.sin(this.time * 5) * influence * 40;
+                for (let i = 0; i <= segments; i++) {
+                    const x = (i / segments) * this.canvas.width;
+                    const baseY = wave.baseY;
+                    
+                    // Mehrere Sinus-Wellen für komplexere Form
+                    let y = baseY;
+                    y += Math.sin(x * wave.frequency + wave.phase) * wave.amplitude * 0.6;
+                    y += Math.sin(x * wave.frequency * 2.1 + wave.phase * 1.3) * wave.amplitude * 0.3;
+                    y += Math.sin(x * wave.frequency * 0.7 + wave.phase * 0.8) * wave.amplitude * 0.4;
+                    
+                    // Rauschen hinzufügen
+                    y += this.noise(x, index * 100, this.time) * 30;
+                    
+                    // Mauseinfluss
+                    if (this.mouseInfluence > 0.1) {
+                        const mouseDistance = Math.sqrt(
+                            Math.pow(x - this.mouseX, 2) + Math.pow(y - this.mouseY, 2)
+                        );
+                        if (mouseDistance < 150) {
+                            const influence = (1 - mouseDistance / 150) * this.mouseInfluence;
+                            y += Math.sin(this.time * 5) * influence * 40;
+                        }
                     }
+                    
+                    wave.points.push({ x, y });
                 }
-                
-                wave.points.push({ x, y });
-            }
-        });
+            });
+        }
         
         // Partikel aktualisieren
         this.particles.forEach(particle => {
@@ -241,13 +282,16 @@ class Aurora {
     }
     
     draw() {
-        // Canvas mit dunklem Hintergrund löschen
-        const gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
-        gradient.addColorStop(0, '#0a0a1e');
-        gradient.addColorStop(0.3, '#1a1a3e');
-        gradient.addColorStop(1, '#2a2a4e');
+        this.ctx.save();
         
-        this.ctx.fillStyle = gradient;
+        // Canvas mit dunklem Hintergrund löschen (cached)
+        const bgGradient = this.getCachedGradient('linear', 0, 0, 0, this.canvas.height, [
+            { color: '#0a0a1e' },
+            { color: '#1a1a3e' },
+            { color: '#2a2a4e' }
+        ]);
+        
+        this.ctx.fillStyle = bgGradient;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
         // Sterne im Hintergrund
@@ -260,6 +304,8 @@ class Aurora {
         
         // Partikel zeichnen
         this.drawParticles();
+        
+        this.ctx.restore();
     }
     
     drawStars() {
@@ -290,13 +336,14 @@ class Aurora {
             this.ctx.lineCap = 'round';
             this.ctx.lineJoin = 'round';
             
-            // Verlauf für zusätzliche Tiefe
+            // Verlauf für zusätzliche Tiefe (cached)
             if (layer === 0) {
-                const waveGradient = this.ctx.createLinearGradient(0, 0, this.canvas.width, 0);
-                waveGradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, 0)`);
-                waveGradient.addColorStop(0.3, `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity})`);
-                waveGradient.addColorStop(0.7, `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity})`);
-                waveGradient.addColorStop(1, `rgba(${color.r}, ${color.g}, ${color.b}, 0)`);
+                const waveGradient = this.getCachedGradient('linear', 0, 0, this.canvas.width, 0, [
+                    { color: `rgba(${color.r}, ${color.g}, ${color.b}, 0)` },
+                    { color: `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity})` },
+                    { color: `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity})` },
+                    { color: `rgba(${color.r}, ${color.g}, ${color.b}, 0)` }
+                ]);
                 this.ctx.strokeStyle = waveGradient;
             }
             
@@ -328,15 +375,16 @@ class Aurora {
             // Partikel mit Glow
             this.ctx.globalAlpha = particle.currentOpacity;
             
-            // Äußerer Glow
+            // Äußerer Glow (cached)
             this.ctx.beginPath();
             this.ctx.arc(particle.x, particle.y, particle.radius * 3, 0, Math.PI * 2);
-            const particleGradient = this.ctx.createRadialGradient(
-                particle.x, particle.y, 0,
-                particle.x, particle.y, particle.radius * 3
+            const particleGradient = this.getCachedGradient('radial', 
+                particle.x, particle.y, particle.x, particle.y, particle.radius * 3,
+                [
+                    { color: `rgba(${color.r}, ${color.g}, ${color.b}, ${particle.currentOpacity})` },
+                    { color: `rgba(${color.r}, ${color.g}, ${color.b}, 0)` }
+                ]
             );
-            particleGradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${particle.currentOpacity})`);
-            particleGradient.addColorStop(1, `rgba(${color.r}, ${color.g}, ${color.b}, 0)`);
             this.ctx.fillStyle = particleGradient;
             this.ctx.fill();
             
@@ -353,7 +401,16 @@ class Aurora {
     animate() {
         this.update();
         this.draw();
-        requestAnimationFrame(() => this.animate());
+        this.animationId = requestAnimationFrame(() => this.animate());
+    }
+    
+    // Cleanup Methode für Memory Management
+    destroy() {
+        cancelAnimationFrame(this.animationId);
+        this.gradientCache.clear();
+        window.removeEventListener('resize', () => this.resize());
+        this.canvas.removeEventListener('mousemove', (e) => this.handleMouseMove(e));
+        this.canvas.removeEventListener('touchmove', (e) => this.handleTouchMove(e));
     }
 }
 
