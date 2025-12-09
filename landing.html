@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shader Animation Gallery - Interaktive Canvas-Animationen</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="landing-styles.css">
+    <link rel="icon" href="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZz0iIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQxIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzJiNTc5NztzdG9wLW9wYWNpdHk6MSIgLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjYiIHJ5PSI2IiBmaWxsPSJ1cmwoI2dyYWQxKSIgLz4KICA8Y2lyY2xlIGN4PSIxNiIgY3k9IjExIiByPSI0IiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iLjciIC8+CiAgPHBhdGggZD0iTTgsMjAgUTE2LDE1IDI0LDIwIFE2LDI1IDgsMjAiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjkiIC8+Cjwvc3ZnPg==">
+    <meta name="description" content="Eine beeindruckende Galerie interaktiver Canvas-Animationen. Entdecken Sie Particle-Systeme, Natur-Phänomene, kosmische Effekte und mehr.">
+    <meta name="theme-color" content="#2b5797">
+    
+    <!-- Performance Systems -->
+    <script src="performance-monitor.js"></script>
+    <script src="enhanced-adaptive-quality.js"></script>
+    <script src="resource-pool.js"></script>
+    <script src="progressive-loader.js"></script>
+    <script src="user-count-detector.js"></script>
+    <script src="emergency-mode.js"></script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2>Lade Animationen...</h2>
+            <p>Bitte warten Sie einen Moment</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="landing-header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>Shader Gallery</h1>
+                <p>Interaktive Canvas-Animationen</p>
+            </div>
+            <nav class="header-nav">
+                <button class="nav-btn active" data-view="gallery">Galerie</button>
+                <button class="nav-btn" data-view="categories">Kategorien</button>
+                <button class="nav-btn" data-view="about">Über</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Search and Filter Bar -->
+    <div class="search-filter-bar">
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Animationen suchen..." class="search-input">
+            <button class="search-btn" id="search-btn">🔍</button>
+        </div>
+        <div class="filter-container">
+            <select id="category-filter" class="filter-select">
+                <option value="">Alle Kategorien</option>
+            </select>
+            <select id="difficulty-filter" class="filter-select">
+                <option value="">Alle Schwierigkeitsgrade</option>
+            </select>
+            <button class="random-btn" id="random-btn">🎲 Zufällig</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="landing-main">
+        <!-- Gallery View -->
+        <div id="gallery-view" class="view active">
+            <div class="gallery-grid" id="gallery-grid">
+                <!-- Animation cards werden hier dynamisch eingefügt -->
+            </div>
+        </div>
+
+        <!-- Categories View -->
+        <div id="categories-view" class="view">
+            <div class="categories-container" id="categories-container">
+                <!-- Kategorien werden hier dynamisch eingefügt -->
+            </div>
+        </div>
+
+        <!-- About View -->
+        <div id="about-view" class="view">
+            <div class="about-content">
+                <h2>Über Shader Gallery</h2>
+                <p>Willkommen in der Welt der interaktiven Canvas-Animationen!</p>
+                
+                <div class="about-section">
+                    <h3>🎨 Was Sie erwartet</h3>
+                    <ul>
+                        <li><strong>14 einzigartige Animationen</strong> in verschiedenen Kategorien</li>
+                        <li><strong>Interaktive Steuerung</strong> mit Echtzeit-Parametern</li>
+                        <li><strong>Performance-Optimiert</strong> für alle Geräte</li>
+                        <li><strong>Responsive Design</strong> für Desktop und Mobile</li>
+                        <li><strong>Einfache Einbettung</strong> in Ihre Webprojekte</li>
+                    </ul>
+                </div>
+
+                <div class="about-section">
+                    <h3>🚀 Features</h3>
+                    <ul>
+                        <li>Particle-Systeme mit Physik-Simulation</li>
+                        <li>Natur-Phänomene und Wetter-Effekte</li>
+                        <li>Kosmische Animationen mit Parallax-Effekten</li>
+                        <li>Geometrische Muster und Symmetrien</li>
+                        <li>Abstrakte Kunst und generative Designs</li>
+                    </ul>
+                </div>
+
+                <div class="about-section">
+                    <h3>💡 Nutzung</h3>
+                    <ol>
+                        <li>Klicken Sie auf eine Animation-Vorschau</li>
+                        <li>Passen Sie die Parameter mit den Steuerelementen an</li>
+                        <li>Verwenden Sie die Maus oder Touch für Interaktion</li>
+                        <li>Betten Sie Animationen mit dem Code-Button ein</li>
+                    </ol>
+                </div>
+
+                <div class="about-section">
+                    <h3>🎯 Für Entwickler</h3>
+                    <p>Alle Animationen sind als ES6+ Klassen implementiert und können einfach in Ihre Projekte integriert werden. Nutzen Sie unsere <strong>Animation Registry</strong> für die einfache Verwaltung und Initialisierung.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Animation Modal -->
+    <div id="animation-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Animation</h3>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="animation-canvas-container">
+                    <canvas id="modal-canvas" class="modal-canvas"></canvas>
+                </div>
+                <div class="animation-controls" id="animation-controls">
+                    <!-- Steuerelemente werden hier dynamisch eingefügt -->
+                </div>
+                <div class="animation-info" id="animation-info">
+                    <!-- Informationen werden hier dynamisch eingefügt -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="embed-section">
+                    <h4>Einbetten</h4>
+                    <div class="embed-options">
+                        <button class="embed-btn" id="embed-iframe-btn">iFrame</button>
+                        <button class="embed-btn" id="embed-code-btn">Code</button>
+                        <button class="embed-btn" id="embed-download-btn">Download</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Animationen</h4>
+                <span id="total-animations-count">0</span> Animationen verfügbar
+            </div>
+            <div class="footer-section">
+                <h4>Kategorien</h4>
+                <span id="total-categories-count">0</span> Kategorien
+            </div>
+            <div class="footer-section">
+                <h4>Links</h4>
+                <a href="https://github.com/skquievreux/shader" target="_blank">GitHub</a>
+                <a href="#" id="documentation-link">Dokumentation</a>
+            </div>
+            <div class="footer-section">
+                <h4>Kontakt</h4>
+                <a href="mailto:quievreux.consulting@gmail.com">Quievreux Consulting</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 DreamEdit. Alle Rechte vorbehalten.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="environment-config.js"></script>
+    <script src="adaptive-quality.js"></script>
+    <script src="animation-registry.js"></script>
+    
+    <!-- Animation Scripts (werden bei Bedarf geladen) -->
+    <script>
+        // Landing Page Controller
+        class LandingPage {
+            constructor() {
+                this.currentView = 'gallery';
+                this.currentAnimation = null;
+                this.animations = [];
+                this.filteredAnimations = [];
+                this.searchQuery = '';
+                this.categoryFilter = '';
+                this.difficultyFilter = '';
+                
+                this.init();
+            }
+            
+            async init() {
+                // Warten bis Animation Registry geladen ist
+                if (typeof window.animationRegistry === 'undefined') {
+                    await this.waitForRegistry();
+                }
+                
+                this.animations = window.animationRegistry.getAllAnimations();
+                this.filteredAnimations = [...this.animations];
+                
+                this.setupEventListeners();
+                this.populateFilters();
+                this.renderGallery();
+                this.renderCategories();
+                this.updateStatistics();
+                this.hideLoadingScreen();
+            }
+            
+            waitForRegistry() {
+                return new Promise(resolve => {
+                    const checkInterval = setInterval(() => {
+                        if (typeof window.animationRegistry !== 'undefined') {
+                            clearInterval(checkInterval);
+                            resolve();
+                        }
+                    }, 100);
+                });
+            }
+            
+            setupEventListeners() {
+                // Navigation
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        this.switchView(e.target.dataset.view);
+                    });
+                });
+                
+                // Search
+                const searchInput = document.getElementById('search-input');
+                const searchBtn = document.getElementById('search-btn');
+                
+                searchInput.addEventListener('input', (e) => {
+                    this.searchQuery = e.target.value.toLowerCase();
+                    this.applyFilters();
+                });
+                
+                searchBtn.addEventListener('click', () => {
+                    this.searchQuery = searchInput.value.toLowerCase();
+                    this.applyFilters();
+                });
+                
+                // Filter
+                const categoryFilter = document.getElementById('category-filter');
+                const difficultyFilter = document.getElementById('difficulty-filter');
+                
+                categoryFilter.addEventListener('change', (e) => {
+                    this.categoryFilter = e.target.value;
+                    this.applyFilters();
+                });
+                
+                difficultyFilter.addEventListener('change', (e) => {
+                    this.difficultyFilter = e.target.value;
+                    this.applyFilters();
+                });
+                
+                // Random Button
+                document.getElementById('random-btn').addEventListener('click', () => {
+                    this.openRandomAnimation();
+                });
+                
+                // Modal
+                document.getElementById('close-modal').addEventListener('click', () => {
+                    this.closeModal();
+                });
+                
+                // Embed Buttons
+                document.getElementById('embed-iframe-btn').addEventListener('click', () => {
+                    this.copyEmbedCode('iframe');
+                });
+                
+                document.getElementById('embed-code-btn').addEventListener('click', () => {
+                    this.copyEmbedCode('code');
+                });
+                
+                document.getElementById('embed-download-btn').addEventListener('click', () => {
+                    this.downloadAnimation();
+                });
+                
+                // Keyboard Shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.closeModal();
+                    } else if (e.key === 'r' && e.ctrlKey) {
+                        e.preventDefault();
+                        this.openRandomAnimation();
+                    }
+                });
+                
+                // Performance Monitoring
+                if (window.PerformanceMonitor) {
+                    window.PerformanceMonitor.registerAnimation('landing-page', this);
+                }
+            }
+            
+            populateFilters() {
+                // Kategorien-Filter
+                const categoryFilter = document.getElementById('category-filter');
+                const categories = Object.values(window.ANIMATION_CATEGORIES);
+                
+                categories.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.name.toLowerCase().replace('ä', 'ae').replace('ö', 'oe').replace('ü', 'ue');
+                    option.textContent = `${category.icon} ${category.name}`;
+                    categoryFilter.appendChild(option);
+                });
+                
+                // Schwierigkeits-Filter
+                const difficultyFilter = document.getElementById('difficulty-filter');
+                const difficulties = Object.values(window.DIFFICULTY_LEVELS);
+                
+                difficulties.forEach(difficulty => {
+                    const option = document.createElement('option');
+                    option.value = difficulty.name.toLowerCase();
+                    option.textContent = difficulty.name;
+                    difficultyFilter.appendChild(option);
+                });
+            }
+            
+            switchView(view) {
+                this.currentView = view;
+                
+                // Navigation aktualisieren
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelector(`[data-view="${view}"]`).classList.add('active');
+                
+                // Views anzeigen/verstecken
+                document.querySelectorAll('.view').forEach(v => {
+                    v.classList.remove('active');
+                });
+                document.getElementById(`${view}-view`).classList.add('active');
+            }
+            
+            applyFilters() {
+                this.filteredAnimations = this.animations.filter(animation => {
+                    // Search Filter
+                    if (this.searchQuery && !this.matchesSearch(animation)) {
+                        return false;
+                    }
+                    
+                    // Category Filter
+                    if (this.categoryFilter && animation.category !== this.categoryFilter) {
+                        return false;
+                    }
+                    
+                    // Difficulty Filter
+                    if (this.difficultyFilter && animation.difficulty !== this.difficultyFilter) {
+                        return false;
+                    }
+                    
+                    return true;
+                });
+                
+                this.renderGallery();
+            }
+            
+            matchesSearch(animation) {
+                const query = this.searchQuery;
+                return animation.name.toLowerCase().includes(query) ||
+                       animation.description.toLowerCase().includes(query) ||
+                       (animation.tags && animation.tags.some(tag => tag.toLowerCase().includes(query)));
+            }
+            
+            renderGallery() {
+                const galleryGrid = document.getElementById('gallery-grid');
+                galleryGrid.innerHTML = '';
+                
+                if (this.filteredAnimations.length === 0) {
+                    galleryGrid.innerHTML = `
+                        <div class="no-results">
+                            <h3>Keine Animationen gefunden</h3>
+                            <p>Versuchen Sie andere Suchbegriffe oder Filter.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                this.filteredAnimations.forEach(animation => {
+                    const card = this.createAnimationCard(animation);
+                    galleryGrid.appendChild(card);
+                });
+            }
+            
+            renderCategories() {
+                const categoriesContainer = document.getElementById('categories-container');
+                categoriesContainer.innerHTML = '';
+                
+                const categories = Object.values(window.ANIMATION_CATEGORIES);
+                
+                categories.forEach(category => {
+                    const categoryAnimations = this.animations.filter(animation => 
+                        animation.category === category.name.toLowerCase().replace('ä', 'ae').replace('ö', 'oe').replace('ü', 'ue')
+                    );
+                    
+                    const categorySection = document.createElement('div');
+                    categorySection.className = 'category-section';
+                    categorySection.innerHTML = `
+                        <div class="category-header">
+                            <h3>${category.icon} ${category.name}</h3>
+                            <span class="category-count">${categoryAnimations.length} Animationen</span>
+                        </div>
+                        <div class="category-description">
+                            <p>${category.description}</p>
+                        </div>
+                        <div class="category-grid">
+                            ${categoryAnimations.map(animation => this.createAnimationCardHTML(animation)).join('')}
+                        </div>
+                    `;
+                    
+                    categoriesContainer.appendChild(categorySection);
+                });
+            }
+            
+            createAnimationCard(animation) {
+                const card = document.createElement('div');
+                card.className = 'animation-card';
+                card.innerHTML = this.createAnimationCardHTML(animation);
+                
+                card.addEventListener('click', () => {
+                    this.openAnimation(animation.id);
+                });
+                
+                return card;
+            }
+            
+            createAnimationCardHTML(animation) {
+                const category = window.ANIMATION_CATEGORIES[animation.category];
+                const difficulty = window.DIFFICULTY_LEVELS[animation.difficulty];
+                
+                return `
+                    <div class="card-thumbnail">
+                        <img src="${animation.thumbnail}" alt="${animation.name}" loading="lazy">
+                        <div class="card-overlay">
+                            <div class="play-button">▶</div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h4 class="card-title">${animation.name}</h4>
+                        <p class="card-description">${animation.description}</p>
+                        <div class="card-meta">
+                            <span class="card-category" style="color: ${category.color}">
+                                ${category.icon} ${category.name}
+                            </span>
+                            <span class="card-difficulty" style="color: ${difficulty.color}">
+                                ${difficulty.name}
+                            </span>
+                        </div>
+                        <div class="card-tags">
+                            ${animation.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            async openAnimation(animationId) {
+                try {
+                    this.currentAnimation = await window.animationRegistry.initializeAnimation(animationId, 'modal-canvas');
+                    this.showModal(animationId);
+                } catch (error) {
+                    console.error('Fehler beim Öffnen der Animation:', error);
+                    this.showError('Animation konnte nicht geladen werden');
+                }
+            }
+            
+            showModal(animationId) {
+                const modal = document.getElementById('animation-modal');
+                const animation = window.animationRegistry.getAnimation(animationId);
+                
+                if (!animation) return;
+                
+                // Modal-Titel setzen
+                document.getElementById('modal-title').textContent = animation.name;
+                
+                // Canvas-Größe anpassen
+                const canvas = document.getElementById('modal-canvas');
+                canvas.width = 800;
+                canvas.height = 600;
+                
+                // Steuerelemente erstellen
+                this.renderControls(animation);
+                
+                // Informationen anzeigen
+                this.renderAnimationInfo(animation);
+                
+                // Modal anzeigen
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            renderControls(animation) {
+                const controlsContainer = document.getElementById('animation-controls');
+                controlsContainer.innerHTML = '';
+                
+                if (!animation.controls || animation.controls.length === 0) {
+                    controlsContainer.innerHTML = '<p>Keine Steuerelemente verfügbar</p>';
+                    return;
+                }
+                
+                animation.controls.forEach(control => {
+                    const controlGroup = document.createElement('div');
+                    controlGroup.className = 'control-group';
+                    
+                    const label = document.createElement('label');
+                    label.textContent = control.label;
+                    label.setAttribute('for', `control-${control.id}`);
+                    
+                    let input;
+                    switch (control.type) {
+                        case 'range':
+                            input = document.createElement('input');
+                            input.type = 'range';
+                            input.min = control.min;
+                            input.max = control.max;
+                            input.value = control.default;
+                            input.id = `control-${control.id}`;
+                            input.addEventListener('input', (e) => {
+                                this.updateAnimationControl(control.id, e.target.value);
+                            });
+                            break;
+                            
+                        case 'color':
+                            input = document.createElement('input');
+                            input.type = 'color';
+                            input.value = control.default;
+                            input.id = `control-${control.id}`;
+                            input.addEventListener('input', (e) => {
+                                this.updateAnimationControl(control.id, e.target.value);
+                            });
+                            break;
+                            
+                        case 'select':
+                            input = document.createElement('select');
+                            input.id = `control-${control.id}`;
+                            control.options.forEach(option => {
+                                const optionElement = document.createElement('option');
+                                optionElement.value = option;
+                                optionElement.textContent = option;
+                                optionElement.selected = option === control.default;
+                                input.appendChild(optionElement);
+                            });
+                            input.addEventListener('change', (e) => {
+                                this.updateAnimationControl(control.id, e.target.value);
+                            });
+                            break;
+                            
+                        case 'checkbox':
+                            input = document.createElement('input');
+                            input.type = 'checkbox';
+                            input.checked = control.default;
+                            input.id = `control-${control.id}`;
+                            input.addEventListener('change', (e) => {
+                                this.updateAnimationControl(control.id, e.target.checked);
+                            });
+                            break;
+                    }
+                    
+                    controlGroup.appendChild(label);
+                    controlGroup.appendChild(input);
+                    controlsContainer.appendChild(controlGroup);
+                });
+            }
+            
+            renderAnimationInfo(animation) {
+                const infoContainer = document.getElementById('animation-info');
+                const category = window.ANIMATION_CATEGORIES[animation.category];
+                const difficulty = window.DIFFICULTY_LEVELS[animation.difficulty];
+                
+                infoContainer.innerHTML = `
+                    <div class="info-section">
+                        <h4>Informationen</h4>
+                        <p><strong>Kategorie:</strong> ${category.icon} ${category.name}</p>
+                        <p><strong>Schwierigkeit:</strong> ${difficulty.name}</p>
+                        <p><strong>Beschreibung:</strong> ${animation.description}</p>
+                    </div>
+                    <div class="info-section">
+                        <h4>Tags</h4>
+                        <div class="tags">
+                            ${animation.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            updateAnimationControl(controlId, value) {
+                if (this.currentAnimation && typeof this.currentAnimation[`set${controlId.charAt(0).toUpperCase() + controlId.slice(1)}`] === 'function') {
+                    this.currentAnimation[`set${controlId.charAt(0).toUpperCase() + controlId.slice(1)}`](value);
+                }
+            }
+            
+            closeModal() {
+                const modal = document.getElementById('animation-modal');
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+                
+                // Animation beenden
+                if (this.currentAnimation) {
+                    window.animationRegistry.destroyAnimation(this.currentAnimation.constructor.name.replace('Animation', '').toLowerCase());
+                    this.currentAnimation = null;
+                }
+            }
+            
+            openRandomAnimation() {
+                const randomAnimation = window.animationRegistry.getRandomAnimation();
+                this.openAnimation(randomAnimation.id);
+            }
+            
+            copyEmbedCode(type) {
+                if (!this.currentAnimation) return;
+                
+                const animationId = this.currentAnimation.constructor.name.replace('Animation', '').toLowerCase();
+                const config = window.animationRegistry.getEmbedConfig(animationId);
+                
+                let code = '';
+                switch (type) {
+                    case 'iframe':
+                        code = `<iframe src="${config.embedUrl}" width="800" height="600" frameborder="0"></iframe>`;
+                        break;
+                    case 'code':
+                        code = `<!-- ${config.name} Animation -->
+<canvas id="${animationId}-canvas"></canvas>
+<script src="${config.scriptUrl}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        ${config.initFunction}('${animationId}-canvas');
+    });
+</script>`;
+                        break;
+                }
+                
+                navigator.clipboard.writeText(code).then(() => {
+                    this.showSuccess('Code in Zwischenablage kopiert!');
+                }).catch(() => {
+                    this.showError('Code konnte nicht kopiert werden');
+                });
+            }
+            
+            downloadAnimation() {
+                if (!this.currentAnimation) return;
+                
+                const animationId = this.currentAnimation.constructor.name.replace('Animation', '').toLowerCase();
+                const config = window.animationRegistry.getEmbedConfig(animationId);
+                
+                // HTML-Datei erstellen
+                const html = `<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${config.name} Animation</title>
+    <style>
+        body { margin: 0; padding: 0; overflow: hidden; }
+        canvas { display: block; width: 100vw; height: 100vh; }
+    </style>
+</head>
+<body>
+    <canvas id="${animationId}-canvas"></canvas>
+    <script src="${config.scriptUrl}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            ${config.initFunction}('${animationId}-canvas');
+        });
+    </script>
+</body>
+</html>`;
+                
+                // Download
+                const blob = new Blob([html], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${animationId}-animation.html`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                this.showSuccess('Animation heruntergeladen!');
+            }
+            
+            updateStatistics() {
+                document.getElementById('total-animations-count').textContent = this.animations.length;
+                document.getElementById('total-categories-count').textContent = Object.keys(window.ANIMATION_CATEGORIES).length;
+            }
+            
+            hideLoadingScreen() {
+                const loadingScreen = document.getElementById('loading-screen');
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 300);
+            }
+            
+            showSuccess(message) {
+                this.showToast(message, 'success');
+            }
+            
+            showError(message) {
+                this.showToast(message, 'error');
+            }
+            
+            showToast(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.classList.add('show');
+                }, 100);
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => {
+                        document.body.removeChild(toast);
+                    }, 300);
+                }, 3000);
+            }
+        }
+        
+        // Landing Page initialisieren
+        document.addEventListener('DOMContentLoaded', () => {
+            new LandingPage();
+        });
+    </script>
+</body>
+</html>
