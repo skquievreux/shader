@@ -1,51 +1,51 @@
 {
-    "name": "energiefeld-animationen",
-    "version": "2.1.2",
-    "description": "Eine erweiterte Sammlung von HTML5-Canvas-Animationen mit Aurora Borealis",
-    "main": "index.html",
-    "scripts": {
-        "start": "start index.html",
-        "dev": "python -m http.server 8000",
-        "demo": "start aurora-demo.html",
-        "test": "start index.html && start aurora-demo.html",
-        "version:patch": "npm version patch",
-        "version:minor": "npm version minor",
-        "version:major": "npm version major",
-        "release": "npm version patch && git push && git push --tags"
-    },
-    "keywords": [
-        "canvas",
-        "animation",
-        "javascript",
-        "webgl",
-        "particles",
-        "aurora",
-        "nordlicht",
-        "visual-effects",
-        "web-animations"
-    ],
-    "author": "Quievreux Consulting",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/skquievreux/shader.git"
-    },
-    "homepage": "https://github.com/skquievreux/shader#readme",
-    "files": [
-        "*.html",
-        "*.css",
-        "*.js",
-        "*.md",
-        "LICENSE"
-    ],
-    "engines": {
-        "node": ">=14.0.0"
-    },
-    "browserslist": [
-        "> 1%",
-        "last 2 versions",
-        "not dead"
-    ],
-    "devDependencies": {},
-    "dependencies": {}
+  "name": "energiefeld-animationen",
+  "version": "2.1.2",
+  "description": "Eine erweiterte Sammlung von HTML5-Canvas-Animationen mit Aurora Borealis",
+  "main": "index.html",
+  "scripts": {
+    "start": "start index.html",
+    "dev": "python -m http.server 8000",
+    "demo": "start aurora-demo.html",
+    "test": "start index.html && start aurora-demo.html",
+    "version:patch": "npm version patch",
+    "version:minor": "npm version minor",
+    "version:major": "npm version major",
+    "release": "npm version patch && git push && git push --tags"
+  },
+  "keywords": [
+    "canvas",
+    "animation",
+    "javascript",
+    "webgl",
+    "particles",
+    "aurora",
+    "nordlicht",
+    "visual-effects",
+    "web-animations"
+  ],
+  "author": "Quievreux Consulting",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skquievreux/shader.git"
+  },
+  "homepage": "https://github.com/skquievreux/shader#readme",
+  "files": [
+    "*.html",
+    "*.css",
+    "*.js",
+    "*.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "devDependencies": {},
+  "dependencies": {}
 }
