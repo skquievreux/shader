@@ -9,6 +9,11 @@ class WaterWaves {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d', { willReadFrequently: true });
         
+        // Performance-Optimierungen
+        this.gradientCache = new Map();
+        this.frameSkip = 0;
+        this.adaptiveQuality = new AdaptiveQuality();
+        
         // Parameter mit Standardwerten
         this.waveHeight = 20;
         this.waveSpeed = 4;
@@ -115,6 +120,29 @@ class WaterWaves {
         }
     }
     
+// Gradient-Caching für Performance
+    getCachedGradient(type, x1, y1, x2, y2, colors) {
+        const key = `${type}-${x1}-${y1}-${x2}-${y2}-${JSON.stringify(colors)}`;
+        if (!this.gradientCache.has(key)) {
+            const gradient = type === 'linear' 
+                ? this.ctx.createLinearGradient(x1, y1, x2, y2)
+                : this.ctx.createRadialGradient(x1, y1, colors[0].radius || 0, x2, y2, colors[0].radius || 100);
+            
+            colors.forEach((color, index) => {
+                gradient.addColorStop(index / (colors.length - 1), color.color);
+            });
+            
+            this.gradientCache.set(key, gradient);
+            
+            // Cache begrenzen
+            if (this.gradientCache.size > 30) {
+                const firstKey = this.gradientCache.keys().next().value;
+                this.gradientCache.delete(firstKey);
+            }
+        }
+        return this.gradientCache.get(key);
+    }
+
     // Funktion zur Farbmanipulation für Tiefeneffekt
     getColorVariation(depth) {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.waterColor);
@@ -334,7 +362,14 @@ class WaterWaves {
         this.time++;
     }
     
-    draw() {
+draw() {
+        this.adaptiveQuality.update();
+        
+        // Frame überspringen bei niedriger Qualität
+        if (this.adaptiveQuality.shouldSkipFrame()) return;
+        
+        this.ctx.save();
+        
         // Canvas löschen
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
@@ -346,12 +381,33 @@ class WaterWaves {
         
         // Splash-Effekte zeichnen
         this.drawSplashes();
+        
+        this.ctx.restore();
     }
     
-    animate() {
+animate() {
         this.update();
         this.draw();
-        requestAnimationFrame(() => this.animate());
+        this.animationId = requestAnimationFrame(() => this.animate());
+    }
+    
+    // Cleanup Methode für Memory Management
+    destroy() {
+        cancelAnimationFrame(this.animationId);
+        this.gradientCache.clear();
+        window.removeEventListener('resize', () => this.resize());
+        this.canvas.removeEventListener('mousemove', (e) => this.handleMouseMove(e));
+        this.canvas.removeEventListener('mouseleave', () => { this.mouseActive = false; });
+        this.canvas.removeEventListener('mouseenter', () => { this.mouseActive = true; });
+        this.canvas.removeEventListener('click', (e) => this.createSplash(e));
+        this.canvas.removeEventListener('touchstart', (e) => {
+            if (e.touches.length > 0) {
+                this.handleTouchMove(e);
+                this.createSplash(e);
+            }
+        });
+        this.canvas.removeEventListener('touchmove', (e) => this.handleTouchMove(e));
+        this.canvas.removeEventListener('touchend', () => { this.mouseActive = false; });
     }
 }
 

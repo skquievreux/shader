@@ -130,7 +130,7 @@
             <h2>Einbetten in Ihre Webseite</h2>
             <div class="embed-info">
                 <p>Sie können jede Animation als Iframe in Ihre Webseite einbetten:</p>
-                <pre><code>&lt;iframe src="https://ihre-domain.com/energiefeld-animationen/embed.html?animation=energy-field&param1=value1" width="500" height="300"&gt;&lt;/iframe&gt;</code></pre>
+                <pre><code>&lt;iframe src="https://shader.runitfast.xyz/embed.html?animation=energy-field&particles=200&speed=5&color=ff6b6b" width="500" height="300" frameborder="0"&gt;&lt;/iframe&gt;</code></pre>
                 <p>Parameter können über die URL angepasst werden. Vollständige Dokumentation finden Sie unten.</p>
             </div>
         </section>
@@ -171,6 +171,8 @@
         window.addEventListener('load', resizeCanvases);
         window.addEventListener('resize', resizeCanvases);
     </script>
+    <script src="environment-config.js"></script>
+    <script src="adaptive-quality.js"></script>
     <script src="energy-field.js"></script>
     <script src="blue-sky.js"></script>
     <script src="firework.js"></script>
@@ -223,13 +225,39 @@
                 
                 switch(tabType) {
                     case 'html':
-                        codeToDisplay = `&lt;canvas id="${currentAnimation}-canvas" width="500" height="300"&gt;&lt;/canvas&gt;`;
+                        codeToDisplay = `&lt;!DOCTYPE html&gt;
+&lt;html lang="de"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;${currentAnimation} Animation&lt;/title&gt;
+    &lt;style&gt;
+        body { margin: 0; padding: 0; }
+        canvas { display: block; width: 100%; height: 100vh; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;canvas id="${currentAnimation}-canvas"&gt;&lt;/canvas&gt;
+    &lt;script src="https://shader.runitfast.xyz/environment-config.js"&gt;&lt;/script&gt;
+    &lt;script src="https://shader.runitfast.xyz/${currentAnimation}.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+        document.addEventListener('DOMContentLoaded', function() {
+            init${currentAnimation.charAt(0).toUpperCase() + currentAnimation.slice(1).replace('-', '')}('${currentAnimation}-canvas');
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;`;
                         break;
                     case 'js':
-                        codeToDisplay = `// ${currentAnimation}.js muss eingebunden sein\ndocument.addEventListener('DOMContentLoaded', function() {\n    initAnimation('${currentAnimation}-canvas');\n});`;
+                        codeToDisplay = `// Animation initialisieren
+document.addEventListener('DOMContentLoaded', function() {
+    const canvas = document.getElementById('${currentAnimation}-canvas');
+    init${currentAnimation.charAt(0).toUpperCase() + currentAnimation.slice(1).replace('-', '')}(canvas.id);
+});`;
                         break;
                     case 'iframe':
-                        codeToDisplay = `&lt;iframe src="https://ihre-domain.com/energiefeld-animationen/embed.html?animation=${currentAnimation}" width="500" height="300" frameborder="0"&gt;&lt;/iframe&gt;`;
+                        const embedUrl = window.ShaderConfig.getEmbedUrl(currentAnimation);
+                        codeToDisplay = `&lt;iframe src="${embedUrl}" width="500" height="300" frameborder="0"&gt;&lt;/iframe&gt;`;
                         break;
                 }
                 
@@ -252,5 +280,11 @@
             });
         });
     </script>
+    
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 20px; background: #2b5797; color: white; margin-top: 40px;">
+        <p>Entwickelt von <a href="mailto:quievreux.consulting@gmail.com" style="color: #4dabf7; text-decoration: none;">Quievreux Consulting</a></p>
+        <p style="margin-top: 5px; font-size: 0.9em; opacity: 0.8;">© 2025 DreamEdit. Alle Rechte vorbehalten.</p>
+    </footer>
 </body>
 </html>

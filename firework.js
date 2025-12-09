@@ -3,15 +3,116 @@
  * Erzeugt Feuerwerkseffekte mit konfigurierbaren Eigenschaften
  */
 
+// Particle Pool für Performance-Optimierung
+class ParticlePool {
+    constructor(initialSize = 200) {
+        this.pool = [];
+        this.active = [];
+        for (let i = 0; i < initialSize; i++) {
+            this.pool.push(this.createParticle());
+        }
+    }
+    
+    createParticle() {
+        return {
+            x: 0,
+            y: 0,
+            radius: 1,
+            color: '#ffffff',
+            speed: 0,
+            angle: 0,
+            friction: 0.98,
+            gravity: 0.1,
+            alpha: 1,
+            decay: 0.02,
+            brightnessFactor: 100,
+            active: false
+        };
+    }
+    
+    get() {
+        let particle;
+        if (this.pool.length > 0) {
+            particle = this.pool.pop();
+        } else {
+            particle = this.createParticle();
+        }
+        particle.active = true;
+        this.active.push(particle);
+        return particle;
+    }
+    
+    release(particle) {
+        const index = this.active.indexOf(particle);
+        if (index !== -1) {
+            this.active.splice(index, 1);
+            particle.active = false;
+            this.pool.push(particle);
+        }
+    }
+    
+    updateAll() {
+        for (let i = this.active.length - 1; i >= 0; i--) {
+            const particle = this.active[i];
+            
+            // Bewegung und Schwerkraft anwenden
+            particle.speed *= particle.friction;
+            particle.x += Math.cos(particle.angle) * particle.speed;
+            particle.y += Math.sin(particle.angle) * particle.speed + particle.gravity;
+            
+            // Transparenz verringern
+            particle.alpha -= particle.decay;
+            
+            // Partikel entfernen, wenn nicht mehr sichtbar
+            if (particle.alpha <= 0.05) {
+                this.release(particle);
+            }
+        }
+    }
+    
+    drawAll(ctx) {
+        this.active.forEach(particle => {
+            ctx.globalAlpha = particle.alpha;
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+            ctx.fillStyle = particle.color;
+            ctx.fill();
+            
+            // Leuchten um die Partikel
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, particle.radius * 2, 0, Math.PI * 2);
+            const gradient = ctx.createRadialGradient(
+                particle.x, particle.y, particle.radius * 0.5,
+                particle.x, particle.y, particle.radius * 2
+            );
+            
+            const glowColor = particle.color === '#FFFFFF' ? 'rgba(255, 255, 255, ' : 
+                                (particle.color === '#FFF9C4' ? 'rgba(255, 249, 196, ' : 
+                                particle.color.replace('rgb', 'rgba').replace(')', ', '));
+                                
+            gradient.addColorStop(0, glowColor + (particle.alpha * 0.6) + ')');
+            gradient.addColorStop(1, glowColor + '0)');
+            
+            ctx.fillStyle = gradient;
+            ctx.fill();
+        });
+        ctx.globalAlpha = 1;
+    }
+}
+
 class Firework {
     constructor(canvasId) {
         // Canvas einrichten
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d', { willReadFrequently: true });
         
+        // Performance-Optimierungen
+        this.particlePool = new ParticlePool(200);
+        this.gradientCache = new Map();
+        this.adaptiveQuality = new AdaptiveQuality();
+        
         // Parameter mit Standardwerten
         this.rockets = [];
-        this.particles = [];
         this.frequency = 3; // 1-10
         this.particleSize = 100; // 20-200
         this.baseColor = '#cc5de8';
@@ -125,48 +226,70 @@ class Firework {
         return `rgb(${newR}, ${newG}, ${newB})`;
     }
     
+// Gradient-Caching für Performance
+    getCachedGradient(type, x1, y1, x2, y2, colors) {
+        const key = `${type}-${x1}-${y1}-${x2}-${y2}-${JSON.stringify(colors)}`;
+        if (!this.gradientCache.has(key)) {
+            const gradient = type === 'linear' 
+                ? this.ctx.createLinearGradient(x1, y1, x2, y2)
+                : this.ctx.createRadialGradient(x1, y1, colors[0].radius || 0, x2, y2, colors[0].radius || 100);
+            
+            colors.forEach((color, index) => {
+                gradient.addColorStop(index / (colors.length - 1), color.color);
+            });
+            
+            this.gradientCache.set(key, gradient);
+            
+            // Cache begrenzen
+            if (this.gradientCache.size > 30) {
+                const firstKey = this.gradientCache.keys().next().value;
+                this.gradientCache.delete(firstKey);
+            }
+        }
+        return this.gradientCache.get(key);
+    }
+
     // Rakete explodieren lassen
     explodeRocket(rocket) {
-        const particleCount = Math.floor(this.particleSize / 10) + 10;
+        const baseParticleCount = Math.floor(this.particleSize / 10) + 10;
+        const particleCount = Math.floor(baseParticleCount * this.adaptiveQuality.getParticleMultiplier());
         
         // Basisfarbe für die Explosion
         const mainColor = rocket.color;
         
-        // Verschiedene Partikelarten erzeugen
+        // Verschiedene Partikelarten erzeugen mit Pooling
         for (let i = 0; i < particleCount; i++) {
             const speed = Math.random() * 3 + 2;
             const angle = Math.random() * Math.PI * 2;
             
             // Hauptpartikel
-            this.particles.push({
-                x: rocket.x,
-                y: rocket.y,
-                radius: Math.random() * 2 + 1,
-                color: i % 3 === 0 ? '#FFFFFF' : mainColor,
-                speed,
-                angle,
-                friction: 0.98,
-                gravity: 0.1,
-                alpha: 1,
-                decay: Math.random() * 0.01 + 0.02,
-                brightnessFactor: Math.random() * 50 + 50
-            });
+            const particle1 = this.particlePool.get();
+            particle1.x = rocket.x;
+            particle1.y = rocket.y;
+            particle1.radius = Math.random() * 2 + 1;
+            particle1.color = i % 3 === 0 ? '#FFFFFF' : mainColor;
+            particle1.speed = speed;
+            particle1.angle = angle;
+            particle1.friction = 0.98;
+            particle1.gravity = 0.1;
+            particle1.alpha = 1;
+            particle1.decay = Math.random() * 0.01 + 0.02;
+            particle1.brightnessFactor = Math.random() * 50 + 50;
             
             // Zweite Schicht von Partikeln (weniger, schneller verblassend)
             if (i % 3 === 0) {
-                this.particles.push({
-                    x: rocket.x,
-                    y: rocket.y,
-                    radius: Math.random() * 1.5 + 0.5,
-                    color: i % 2 === 0 ? '#FFF9C4' : this.getRandomColorVariation(),
-                    speed: speed * 1.3,
-                    angle: angle + (Math.random() * 0.2 - 0.1),
-                    friction: 0.95,
-                    gravity: 0.1,
-                    alpha: 1,
-                    decay: Math.random() * 0.02 + 0.03,
-                    brightnessFactor: Math.random() * 30 + 70
-                });
+                const particle2 = this.particlePool.get();
+                particle2.x = rocket.x;
+                particle2.y = rocket.y;
+                particle2.radius = Math.random() * 1.5 + 0.5;
+                particle2.color = i % 2 === 0 ? '#FFF9C4' : this.getRandomColorVariation();
+                particle2.speed = speed * 1.3;
+                particle2.angle = angle + (Math.random() * 0.2 - 0.1);
+                particle2.friction = 0.95;
+                particle2.gravity = 0.1;
+                particle2.alpha = 1;
+                particle2.decay = Math.random() * 0.02 + 0.03;
+                particle2.brightnessFactor = Math.random() * 30 + 70;
             }
         }
         
@@ -176,7 +299,12 @@ class Firework {
         rocket.exploded = true;
     }
     
-    update() {
+update() {
+        this.adaptiveQuality.update();
+        
+        // Frame überspringen bei niedriger Qualität
+        if (this.adaptiveQuality.shouldSkipFrame()) return;
+        
         // Aktuelle Zeit ermitteln
         const now = Date.now();
         
@@ -215,26 +343,13 @@ class Firework {
             }
         }
         
-        // Partikel aktualisieren
-        for (let i = this.particles.length - 1; i >= 0; i--) {
-            const particle = this.particles[i];
-            
-            // Bewegung und Schwerkraft anwenden
-            particle.speed *= particle.friction;
-            particle.x += Math.cos(particle.angle) * particle.speed;
-            particle.y += Math.sin(particle.angle) * particle.speed + particle.gravity;
-            
-            // Transparenz verringern
-            particle.alpha -= particle.decay;
-            
-            // Partikel entfernen, wenn nicht mehr sichtbar
-            if (particle.alpha <= 0.05) {
-                this.particles.splice(i, 1);
-            }
-        }
+// Partikel mit Pooling aktualisieren
+        this.particlePool.updateAll();
     }
     
-    draw() {
+draw() {
+        this.ctx.save();
+        
         // Canvas löschen mit leichter Transparenz für Nachleuchten
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -263,40 +378,27 @@ class Firework {
             }
         });
         
-        // Partikel zeichnen
-        this.particles.forEach(particle => {
-            this.ctx.globalAlpha = particle.alpha;
-            this.ctx.beginPath();
-            this.ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-            this.ctx.fillStyle = particle.color;
-            this.ctx.fill();
-            
-            // Leuchten um die Partikel
-            this.ctx.beginPath();
-            this.ctx.arc(particle.x, particle.y, particle.radius * 2, 0, Math.PI * 2);
-            const gradient = this.ctx.createRadialGradient(
-                particle.x, particle.y, particle.radius * 0.5,
-                particle.x, particle.y, particle.radius * 2
-            );
-            
-            const glowColor = particle.color === '#FFFFFF' ? 'rgba(255, 255, 255, ' : 
-                                (particle.color === '#FFF9C4' ? 'rgba(255, 249, 196, ' : 
-                                particle.color.replace('rgb', 'rgba').replace(')', ', '));
-                                
-            gradient.addColorStop(0, glowColor + (particle.alpha * 0.6) + ')');
-            gradient.addColorStop(1, glowColor + '0)');
-            
-            this.ctx.fillStyle = gradient;
-            this.ctx.fill();
-        });
+        // Partikel mit Pooling zeichnen
+        this.particlePool.drawAll(this.ctx);
         
-        this.ctx.globalAlpha = 1;
+        this.ctx.restore();
     }
     
-    animate() {
+animate() {
         this.update();
         this.draw();
-        requestAnimationFrame(() => this.animate());
+        this.animationId = requestAnimationFrame(() => this.animate());
+    }
+    
+    // Cleanup Methode für Memory Management
+    destroy() {
+        cancelAnimationFrame(this.animationId);
+        this.gradientCache.clear();
+        this.particlePool.active.forEach(particle => {
+            this.particlePool.release(particle);
+        });
+        window.removeEventListener('resize', () => this.resize());
+        this.canvas.removeEventListener('click', (e) => this.launchRocket(e.clientX, e.clientY));
     }
 }
 

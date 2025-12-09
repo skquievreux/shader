@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shader Animationen - Embed Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .test-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .test-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .test-header {
+            background: linear-gradient(135deg, #2b5797, #5074b8);
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .test-header h3 {
+            margin-bottom: 5px;
+        }
+        
+        .test-params {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .iframe-container {
+            height: 300px;
+            position: relative;
+            background: #f0f0f0;
+        }
+        
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .code-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .code-section h2 {
+            color: #2b5797;
+            margin-bottom: 20px;
+        }
+        
+        .code-examples {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .code-example {
+            background: #f8f9fa;
+            border-left: 4px solid #4dabf7;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        .code-example h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .code-example pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .copy-btn {
+            background: #4dabf7;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: #3b95d3;
+        }
+        
+        .copy-btn.copied {
+            background: #28a745;
+        }
+        
+        .environment-info {
+            background: #e8f5e8;
+            border: 1px solid #28a745;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .environment-info h3 {
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+        
+        .url-display {
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+        
+        @media (max-width: 768px) {
+            .test-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Shader Animationen Embed Test</h1>
+            <p class="subtitle">Testen Sie die Einbettung der Animationen in Ihre Webseite</p>
+        </header>
+
+        <div class="environment-info">
+            <h3>🌐 Environment Information</h3>
+            <p><strong>Current Base URL:</strong></p>
+            <div class="url-display" id="current-url">Loading...</div>
+            <p><strong>Environment:</strong> <span id="environment-type">Loading...</span></p>
+        </div>
+
+        <div class="test-grid">
+            <div class="test-card">
+                <div class="test-header">
+                    <h3>⚡ Energiefeld</h3>
+                    <p class="test-params">200 Partikel, Geschwindigkeit 5</p>
+                </div>
+                <div class="iframe-container">
+                    <iframe id="energy-field-iframe" src="about:blank"></iframe>
+                </div>
+            </div>
+
+            <div class="test-card">
+                <div class="test-header">
+                    <h3>🌅 Blauer Himmel</h3>
+                    <p class="test-params">15 Wolken, Windgeschwindigkeit 3</p>
+                </div>
+                <div class="iframe-container">
+                    <iframe id="blue-sky-iframe" src="about:blank"></iframe>
+                </div>
+            </div>
+
+            <div class="test-card">
+                <div class="test-header">
+                    <h3>🎆 Feuerwerk</h3>
+                    <p class="test-params">Frequenz 3, 100 Partikel</p>
+                </div>
+                <div class="iframe-container">
+                    <iframe id="firework-iframe" src="about:blank"></iframe>
+                </div>
+            </div>
+
+            <div class="test-card">
+                <div class="test-header">
+                    <h3>🌊 Wasserwellen</h3>
+                    <p class="test-params">Höhe 20, Geschwindigkeit 4</p>
+                </div>
+                <div class="iframe-container">
+                    <iframe id="water-waves-iframe" src="about:blank"></iframe>
+                </div>
+            </div>
+
+            <div class="test-card">
+                <div class="test-header">
+                    <h3>🌌 Aurora Borealis</h3>
+                    <p class="test-params">Intensität 5, Geschwindigkeit 3</p>
+                </div>
+                <div class="iframe-container">
+                    <iframe id="aurora-iframe" src="about:blank"></iframe>
+                </div>
+            </div>
+
+            <div class="test-card">
+                <div class="test-header">
+                    <h3>🎨 Angepasste Aurora</h3>
+                    <p class="test-params">Intensität 8, Geschwindigkeit 7, Farbe #ff00ff</p>
+                </div>
+                <div class="iframe-container">
+                    <iframe id="aurora-custom-iframe" src="about:blank"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-section">
+            <h2>📝 Embed Code Beispiele</h2>
+            <div class="code-examples">
+                <div class="code-example">
+                    <h4>Standard Energiefeld</h4>
+                    <pre id="energy-field-code">&lt;iframe src="..." width="500" height="300" frameborder="0"&gt;&lt;/iframe&gt;</pre>
+                    <button class="copy-btn" onclick="copyCode('energy-field-code')">Kopieren</button>
+                </div>
+
+                <div class="code-example">
+                    <h4>Angepasste Aurora mit Parametern</h4>
+                    <pre id="aurora-custom-code">&lt;iframe src="..." width="800" height="400" frameborder="0"&gt;&lt;/iframe&gt;</pre>
+                    <button class="copy-btn" onclick="copyCode('aurora-custom-code')">Kopieren</button>
+                </div>
+
+                <div class="code-example">
+                    <h4>Feuerwerk mit hoher Frequenz</h4>
+                    <pre id="firework-code">&lt;iframe src="..." width="600" height="400" frameborder="0"&gt;&lt;/iframe&gt;</pre>
+                    <button class="copy-btn" onclick="copyCode('firework-code')">Kopieren</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 20px; background: linear-gradient(135deg, #2b5797, #5074b8); color: white; margin-top: 40px;">
+        <p>Entwickelt von <a href="mailto:quievreux.consulting@gmail.com" style="color: #4dabf7; text-decoration: none;">Quievreux Consulting</a></p>
+        <p style="margin-top: 5px; font-size: 0.9em; opacity: 0.8;">© 2025 DreamEdit. Alle Rechte vorbehalten.</p>
+    </footer>
+
+    <script>
+        // Environment Config laden
+        let config;
+        
+        function initializeTestPage() {
+            // Warte auf Environment Config
+            if (typeof window.ShaderConfig === 'undefined') {
+                setTimeout(initializeTestPage, 100);
+                return;
+            }
+            
+            config = window.ShaderConfig;
+            
+            // Environment Informationen anzeigen
+            document.getElementById('current-url').textContent = config.baseUrl;
+            document.getElementById('environment-type').textContent = config.isProduction ? 'Production' : 'Development';
+            
+            // Iframes mit korrekten URLs laden
+            loadIframes();
+            
+            // Code-Beispiele generieren
+            generateCodeExamples();
+        }
+        
+        function loadIframes() {
+            // Energiefeld
+            const energyFieldUrl = config.getEmbedUrl('energy-field', {
+                particles: 200,
+                speed: 5,
+                color: 'ff6b6b'
+            });
+            document.getElementById('energy-field-iframe').src = energyFieldUrl;
+            
+            // Blauer Himmel
+            const blueSkyUrl = config.getEmbedUrl('blue-sky', {
+                clouds: 15,
+                speed: 3,
+                color: '4dabf7'
+            });
+            document.getElementById('blue-sky-iframe').src = blueSkyUrl;
+            
+            // Feuerwerk
+            const fireworkUrl = config.getEmbedUrl('firework', {
+                frequency: 3,
+                particles: 100,
+                color: 'cc5de8'
+            });
+            document.getElementById('firework-iframe').src = fireworkUrl;
+            
+            // Wasserwellen
+            const waterWavesUrl = config.getEmbedUrl('water-waves', {
+                height: 20,
+                speed: 4,
+                color: '15aabf'
+            });
+            document.getElementById('water-waves-iframe').src = waterWavesUrl;
+            
+            // Aurora
+            const auroraUrl = config.getEmbedUrl('aurora', {
+                intensity: 5,
+                speed: 3,
+                color: '00ff88'
+            });
+            document.getElementById('aurora-iframe').src = auroraUrl;
+            
+            // Angepasste Aurora
+            const auroraCustomUrl = config.getEmbedUrl('aurora', {
+                intensity: 8,
+                speed: 7,
+                color: 'ff00ff'
+            });
+            document.getElementById('aurora-custom-iframe').src = auroraCustomUrl;
+        }
+        
+        function generateCodeExamples() {
+            // Energiefeld Code
+            const energyFieldUrl = config.getEmbedUrl('energy-field', {
+                particles: 200,
+                speed: 5,
+                color: 'ff6b6b'
+            });
+            document.getElementById('energy-field-code').textContent = 
+                `<iframe src="${energyFieldUrl}" width="500" height="300" frameborder="0"></iframe>`;
+            
+            // Aurora Custom Code
+            const auroraCustomUrl = config.getEmbedUrl('aurora', {
+                intensity: 8,
+                speed: 7,
+                color: 'ff00ff'
+            });
+            document.getElementById('aurora-custom-code').textContent = 
+                `<iframe src="${auroraCustomUrl}" width="800" height="400" frameborder="0"></iframe>`;
+            
+            // Feuerwerk Code
+            const fireworkUrl = config.getEmbedUrl('firework', {
+                frequency: 8,
+                particles: 150,
+                color: 'ff6b35'
+            });
+            document.getElementById('firework-code').textContent = 
+                `<iframe src="${fireworkUrl}" width="600" height="400" frameborder="0"></iframe>`;
+        }
+        
+        function copyCode(elementId) {
+            const codeElement = document.getElementById(elementId);
+            const textArea = document.createElement('textarea');
+            textArea.value = codeElement.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            // Button Feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Kopiert!';
+            button.classList.add('copied');
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.classList.remove('copied');
+            }, 2000);
+        }
+        
+        // Initialisierung starten
+        document.addEventListener('DOMContentLoaded', initializeTestPage);
+    </script>
+    
+    <!-- Environment Config muss zuerst geladen werden -->
+    <script src="environment-config.js"></script>
+    
+    <!-- Fallback für den Fall, dass Environment Config nicht geladen werden kann -->
+    <script>
+        // Fallback-Konfiguration, falls environment-config.js nicht verfügbar ist
+        if (typeof window.ShaderConfig === 'undefined') {
+            window.ShaderConfig = {
+                baseUrl: window.location.origin,
+                isProduction: !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1'),
+                getEmbedUrl: function(animation, params = {}) {
+                    const url = new URL(`${this.baseUrl}/embed.html`);
+                    url.searchParams.set('animation', animation);
+                    Object.entries(params).forEach(([key, value]) => {
+                        url.searchParams.set(key, value);
+                    });
+                    return url.toString();
+                }
+            };
+        }
+    </script>
+</body>
+</html>

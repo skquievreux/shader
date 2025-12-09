@@ -9,6 +9,10 @@ class BlueSky {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d', { willReadFrequently: true });
         
+        // Performance-Optimierungen
+        this.gradientCache = new Map();
+        this.adaptiveQuality = new AdaptiveQuality();
+        
         // Parameter mit Standardwerten
         this.clouds = [];
         this.cloudCount = 15;
@@ -41,10 +45,11 @@ class BlueSky {
         }
     }
     
-    init() {
-        // Wolken erstellen
+init() {
+        // Wolken erstellen (adaptive Anzahl)
         this.clouds = [];
-        for (let i = 0; i < this.cloudCount; i++) {
+        const adaptiveCount = Math.floor(this.cloudCount * this.adaptiveQuality.getParticleMultiplier());
+        for (let i = 0; i < adaptiveCount; i++) {
             this.addCloud(true);
         }
     }
@@ -113,6 +118,29 @@ class BlueSky {
         }
     }
     
+// Gradient-Caching für Performance
+    getCachedGradient(type, x1, y1, x2, y2, colors) {
+        const key = `${type}-${x1}-${y1}-${x2}-${y2}-${JSON.stringify(colors)}`;
+        if (!this.gradientCache.has(key)) {
+            const gradient = type === 'linear' 
+                ? this.ctx.createLinearGradient(x1, y1, x2, y2)
+                : this.ctx.createRadialGradient(x1, y1, colors[0].radius || 0, x2, y2, colors[0].radius || 100);
+            
+            colors.forEach((color, index) => {
+                gradient.addColorStop(index / (colors.length - 1), color.color);
+            });
+            
+            this.gradientCache.set(key, gradient);
+            
+            // Cache begrenzen
+            if (this.gradientCache.size > 30) {
+                const firstKey = this.gradientCache.keys().next().value;
+                this.gradientCache.delete(firstKey);
+            }
+        }
+        return this.gradientCache.get(key);
+    }
+
     // Hilfsfunktion für Farbmanipulation mit Transparenz
     getCloudColor(opacity) {
         return `rgba(255, 255, 255, ${opacity})`;
@@ -138,29 +166,34 @@ class BlueSky {
         this.ctx.restore();
     }
     
-    draw() {
-        // Himmelshintergrund zeichnen
-        const skyGradient = this.ctx.createLinearGradient(
-            0, 0, 
-            0, this.canvas.height
-        );
+draw() {
+        this.adaptiveQuality.update();
         
+        // Frame überspringen bei niedriger Qualität
+        if (this.adaptiveQuality.shouldSkipFrame()) return;
+        
+        this.ctx.save();
+        
+        // Himmelshintergrund zeichnen (cached)
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.skyColor);
+        let skyGradient;
+        
         if (result) {
             const r = parseInt(result[1], 16);
             const g = parseInt(result[2], 16);
             const b = parseInt(result[3], 16);
             
-            // Hellerer Himmel oben
-            skyGradient.addColorStop(0, `rgba(${r + 30 > 255 ? 255 : r + 30}, ${g + 30 > 255 ? 255 : g + 30}, ${b + 30 > 255 ? 255 : b + 30}, 1)`);
-            // Originalfarbe in der Mitte
-            skyGradient.addColorStop(0.6, `rgba(${r}, ${g}, ${b}, 1)`);
-            // Leicht dunklerer Himmel unten
-            skyGradient.addColorStop(1, `rgba(${r - 20 < 0 ? 0 : r - 20}, ${g - 10 < 0 ? 0 : g - 10}, ${b < 0 ? 0 : b}, 1)`);
+            skyGradient = this.getCachedGradient('linear', 0, 0, 0, this.canvas.height, [
+                { color: `rgba(${r + 30 > 255 ? 255 : r + 30}, ${g + 30 > 255 ? 255 : g + 30}, ${b + 30 > 255 ? 255 : b + 30}, 1)` },
+                { color: `rgba(${r}, ${g}, ${b}, 1)` },
+                { color: `rgba(${r - 20 < 0 ? 0 : r - 20}, ${g - 10 < 0 ? 0 : g - 10}, ${b < 0 ? 0 : b}, 1)` }
+            ]);
         } else {
-            skyGradient.addColorStop(0, '#7cc0ff');
-            skyGradient.addColorStop(0.6, '#4dabf7');
-            skyGradient.addColorStop(1, '#3b95d3');
+            skyGradient = this.getCachedGradient('linear', 0, 0, 0, this.canvas.height, [
+                { color: '#7cc0ff' },
+                { color: '#4dabf7' },
+                { color: '#3b95d3' }
+            ]);
         }
         
         this.ctx.fillStyle = skyGradient;
@@ -187,35 +220,35 @@ class BlueSky {
                 }
             }
         });
+        
+        this.ctx.restore();
     }
     
-    drawSun() {
+drawSun() {
         const sunX = this.canvas.width * 0.85;
         const sunY = this.canvas.height * 0.2;
         const sunRadius = 40;
         
-        // Sonnenglow
-        const glowGradient = this.ctx.createRadialGradient(
-            sunX, sunY, 0,
-            sunX, sunY, sunRadius * 2.5
-        );
-        glowGradient.addColorStop(0, 'rgba(255, 255, 200, 0.6)');
-        glowGradient.addColorStop(0.5, 'rgba(255, 255, 200, 0.2)');
-        glowGradient.addColorStop(1, 'rgba(255, 255, 200, 0)');
+        // Sonnenglow (cached)
+        const glowGradient = this.getCachedGradient('radial', sunX, sunY, sunX, sunY, sunRadius * 2.5, [
+            { color: 'rgba(255, 255, 200, 0.6)' },
+            { color: 'rgba(255, 255, 200, 0.2)' },
+            { color: 'rgba(255, 255, 200, 0)' }
+        ]);
         
         this.ctx.beginPath();
         this.ctx.arc(sunX, sunY, sunRadius * 2.5, 0, Math.PI * 2);
         this.ctx.fillStyle = glowGradient;
         this.ctx.fill();
         
-        // Sonne
-        const sunGradient = this.ctx.createRadialGradient(
-            sunX - sunRadius * 0.2, sunY - sunRadius * 0.2, 0,
-            sunX, sunY, sunRadius
-        );
-        sunGradient.addColorStop(0, '#fff9c4');
-        sunGradient.addColorStop(0.8, '#ffd600');
-        sunGradient.addColorStop(1, '#ffab00');
+        // Sonne (cached)
+        const sunGradient = this.getCachedGradient('radial', 
+            sunX - sunRadius * 0.2, sunY - sunRadius * 0.2, 
+            sunX, sunY, sunRadius, [
+            { color: '#fff9c4' },
+            { color: '#ffd600' },
+            { color: '#ffab00' }
+        ]);
         
         this.ctx.beginPath();
         this.ctx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
@@ -223,9 +256,16 @@ class BlueSky {
         this.ctx.fill();
     }
     
-    animate() {
+animate() {
         this.draw();
-        requestAnimationFrame(() => this.animate());
+        this.animationId = requestAnimationFrame(() => this.animate());
+    }
+    
+    // Cleanup Methode für Memory Management
+    destroy() {
+        cancelAnimationFrame(this.animationId);
+        this.gradientCache.clear();
+        window.removeEventListener('resize', () => this.resize());
     }
 }
 
