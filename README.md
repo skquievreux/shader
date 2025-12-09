@@ -2,7 +2,7 @@
 
 Eine Sammlung interaktiver Canvas-Animationen für Webprojekte. Diese Bibliothek bietet fünf verschiedene Animationen, die einfach in jede Webseite eingebunden werden können.
 
-> **Version 2.1.1** - Bugfix Release mit korrigierten Embed-URLs und Copyright-Informationen
+> **Version 2.1.2** - Structure Fix Release mit HTML-Validierung und JSON-Bereinigung
 
 ![Energiefeld-Animationen](https://via.placeholder.com/800x400?text=Energiefeld-Animationen)
 
@@ -218,6 +218,18 @@ Die `environment-config.js` erkennt automatisch die korrekte Umgebung.
 ```
 
 ## Changelog
+
+### Version 2.1.2
+- 🔧 **HTML-Struktur-Reparatur**: Korrigierte fehlende schließende div-Tags und entfernte doppelte Footer
+- 🧹 **JSON-Bereinigung**: Konsolidierte duplizierte Sektionen in package.json
+- ✅ **Validierung**: HTML-Struktur und JSON-Syntax validiert
+- 🐛 **Bugfix**: Behebung von Endlosschleifen während der Entwicklung
+- 📦 **Deployment**: Neuer Release-Branch für stabile Version
+
+### Version 2.1.1
+- 🔧 **Embed-URLs**: Korrigierte Embed-URLs für alle Animationen
+- 📄 **Copyright**: Aktualisierte Copyright-Informationen
+- 🐛 **Bugfix**: Kleinere Fehler behoben
 
 ### Version 2.0.0
 - ✨ **Neue Animation**: Aurora Borealis mit realistischen Nordlichteffekten

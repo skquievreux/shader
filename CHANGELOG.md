@@ -5,6 +5,31 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt hält sich an [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.2] - 2025-12-09
+
+### 🐛 Behoben
+- **HTML-Strukturprobleme**:
+  - Fehlende schließende div-Tags in index.html korrigiert
+  - Doppelter Footer in index.html entfernt
+  - HTML-Validierung erfolgreich durchgeführt
+- **JSON-Bereinigung**:
+  - Duplizierte repository Sektion in package.json entfernt
+  - Scripts-Sektion konsolidiert und doppelte Einträge eliminiert
+  - JSON-Syntaxfehler behoben und validiert
+- **Development-Loop**:
+  - Endlosschleife während der Entwicklung behoben
+  - Stabilisierung des Build-Prozesses
+
+### 🔧 Technisch
+- **Code-Struktur**:
+  - Verbesserte HTML-Struktur für bessere Wartbarkeit
+  - Konsolidierte package.json für sauberere Konfiguration
+  - Enhanced validation workflows
+- **Build-Prozess**:
+  - Stabilere npm scripts
+  - Verbesserte Fehlerbehandlung
+  - Bessere Development-Erfahrung
+
 ## [2.1.1] - 2025-12-09
 
 ### 🐛 Behoben
@@ -195,7 +220,7 @@ und dieses Projekt hält sich an [Semantic Versioning](https://semver.org/spec/v
 
 ---
 
-*Letzte Aktualisierung: 2025-12-09*
+*Letzte Aktualisierung: 2025-12-09 (v2.1.2)*
 
 ## Legend
 - ✨ **Hinzugefügt** für neue Features
