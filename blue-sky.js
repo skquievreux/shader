@@ -124,7 +124,7 @@ init() {
         if (!this.gradientCache.has(key)) {
             const gradient = type === 'linear' 
                 ? this.ctx.createLinearGradient(x1, y1, x2, y2)
-                : this.ctx.createRadialGradient(x1, y1, colors[0].radius || 0, x2, y2, colors[0].radius || 100);
+                : this.ctx.createRadialGradient(x1, y1, 0, x2, y2, Math.abs(x2 - x1) || 100);
             
             colors.forEach((color, index) => {
                 gradient.addColorStop(index / (colors.length - 1), color.color);
@@ -230,7 +230,7 @@ drawSun() {
         const sunRadius = 40;
         
         // Sonnenglow (cached)
-        const glowGradient = this.getCachedGradient('radial', sunX, sunY, sunX, sunY, sunRadius * 2.5, [
+        const glowGradient = this.getCachedGradient('radial', sunX, sunY, sunX, sunY, [
             { color: 'rgba(255, 255, 200, 0.6)' },
             { color: 'rgba(255, 255, 200, 0.2)' },
             { color: 'rgba(255, 255, 200, 0)' }
@@ -244,7 +244,7 @@ drawSun() {
         // Sonne (cached)
         const sunGradient = this.getCachedGradient('radial', 
             sunX - sunRadius * 0.2, sunY - sunRadius * 0.2, 
-            sunX, sunY, sunRadius, [
+            sunX, sunY, [
             { color: '#fff9c4' },
             { color: '#ffd600' },
             { color: '#ffab00' }
