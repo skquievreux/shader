@@ -586,11 +586,15 @@ Dieses Projekt steht unter der MIT-Lizenz - siehe die [LICENSE](LICENSE) Datei f
 
 ---
 
-## 📞 Kontakt
+## 📞 Kontakt & Support
 
-- **GitHub Issues**: [https://github.com/your-username/energiefeld-animationen/issues](https://github.com/your-username/energiefeld-animationen/issues)
-- **Email**: your-email@example.com
-- **Website**: [https://shader.runitfast.xyz](https://shader.runitfast.xyz)
+**Entwickelt von Quievreux Consulting**
+
+- 📧 **E-Mail**: [quievreux.consulting@gmail.com](mailto:quievreux.consulting@gmail.com)
+- 🌐 **Live Demo**: [https://shader.runitfast.xyz](https://shader.runitfast.xyz)
+- 📋 **Embed Test**: [https://shader.runitfast.xyz/embed-test.html](https://shader.runitfast.xyz/embed-test.html)
+
+**© 2025 DreamEdit. Alle Rechte vorbehalten.**
 
 ---
 

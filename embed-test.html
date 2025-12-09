@@ -279,6 +279,12 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 20px; background: linear-gradient(135deg, #2b5797, #5074b8); color: white; margin-top: 40px;">
+        <p>Entwickelt von <a href="mailto:quievreux.consulting@gmail.com" style="color: #4dabf7; text-decoration: none;">Quievreux Consulting</a></p>
+        <p style="margin-top: 5px; font-size: 0.9em; opacity: 0.8;">© 2025 DreamEdit. Alle Rechte vorbehalten.</p>
+    </footer>
+
     <script>
         // Environment Config laden
         let config;
@@ -409,5 +415,24 @@
     
     <!-- Environment Config muss zuerst geladen werden -->
     <script src="environment-config.js"></script>
+    
+    <!-- Fallback für den Fall, dass Environment Config nicht geladen werden kann -->
+    <script>
+        // Fallback-Konfiguration, falls environment-config.js nicht verfügbar ist
+        if (typeof window.ShaderConfig === 'undefined') {
+            window.ShaderConfig = {
+                baseUrl: window.location.origin,
+                isProduction: !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1'),
+                getEmbedUrl: function(animation, params = {}) {
+                    const url = new URL(`${this.baseUrl}/embed.html`);
+                    url.searchParams.set('animation', animation);
+                    Object.entries(params).forEach(([key, value]) => {
+                        url.searchParams.set(key, value);
+                    });
+                    return url.toString();
+                }
+            };
+        }
+    </script>
 </body>
 </html>

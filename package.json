@@ -1,6 +1,6 @@
 {
     "name": "energiefeld-animationen",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "description": "Eine erweiterte Sammlung von HTML5-Canvas-Animationen mit Aurora Borealis",
     "main": "index.html",
     "scripts": {
@@ -20,7 +20,7 @@
         "visual-effects",
         "web-animations"
     ],
-    "author": "SHADER Project",
+    "author": "Quievreux Consulting",
     "license": "MIT",
     "repository": {
         "type": "git",

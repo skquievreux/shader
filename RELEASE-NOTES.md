@@ -1,3 +1,76 @@
+# Release Notes v2.1.1
+
+## 🎉 Overview
+
+Version 2.1.1 is a critical bugfix release that resolves embedding issues and adds professional copyright information across all documentation and pages.
+
+---
+
+## 🐛 Critical Fixes
+
+### Embed URL Resolution
+- **Fixed**: Incorrect placeholder URLs (`ihre-domain.com`) replaced with production URLs
+- **Fixed**: `embed-test.html` now works correctly with proper domain configuration
+- **Fixed**: README.md examples now contain working embed URLs
+- **Improved**: Environment Config with GitHub Pages support and fallback mechanisms
+
+### Documentation & Branding
+- **Added**: Consistent copyright footer across all HTML pages
+- **Added**: Contact information for Quievreux Consulting
+- **Updated**: Author information and copyright notices
+- **Enhanced**: Professional branding with mailto links
+
+---
+
+## 🔧 Technical Improvements
+
+### Environment Configuration
+- **Enhanced**: Domain detection for various hosting platforms
+- **Added**: Fallback mechanism for missing environment config
+- **Improved**: Error handling for production deployments
+
+### HTML Structure
+- **Added**: Responsive footer designs for all pages
+- **Improved**: Consistent styling across documentation
+- **Enhanced**: Mobile-friendly footer layouts
+
+---
+
+## 📋 Files Modified
+
+### Core Files
+- `README.md` - Updated contact information and URLs
+- `CHANGELOG.md` - Added v2.1.1 changelog entry
+- `environment-config.js` - Enhanced domain detection
+
+### HTML Pages
+- `index.html` - Added professional footer
+- `embed.html` - Added fixed footer with transparency
+- `embed-test.html` - Added footer and fallback config
+- `aurora-demo.html` - Added themed footer
+- `chakra-animation-examples.html` - Added minimal footer
+
+---
+
+## 🚀 Deployment Notes
+
+This release is **backward compatible** and can be deployed immediately. The fixes resolve critical embedding functionality that was broken in v2.1.0.
+
+### Production URLs
+- **Main Demo**: https://shader.runitfast.xyz
+- **Embed Test**: https://shader.runitfast.xyz/embed-test.html
+- **Direct Embed**: https://shader.runitfast.xyz/embed.html
+
+---
+
+## 📞 Contact & Support
+
+**Developed by Quievreux Consulting**
+- 📧 Email: [quievreux.consulting@gmail.com](mailto:quievreux.consulting@gmail.com)
+- **© 2025 DreamEdit. Alle Rechte vorbehalten.**
+
+---
+
 # Release Notes v2.1.0
 
 ## 🎉 Overview

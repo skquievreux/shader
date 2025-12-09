@@ -5,6 +5,35 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt hält sich an [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1] - 2025-12-09
+
+### 🐛 Behoben
+- **Embed-URL Korrekturen**:
+  - Falsche Platzhalter-URLs (`ihre-domain.com`) durch korrekte Production-URLs ersetzt
+  - `embed-test.html` funktioniert jetzt mit korrekten Domain-URLs
+  - README.md Beispiele mit funktionierenden URLs aktualisiert
+- **Environment Config Fallback**:
+  - Fallback-Mechanismus für `embed-test.html` hinzugefügt, falls `environment-config.js` nicht geladen werden kann
+  - Verbesserte Fehlerbehandlung für Production-Umgebungen
+- **Copyright Footer**:
+  - Konsistenter Footer in allen HTML-Seiten eingefügt
+  - Kontaktinformationen und Copyright-Informationen hinzugefügt
+  - Mailto-Link für Quievreux Consulting implementiert
+
+### ✨ Verbessert
+- **Dokumentation**:
+  - README.md mit neuen Kontaktinformationen aktualisiert
+  - Version 2.1.1 Hinweis hinzugefügt
+  - Autor- und Lizenzinformationen korrigiert
+
+### 🔧 Technisch
+- **HTML-Struktur**:
+  - Footer in `index.html`, `embed.html`, `embed-test.html`, `aurora-demo.html`, `chakra-animation-examples.html`
+  - Responsive Footer-Designs passend zu jedem Seiten-Layout
+- **URL-Validierung**:
+  - GitHub Pages Unterstützung in Environment Config hinzugefügt
+  - Robustere Domain-Erkennung
+
 ## [2.1.0] - 2025-12-09
 
 ### 🚀 Hinzugefügt

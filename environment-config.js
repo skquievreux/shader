@@ -25,6 +25,11 @@ class EnvironmentConfig {
                 return currentUrl;
             }
             
+            // GitHub Pages oder andere Static Hosts
+            if (currentUrl.includes('github.io')) {
+                return currentUrl;
+            }
+            
             // Andere Domains
             return currentUrl;
         }

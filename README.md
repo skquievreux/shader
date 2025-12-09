@@ -2,6 +2,8 @@
 
 Eine Sammlung interaktiver Canvas-Animationen für Webprojekte. Diese Bibliothek bietet fünf verschiedene Animationen, die einfach in jede Webseite eingebunden werden können.
 
+> **Version 2.1.1** - Bugfix Release mit korrigierten Embed-URLs und Copyright-Informationen
+
 ![Energiefeld-Animationen](https://via.placeholder.com/800x400?text=Energiefeld-Animationen)
 
 ## Funktionen
@@ -41,7 +43,7 @@ Testen Sie die Einbettungsfunktionalität: [https://shader.runitfast.xyz/embed-t
 Jede Animation kann als Iframe in andere Webseiten eingebettet werden:
 
 ```html
-<iframe src="https://ihre-domain.com/energiefeld-animationen/embed.html?animation=energy-field&particles=200&speed=5&color=ff6b6b" 
+<iframe src="https://shader.runitfast.xyz/embed.html?animation=energy-field&particles=200&speed=5&color=ff6b6b" 
         width="500" height="300" frameborder="0"></iframe>
 ```
 
@@ -179,9 +181,13 @@ Die `environment-config.js` Datei sorgt für korrekte URLs in allen Umgebungen.
 
 Dieses Projekt steht unter der MIT-Lizenz - siehe die [LICENSE](LICENSE) Datei für Details.
 
-## Autor
+## Autor & Kontakt
 
-Ihr Name - [Ihre Website](https://ihre-website.com)
+Entwickelt von **Quievreux Consulting**
+
+📧 **E-Mail**: [quievreux.consulting@gmail.com](mailto:quievreux.consulting@gmail.com)
+
+**© 2025 DreamEdit. Alle Rechte vorbehalten.**
 
 ## Mitwirken
 
