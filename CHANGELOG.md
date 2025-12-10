@@ -5,6 +5,51 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt hält sich an [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2025-12-10
+
+### 🚀 Hinzugefügt
+- **Vollständige Integration aller 14 Animationen** in index.html
+- **7 neue Kategorien** mit organisierter Animation-Struktur:
+  - 🌦️ **Wetter-Effekte** (rain, lightning)
+  - 🌌 **Kosmische Effekte** (star-field)
+  - 🌳 **Organische Muster** (fractal-tree)
+  - 🔮 **Geometrische Muster** (chakra-animation, kaleidoscope)
+  - 🎨 **Abstrakte Kunst** (plasma, matrix-rain)
+  - 💨 **Erweiterte Partikel** (smoke)
+- **Performance-Profile** für jede neue Animation mit adaptiver Qualitätsanpassung
+- **Erweiterte Steuerungs-Parameter** für alle neuen Animationen
+- **Progressive Loading** für neue Kategorien mit Prioritäts-System
+
+### 🔧 Verbessert
+- **Enhanced Adaptive Quality System** mit Animation-spezifischen Profilen
+- **Progressive Loader** aktualisiert für 7 Kategorien statt 2
+- **Performance Monitoring** erweitert für anspruchsvolle Animationen (plasma, lightning)
+- **Animation Registry** vollständig mit allen 14 Animationen synchronisiert
+
+### 📊 Performance-Optimierungen
+- **GPU-intensive Animationen** (plasma) mit speziellen Quality-Profilen
+- **CPU-intensive Animationen** (lightning) mit Frame-Skipping
+- **Text-intensive Animationen** (matrix-rain) mit Font-Caching
+- **Particle-intensive Animationen** (smoke, rain) mit adaptiven Multiplikatoren
+
+### 🎨 UI/UX Verbesserungen
+- **Kategorie-Icons** für bessere visuelle Navigation
+- **Erweiterte Control-Parameter** für alle neuen Animationen
+- **Responsive Design** für alle neuen Animation-Container
+- **Konsistente Benennung** aller Canvas-Elemente und Steuerungen
+
+### 🧪 Testing & Validierung
+- **Alle 14 Animationen** einzeln validiert und funktionsfähig
+- **Cross-Browser-Kompatibilität** für neue Animationen sichergestellt
+- **Mobile-Responsiveness** für alle neuen Animationen überprüft
+- **Performance-Tests** mit allen Animationen unter Last bestanden
+
+### 📚 Dokumentation
+- **README.md** vollständig aktualisiert mit allen 14 Animationen
+- **Kategorie-Struktur** dokumentiert mit Icons und Beschreibungen
+- **Parameter-Referenz** für alle neuen Animationen hinzugefügt
+- **Performance-Guides** für anspruchsvolle Animationen erstellt
+
 ## [2.1.2] - 2025-12-09
 
 ### 🐛 Behoben

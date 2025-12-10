@@ -174,6 +174,275 @@
                 </section>
             </div>
         </div>
+
+        <div class="category-section" data-category="weather">
+            <div class="category-header">
+                <h2>🌦️ Wetter-Effekte</h2>
+                <button class="toggle-category" data-category="weather" aria-expanded="false">
+                    <span class="icon">▶</span>
+                    <span class="count">2 Animationen</span>
+                </button>
+            </div>
+            <div class="animation-grid collapsed">
+                <section class="animation-container" id="rain-section">
+                    <h2>Regen</h2>
+                    <div class="canvas-wrapper">
+                        <canvas id="rain-canvas"></canvas>
+                    </div>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="rain-intensity">Regenintensität</label>
+                            <input type="range" id="rain-intensity" min="50" max="2000" value="500">
+                        </div>
+                        <div class="control-group">
+                            <label for="rain-wind">Windstärke</label>
+                            <input type="range" id="rain-wind" min="-10" max="10" value="0">
+                        </div>
+                        <div class="control-group">
+                            <label for="rain-splash">Splash-Intensität</label>
+                            <input type="range" id="rain-splash" min="0" max="2" value="0.8">
+                        </div>
+                        <button class="copy-code-btn" data-animation="rain">Code kopieren</button>
+                    </div>
+                </section>
+
+                <section class="animation-container" id="lightning-section">
+                    <h2>Blitz</h2>
+                    <div class="canvas-wrapper">
+                        <canvas id="lightning-canvas"></canvas>
+                    </div>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="lightning-frequency">Blitz-Häufigkeit</label>
+                            <input type="range" id="lightning-frequency" min="0" max="0.1" step="0.001" value="0.02">
+                        </div>
+                        <div class="control-group">
+                            <label for="lightning-complexity">Blitz-Komplexität</label>
+                            <input type="range" id="lightning-complexity" min="0.1" max="1" step="0.1" value="0.7">
+                        </div>
+                        <div class="control-group">
+                            <label for="lightning-glow">Leuchtintensität</label>
+                            <input type="range" id="lightning-glow" min="0" max="2" step="0.1" value="0.8">
+                        </div>
+                        <button class="copy-code-btn" data-animation="lightning">Code kopieren</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="category-section" data-category="cosmic">
+            <div class="category-header">
+                <h2>🌌 Kosmische Effekte</h2>
+                <button class="toggle-category" data-category="cosmic" aria-expanded="false">
+                    <span class="icon">▶</span>
+                    <span class="count">1 Animationen</span>
+                </button>
+            </div>
+            <div class="animation-grid collapsed">
+                <section class="animation-container" id="star-field-section">
+                    <h2>Sternenfeld</h2>
+                    <div class="canvas-wrapper">
+                        <canvas id="star-field-canvas"></canvas>
+                    </div>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="star-count">Sternenanzahl</label>
+                            <input type="range" id="star-count" min="200" max="2000" value="800">
+                        </div>
+                        <div class="control-group">
+                            <label for="meteor-frequency">Sternschnuppen-Häufigkeit</label>
+                            <input type="range" id="meteor-frequency" min="0" max="0.1" step="0.001" value="0.02">
+                        </div>
+                        <div class="control-group">
+                            <label for="parallax-strength">Parallax-Stärke</label>
+                            <input type="range" id="parallax-strength" min="0" max="2" step="0.1" value="0.5">
+                        </div>
+                        <button class="copy-code-btn" data-animation="star-field">Code kopieren</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="category-section" data-category="organic">
+            <div class="category-header">
+                <h2>🌳 Organische Muster</h2>
+                <button class="toggle-category" data-category="organic" aria-expanded="false">
+                    <span class="icon">▶</span>
+                    <span class="count">1 Animationen</span>
+                </button>
+            </div>
+            <div class="animation-grid collapsed">
+                <section class="animation-container" id="fractal-tree-section">
+                    <h2>Fraktaler Baum</h2>
+                    <div class="canvas-wrapper">
+                        <canvas id="fractal-tree-canvas"></canvas>
+                    </div>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="tree-depth">Maximale Tiefe</label>
+                            <input type="range" id="tree-depth" min="5" max="15" value="10">
+                        </div>
+                        <div class="control-group">
+                            <label for="branch-angle">Astwinkel</label>
+                            <input type="range" id="branch-angle" min="10" max="45" value="25">
+                        </div>
+                        <div class="control-group">
+                            <label for="growth-speed">Wachstumsgeschwindigkeit</label>
+                            <input type="range" id="growth-speed" min="0.001" max="0.1" step="0.001" value="0.02">
+                        </div>
+                        <button class="copy-code-btn" data-animation="fractal-tree">Code kopieren</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="category-section" data-category="geometric">
+            <div class="category-header">
+                <h2>🔮 Geometrische Muster</h2>
+                <button class="toggle-category" data-category="geometric" aria-expanded="false">
+                    <span class="icon">▶</span>
+                    <span class="count">2 Animationen</span>
+                </button>
+            </div>
+            <div class="animation-grid collapsed">
+                <section class="animation-container" id="chakra-animation-section">
+                    <h2>Chakra Animation</h2>
+                    <div class="canvas-wrapper">
+                        <canvas id="chakra-animation-canvas"></canvas>
+                    </div>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="chakra-complexity">Komplexität</label>
+                            <input type="range" id="chakra-complexity" min="1" max="10" value="5">
+                        </div>
+                        <div class="control-group">
+                            <label for="chakra-speed">Geschwindigkeit</label>
+                            <input type="range" id="chakra-speed" min="1" max="10" value="5">
+                        </div>
+                        <div class="control-group">
+                            <label for="chakra-color">Farbe</label>
+                            <input type="color" id="chakra-color" value="#9b59b6">
+                        </div>
+                        <button class="copy-code-btn" data-animation="chakra-animation">Code kopieren</button>
+                    </div>
+                </section>
+
+                <section class="animation-container" id="kaleidoscope-section">
+                    <h2>Kaleidoskop</h2>
+                    <div class="canvas-wrapper">
+                        <canvas id="kaleidoscope-canvas"></canvas>
+                    </div>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="kaleidoscope-symmetry">Symmetrieachsen</label>
+                            <select id="kaleidoscope-symmetry">
+                                <option value="4">4</option>
+                                <option value="6" selected>6</option>
+                                <option value="8">8</option>
+                                <option value="12">12</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label for="kaleidoscope-particles">Partikelanzahl</label>
+                            <input type="range" id="kaleidoscope-particles" min="10" max="200" value="50">
+                        </div>
+                        <div class="control-group">
+                            <label for="kaleidoscope-rotation">Rotationsgeschwindigkeit</label>
+                            <input type="range" id="kaleidoscope-rotation" min="-0.05" max="0.05" step="0.001" value="0.005">
+                        </div>
+                        <button class="copy-code-btn" data-animation="kaleidoscope">Code kopieren</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="category-section" data-category="abstract">
+            <div class="category-header">
+                <h2>🎨 Abstrakte Kunst</h2>
+                <button class="toggle-category" data-category="abstract" aria-expanded="false">
+                    <span class="icon">▶</span>
+                    <span class="count">2 Animationen</span>
+                </button>
+            </div>
+            <div class="animation-grid collapsed">
+                <section class="animation-container" id="plasma-section">
+                    <h2>Plasma</h2>
+                    <div class="canvas-wrapper">
+                        <canvas id="plasma-canvas"></canvas>
+                    </div>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="plasma-resolution">Auflösung</label>
+                            <input type="range" id="plasma-resolution" min="1" max="10" value="4">
+                        </div>
+                        <div class="control-group">
+                            <label for="plasma-speed">Geschwindigkeit</label>
+                            <input type="range" id="plasma-speed" min="0" max="0.1" step="0.001" value="0.02">
+                        </div>
+                        <div class="control-group">
+                            <label for="plasma-intensity">Intensität</label>
+                            <input type="range" id="plasma-intensity" min="0.1" max="2" step="0.1" value="1.0">
+                        </div>
+                        <button class="copy-code-btn" data-animation="plasma">Code kopieren</button>
+                    </div>
+                </section>
+
+                <section class="animation-container" id="matrix-rain-section">
+                    <h2>Matrix Rain</h2>
+                    <div class="canvas-wrapper">
+                        <canvas id="matrix-rain-canvas"></canvas>
+                    </div>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="matrix-columns">Spaltenanzahl</label>
+                            <input type="range" id="matrix-columns" min="20" max="200" value="100">
+                        </div>
+                        <div class="control-group">
+                            <label for="matrix-speed">Fallgeschwindigkeit</label>
+                            <input type="range" id="matrix-speed" min="0.5" max="10" step="0.5" value="2">
+                        </div>
+                        <div class="control-group">
+                            <label for="matrix-font-size">Schriftgröße</label>
+                            <input type="range" id="matrix-font-size" min="8" max="30" value="14">
+                        </div>
+                        <button class="copy-code-btn" data-animation="matrix-rain">Code kopieren</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="category-section" data-category="particles-extended">
+            <div class="category-header">
+                <h2>💨 Erweiterte Partikel</h2>
+                <button class="toggle-category" data-category="particles-extended" aria-expanded="false">
+                    <span class="icon">▶</span>
+                    <span class="count">1 Animationen</span>
+                </button>
+            </div>
+            <div class="animation-grid collapsed">
+                <section class="animation-container" id="smoke-section">
+                    <h2>Rauch</h2>
+                    <div class="canvas-wrapper">
+                        <canvas id="smoke-canvas"></canvas>
+                    </div>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="smoke-particles">Partikelanzahl</label>
+                            <input type="range" id="smoke-particles" min="50" max="500" value="150">
+                        </div>
+                        <div class="control-group">
+                            <label for="smoke-emission">Emissionsrate</label>
+                            <input type="range" id="smoke-emission" min="1" max="10" value="3">
+                        </div>
+                        <div class="control-group">
+                            <label for="smoke-turbulence">Turbulenz</label>
+                            <input type="range" id="smoke-turbulence" min="0" max="2" step="0.1" value="0.8">
+                        </div>
+                        <button class="copy-code-btn" data-animation="smoke">Code kopieren</button>
+                    </div>
+                </section>
+            </div>
+        </div>
     </main>
     
     <!-- Footer -->
@@ -220,6 +489,15 @@
     <script src="firework.js"></script>
     <script src="water-waves.js"></script>
     <script src="aurora.js"></script>
+    <script src="chakra-animation.js"></script>
+    <script src="star-field.js"></script>
+    <script src="rain.js"></script>
+    <script src="lightning.js"></script>
+    <script src="smoke.js"></script>
+    <script src="fractal-tree.js"></script>
+    <script src="kaleidoscope.js"></script>
+    <script src="plasma.js"></script>
+    <script src="matrix-rain.js"></script>
     <script>
         // Gemeinsamer Code für Modals und Kopier-Funktionalität
         document.addEventListener('DOMContentLoaded', function() {
@@ -454,13 +732,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         function initializeAnimations() {
-            // Bestehende Animationen initialisieren
+            // Alle Animationen initialisieren (14 gesamt)
             const animations = [
+                // Bestehende 5 Animationen
                 { id: 'energy-field', init: 'initEnergyField' },
                 { id: 'blue-sky', init: 'initBlueSky' },
                 { id: 'firework', init: 'initFirework' },
                 { id: 'water-waves', init: 'initWaterWaves' },
-                { id: 'aurora', init: 'initAurora' }
+                { id: 'aurora', init: 'initAurora' },
+                
+                // Neue 9 Animationen
+                { id: 'chakra-animation', init: 'initChakraAnimation' },
+                { id: 'star-field', init: 'initStarField' },
+                { id: 'rain', init: 'initRain' },
+                { id: 'lightning', init: 'initLightning' },
+                { id: 'smoke', init: 'initSmoke' },
+                { id: 'fractal-tree', init: 'initFractalTree' },
+                { id: 'kaleidoscope', init: 'initKaleidoscope' },
+                { id: 'plasma', init: 'initPlasma' },
+                { id: 'matrix-rain', init: 'initMatrixRain' }
             ];
             
             animations.forEach(animation => {

@@ -1,6 +1,6 @@
 {
   "name": "energiefeld-animationen",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "Eine umfassende Sammlung von 14 interaktiven Canvas-Animationen mit Landing Page und Gallery",
   "main": "landing.html",
   "scripts": {

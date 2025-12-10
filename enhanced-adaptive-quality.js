@@ -82,6 +82,24 @@ class EnhancedAdaptiveQuality {
         // Battery API Integration
         this.setupBatteryMonitoring();
         
+        // Animation-spezifische Performance-Profile
+        this.animationProfiles = {
+            // Hohe Performance-Anforderungen
+            'plasma': { baseQuality: 'medium', gpuIntensive: true, frameSkipMultiplier: 1.5 },
+            'lightning': { baseQuality: 'medium', cpuIntensive: true, frameSkipMultiplier: 1.2 },
+            'matrix-rain': { baseQuality: 'high', textIntensive: true, fontCacheMultiplier: 1.3 },
+            
+            // Mittlere Performance-Anforderungen
+            'smoke': { baseQuality: 'high', particleIntensive: true, particleMultiplier: 0.8 },
+            'kaleidoscope': { baseQuality: 'high', calculationIntensive: true, detailMultiplier: 0.9 },
+            'fractal-tree': { baseQuality: 'high', recursiveIntensive: true, depthMultiplier: 0.8 },
+            
+            // Niedrige Performance-Anforderungen
+            'star-field': { baseQuality: 'high', particleIntensive: false, particleMultiplier: 1.2 },
+            'rain': { baseQuality: 'high', particleIntensive: true, particleMultiplier: 0.9 },
+            'chakra-animation': { baseQuality: 'high', calculationIntensive: false, detailMultiplier: 1.0 }
+        };
+        
         // Start der automatischen Anpassung
         this.startAdaptiveAdjustment();
     }
@@ -426,6 +444,31 @@ class EnhancedAdaptiveQuality {
      */
     getDetailLevel() {
         return this.qualityLevels[this.quality].detailLevel;
+    }
+    
+    /**
+     * Gibt Animation-spezifische Qualitätseinstellungen zurück
+     */
+    getAnimationQuality(animationId) {
+        const profile = this.animationProfiles[animationId];
+        if (!profile) {
+            return this.getCurrentQuality();
+        }
+        
+        const baseQuality = this.qualityLevels[profile.baseQuality] || this.getCurrentQuality();
+        const currentQuality = this.getCurrentQuality();
+        
+        // Kombiniere Basis-Qualität mit aktueller System-Qualität
+        return {
+            particleMultiplier: baseQuality.particleMultiplier * currentQuality.particleMultiplier * (profile.particleMultiplier || 1.0),
+            frameSkip: Math.max(baseQuality.frameSkip, currentQuality.frameSkip) * (profile.frameSkipMultiplier || 1.0),
+            detailLevel: baseQuality.detailLevel * currentQuality.detailLevel * (profile.detailMultiplier || 1.0),
+            maxAnimations: Math.min(baseQuality.maxAnimations, currentQuality.maxAnimations),
+            gradientCache: Math.max(baseQuality.gradientCache, currentQuality.gradientCache),
+            gpuIntensive: profile.gpuIntensive || false,
+            cpuIntensive: profile.cpuIntensive || false,
+            textIntensive: profile.textIntensive || false
+        };
     }
     
     /**

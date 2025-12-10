@@ -5,40 +5,54 @@
 
 class ProgressiveLoader {
     constructor() {
-        // Animation-Kategorien mit Prioritäten
+        // Animation-Kategorien mit Prioritäten (aktualisiert für 14 Animationen)
         this.categories = {
             particles: {
                 name: '🌟 Particle-Systeme',
                 priority: 1,
-                animations: ['energy-field', 'firework', 'quantum-field', 'plasma-storm'],
+                animations: ['energy-field', 'firework', 'smoke'],
                 loaded: new Set(),
                 loading: false
             },
             nature: {
                 name: '🌍 Natur-Phänomene',
                 priority: 2,
-                animations: ['blue-sky', 'water-waves', 'aurora', 'volcanic-eruption'],
+                animations: ['blue-sky', 'water-waves', 'aurora', 'fractal-tree'],
+                loaded: new Set(),
+                loading: false
+            },
+            weather: {
+                name: '🌦️ Wetter-Effekte',
+                priority: 2,
+                animations: ['rain', 'lightning'],
+                loaded: new Set(),
+                loading: false
+            },
+            cosmic: {
+                name: '🌌 Kosmische Effekte',
+                priority: 3,
+                animations: ['star-field'],
                 loaded: new Set(),
                 loading: false
             },
             geometric: {
                 name: '🔮 Geometrische Muster',
                 priority: 3,
-                animations: ['fractal-tree', 'sacred-geometry', 'kaleidoscope', 'mandala-generator'],
+                animations: ['chakra-animation', 'kaleidoscope'],
                 loaded: new Set(),
                 loading: false
             },
-            tech: {
-                name: '⚡ Technologie-Visualisierungen',
+            organic: {
+                name: '🌳 Organische Muster',
                 priority: 4,
-                animations: ['neural-network', 'blockchain', 'data-stream', 'circuit-board'],
+                animations: ['fractal-tree'],
                 loaded: new Set(),
                 loading: false
             },
-            artistic: {
-                name: '🎭 Künstlerische Effekte',
+            abstract: {
+                name: '🎨 Abstrakte Kunst',
                 priority: 5,
-                animations: ['liquid-metal', 'glass-morphism', 'smoke-mirrors', 'chromatic-aberration'],
+                animations: ['plasma', 'matrix-rain'],
                 loaded: new Set(),
                 loading: false
             }
