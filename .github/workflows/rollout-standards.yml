@@ -11,6 +11,9 @@ on:
 jobs:
   standardize-and-verify:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
     steps:
       - name: Checkout Dashboard (Scripts)
         uses: actions/checkout@v4
@@ -30,6 +33,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
+        registry-url: 'https://npm.pkg.github.com'
           node-version: '20'
 
       - name: Install Dashboard Dependencies (for scripts)

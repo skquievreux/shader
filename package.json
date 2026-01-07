@@ -64,6 +64,7 @@
     "last 2 versions",
     "not dead"
   ],
-  "devDependencies": {},
-  "dependencies": {}
+  "dependencies": {
+    "@quievreux/ui": "^0.1.1"
+  }
 }

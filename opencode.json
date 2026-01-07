@@ -1,0 +1,58 @@
+{
+  "instructions": [
+    "README.md",
+    "ARCHITEKTUR.md",
+    "CONTRIBUTING.md",
+    "DOCS.md"
+  ],
+  "tools": {
+    "write": true,
+    "edit": true,
+    "bash": true,
+    "read": true,
+    "list": true,
+    "glob": true,
+    "grep": true
+  },
+  "permission": {
+    "write": "auto",
+    "edit": "auto",
+    "bash": "auto"
+  },
+  "formatter": {
+    "prettier": {
+      "command": ["npx", "prettier", "--write", "$FILE"],
+      "extensions": [".js", ".ts", ".jsx", ".tsx", ".json", ".md", ".html", ".css"]
+    }
+  },
+  "agents": {
+    "animation-developer": {
+      "description": "Canvas animation specialist for JavaScript visualizations",
+      "prompt": "You are a canvas animation expert. Create ES6+ classes with init(), update(), draw(), animate() API. Support mouse+touch events, use requestAnimationFrame for 60fps, and implement proper cleanup in destroy(). Follow performance best practices.",
+      "model": "anthropic/claude-sonnet-4-5"
+    },
+    "performance-optimizer": {
+      "description": "Optimizes canvas animations for performance",
+      "prompt": "Optimize canvas animations for 60fps performance: use efficient clearing techniques, batch operations, implement frame rate limiting, and handle high DPI displays properly.",
+      "model": "anthropic/claude-sonnet-4-5"
+    }
+  },
+  "commands": {
+    "create-animation": {
+      "template": "Create a new canvas animation class:\n\n1. Use ES6+ class structure with init(), update(), draw(), animate(), destroy()\n2. Support both mouse and touch events\n3. Implement responsive canvas with devicePixelRatio\n4. Add performance optimizations\n5. Include proper cleanup methods\n6. Follow naming conventions (kebab-case file, PascalCase class)",
+      "description": "Create new canvas animation",
+      "agent": "animation-developer"
+    },
+    "optimize-performance": {
+      "template": "Optimize this animation for better performance:\n\n1. Implement frame rate limiting\n2. Optimize canvas clearing\n3. Batch drawing operations\n4. Add performance monitoring\n5. Handle high DPI displays\n6. Check for memory leaks",
+      "description": "Optimize animation performance",
+      "agent": "performance-optimizer"
+    },
+    "create-demo": {
+      "template": "Create a demo HTML page for animations:\n\n1. Include responsive canvas setup\n2. Add performance monitoring\n3. Support multiple animations\n4. Include visual testing checklist\n5. Add mobile touch support\n6. Follow file structure conventions",
+      "description": "Create demo page for animations",
+      "agent": "animation-developer"
+    }
+  },
+  "$schema": "https://opencode.ai/config.json"
+}
