@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: shader
+  description: |
+    Shader ist eine Node.js-basierte Anwendung zur Verwaltung und Verarbeitung von WebGL-Shadern mit JavaScript, HTML und CSS-Integration für moderne Grafikprogrammierung.
+  annotations:
+    github.com/project-slug: skquievreux/shader
+spec:
+  type: service
+  lifecycle: experimental
+  owner: guests
