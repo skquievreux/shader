@@ -6,6 +6,7 @@ metadata:
     Shader ist eine Node.js-basierte Anwendung zur Verwaltung und Verarbeitung von WebGL-Shadern mit JavaScript, HTML und CSS-Integration für moderne Grafikprogrammierung.
   annotations:
     github.com/project-slug: skquievreux/shader
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: service
   lifecycle: experimental
