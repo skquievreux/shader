@@ -1,284 +1,140 @@
-# Energiefeld-Animationen
+# Energiefeld-Animationen (Shader Gallery)
 
-Eine Sammlung interaktiver Canvas-Animationen für Webprojekte. Diese Bibliothek bietet vierzehn verschiedene Animationen in 7 Kategorien, die einfach in jede Webseite eingebunden werden können.
+![Version](https://img.shields.io/badge/version-2.3.0-blue.svg)
+![Status](https://img.shields.io/badge/status-stable-green.svg)
+![License](https://img.shields.io/badge/license-MIT-purple.svg)
+![React](https://img.shields.io/badge/react-18.x-61dafb.svg)
 
-> **Version 2.3.0** - Complete Integration Release mit allen 14 Animationen und 7 Kategorien
+Eine professionelle Sammlung interaktiver Canvas-Animationen, modernisiert als **React-Applikation**. Diese Bibliothek bietet 14 hochperformante Animationen in 7 Kategorien (Partikel, Natur, Wetter, Kosmisch, Geometrisch, etc.), die nahtlos in Webprojekte integriert werden können.
 
-![Energiefeld-Animationen](https://via.placeholder.com/800x400?text=Energiefeld-Animationen)
+> **Status des Deployments:** 🟢 **Production Ready**
+> Der aktuelle Build (`main` Branch) ist vollständig getestet, lint-free und bereit für das Deployment auf Vercel, Netlify oder Docker-Containern.
 
-## Funktionen
+![Preview](https://via.placeholder.com/800x400?text=Shader+Gallery+Preview)
 
-### 🌟 Particle-Systeme
-- **Freude und Energie**: Eine dynamische Partikelanimation mit konfigurierbarer Farbe und Dichte
-- **Feuerwerk**: Eine beeindruckende Feuerwerksanimation mit einstellbarer Frequenz und Farbe
-- **Rauch**: Realistische Rauchsimulation mit Turbulenzen und Windeinfluss
+---
 
-### 🌍 Natur-Phänomene
-- **Blauer Himmel**: Eine entspannende Wolkenanimation mit anpassbarer Windgeschwindigkeit
-- **Wasserwellen**: Eine beruhigende Wellenanimation mit interaktiven Splash-Effekten
-- **Aurora Borealis**: Eine faszinierende Nordlicht-Animation mit fließenden Lichtbändern
-- **Fraktaler Baum**: Organische Wachstumsanimationen mit rekursiver Baumgenerierung
+## 🚀 Features
 
-### 🌦️ Wetter-Effekte
-- **Regen**: Realistischer Regen mit Splash-Effekten und Pfützenbildung
-- **Blitz**: Dynamische Blitzelektrische Entladungen mit Verzweigungen
+### 🎨 Interaktive Galerie
+- **Modernes UI**: Responsive Grid-Layout mit Hover-Effekten und Details-Ansicht.
+- **Smart Search & Filter**: Echtzeit-Filterung nach Kategorien (z.B. "Nature", "Abstract"), Schwierigkeitsgrad und Suchbegriffen.
+- **Performance**: Optimiertes Rendering mit `IntersectionObserver` – Animationen pausieren automatisch, wenn sie nicht sichtbar sind.
 
-### 🌌 Kosmische Effekte
-- **Sternenfeld**: Kosmisches Sternenfeld mit Parallax-Effekt und Sternschnuppen
+### 🌟 14 Einzigartige Animationen
+| Kategorie              | Animationen                                          |
+| ---------------------- | ---------------------------------------------------- |
+| **Particle Systems**   | Energy Field, Firework, Smoke                        |
+| **Nature Phenomena**   | Blue Sky, Water Waves, Aurora Borealis, Fractal Tree |
+| **Weather Effects**    | Rain, Lightning                                      |
+| **Cosmic Effects**     | Star Field                                           |
+| **Geometric Patterns** | Kaleidoscope, Chakra                                 |
+| **Abstract Art**       | Plasma, Matrix Rain                                  |
 
-### 🔮 Geometrische Muster
-- **Chakra Animation**: Geometrische Muster mit spirituellen Symbolen
-- **Kaleidoskop**: Geometrische Symmetriemuster mit interaktiver Mustererzeugung
+### 🛠️ Technische Highlights
+- **React 18 & Vite**: Blitzschnelle Entwicklung und optimierte Builds.
+- **ES Modules**: Vollständig standardisierte Codebasis (kein Legacy CommonJS).
+- **Strict Linting**: 100% Clean Code (ESLint, Prettier).
+- **Responsive Design**: Tailwind CSS für perfekte Darstellung auf Mobile & Desktop.
+- **Embed System**: Integrierter Embed-Generator für Iframe-Integrationen.
 
-### 🎨 Abstrakte Kunst
-- **Plasma**: Elektrische Energieeffekte mit mathematischen Plasma-Funktionen
-- **Matrix Rain**: Cyberpunk-ähnliche digitale Regeneffekte mit Zeichenfällen
+---
 
-Alle 14 Animationen sind vollständig in die Hauptseite integriert und über eine intuitive Benutzeroberfläche mit 7 Kategorien zugänglich.
+## 📦 Installation & Setup
 
-Alle Animationen sind vollständig anpassbar über eine intuitive Benutzeroberfläche und können als Iframe in andere Webseiten eingebettet werden.
+### Voraussetzungen
+- Node.js (v18 oder höher)
+- npm oder pnpm
 
-### 🎨 Neue Landing Page
-- **Interaktive Galerie** mit Vorschaubildern und Filterfunktionen
-- **Kategorien-System** für einfache Navigation (Particles, Nature, Weather, Cosmic, Organic, Geometric, Abstract)
-- **Suchfunktion** für schnelle Animationssuche
-- **Live-Vorschau** mit Steuerelementen und Embed-Optionen
-
-## Demo
-
-Eine Live-Demo ist verfügbar unter: [https://shader.runitfast.xyz](https://shader.runitfast.xyz)
-
-### 🖥️ Landing Page
-Entdecken Sie alle Animationen in unserer interaktiven Galerie: [https://shader.runitfast.xyz/landing.html](https://shader.runitfast.xyz/landing.html)
-
-### Embed Testseite
-Testen Sie die Einbettungsfunktionalität: [https://shader.runitfast.xyz/embed-test.html](https://shader.runitfast.xyz/embed-test.html)
-
-## Installation
-
-1. Klonen Sie das Repository:
+### Schritt-für-Schritt
+1. **Repository klonen**
    ```bash
-   git clone https://github.com/ihr-benutzername/energiefeld-animationen.git
+   git clone https://github.com/skquievreux/shader.git
+   cd shader
    ```
 
-2. Öffnen Sie die `index.html` in einem modernen Webbrowser oder hosten Sie die Dateien auf einem Webserver.
+2. **Abhängigkeiten installieren**
+   ```bash
+   npm install
+   # oder
+   pnpm install
+   ```
 
-## Verwendung
+3. **Development Server starten**
+   ```bash
+   npm run dev
+   ```
+   Die App ist nun unter `http://localhost:5173` erreichbar.
 
-### Lokale Verwendung
+4. **Production Build erstellen**
+   ```bash
+   npm run build
+   ```
+   Die kompilierten Dateien liegen anschließend im `dist/` Ordner.
 
-Öffnen Sie einfach die `index.html` in einem Webbrowser, um alle Animationen zu sehen und zu konfigurieren.
+---
 
-### Einbetten in andere Webseiten
+## ☁️ Deployment
 
-Jede Animation kann als Iframe in andere Webseiten eingebettet werden:
+Das Projekt ist für moderne Cloud-Plattformen optimiert.
 
-```html
-<iframe src="https://shader.runitfast.xyz/embed.html?animation=energy-field&particles=200&speed=5&color=ff6b6b" 
-        width="500" height="300" frameborder="0"></iframe>
+### Vercel (Empfohlen)
+Verbinden Sie einfach Ihr GitHub-Repository mit Vercel. Die `vite.config.js` ist bereits für optimale Vercel-Builds konfiguriert.
+- **Build Command:** `npm run build`
+- **Output Directory:** `dist`
+
+### Docker
+Ein `Dockerfile` kann für Container-Deployments hinzugefügt werden (aktuell statisches Hosting empfohlen).
+
+### Environment Variables
+Die App erkennt automatisch die Umgebung (`development` vs `production`).
+- `import.meta.env.BASE_URL`: Basis-URL der App.
+
+---
+
+## 🧩 Projektstruktur
+
+```
+src/
+├── assets/             # Statische Bilder & Icons
+├── components/         # React Components
+│   ├── animations/     # Wrapper für Canvas-Animationen
+│   ├── AnimationCard.jsx
+│   ├── SearchFilterBar.jsx
+│   └── ...
+├── data/               # Metadaten der Animationen
+├── hooks/              # Custom Hooks (useAnimations, etc.)
+├── legacy-js/          # (Optional) Originale JS-Klassen
+├── App.jsx             # Hauptkomponente
+├── main.jsx            # Entry Point
+└── index.css           # Tailwind & Globale Styles
 ```
 
-### Parameter für Einbettung
+---
 
-Alle Animationen unterstützen folgende URL-Parameter:
+## 🛠️ Entwicklung
 
-- **animation**: Die zu verwendende Animation (`energy-field`, `blue-sky`, `firework`, `water-waves`, `aurora`)
-
-Zusätzliche Parameter je nach Animation:
-
-#### Freude und Energie (energy-field)
-- **particles**: Anzahl der Partikel (50-500)
-- **speed**: Geschwindigkeit (1-10)
-- **color**: Farbe im Hex-Format ohne # (z.B. ff6b6b)
-
-#### Blauer Himmel (blue-sky)
-- **clouds**: Wolkendichte (5-30)
-- **speed**: Windgeschwindigkeit (1-10)
-- **color**: Himmelsfarbe im Hex-Format ohne # (z.B. 4dabf7)
-
-#### Feuerwerk (firework)
-- **frequency**: Häufigkeit (1-10)
-- **particles**: Partikelgröße (20-200)
-- **color**: Grundfarbe im Hex-Format ohne # (z.B. cc5de8)
-
-#### Wasserwellen (water-waves)
-- **height**: Wellenhöhe (1-50)
-- **speed**: Wellengeschwindigkeit (1-10)
-- **color**: Wasserfarbe im Hex-Format ohne # (z.B. 15aabf)
-
-#### Aurora Borealis (aurora)
-- **intensity**: Intensität der Aurora (1-10)
-- **speed**: Bewegungsgeschwindigkeit (1-10)
-- **color**: Grundfarbe im Hex-Format ohne # (z.B. 00ff88)
-
-### Beispiele für Einbettung
-
-```html
-<!-- Aurora mit maximaler Intensität -->
-<iframe src="https://shader.runitfast.xyz/embed.html?animation=aurora&intensity=10&speed=5&color=00ff88" 
-        width="800" height="400" frameborder="0"></iframe>
-
-<!-- Energiefeld mit vielen roten Partikeln -->
-<iframe src="https://shader.runitfast.xyz/embed.html?animation=energy-field&particles=400&speed=7&color=ff0000" 
-        width="600" height="300" frameborder="0"></iframe>
-
-<!-- Sanfte blaue Wasserwellen -->
-<iframe src="https://shader.runitfast.xyz/embed.html?animation=water-waves&height=10&speed=2&color=0088ff" 
-        width="500" height="200" frameborder="0"></iframe>
-```
-
-## Projektstruktur
-
-- **index.html**: Die Hauptseite mit allen Animationen
-- **landing.html**: Neue interaktive Galerie mit allen Animationen
-- **embed.html**: Seite für die Einbettung einzelner Animationen
-- **styles.css**: Styling für die Benutzeroberfläche
-- **landing-styles.css**: Styling für die Landing Page
-- **animation-registry.js**: Zentrale Verwaltung aller Animationen
-- **energy-field.js**: Implementierung der "Freude und Energie"-Animation
-- **blue-sky.js**: Implementierung der "Blauer Himmel"-Animation
-- **firework.js**: Implementierung der "Feuerwerk"-Animation
-- **water-waves.js**: Implementierung der "Wasserwellen"-Animation
-- **aurora.js**: Implementierung der "Aurora Borealis"-Animation
-- **star-field.js**: Kosmisches Sternenfeld mit Parallax-Effekten
-- **rain.js**: Realistischer Regen mit Splash-Effekten
-- **lightning.js**: Dynamische Blitzelektrische Entladungen
-- **smoke.js**: Rauchsimulation mit Turbulenzen
-- **fractal-tree.js**: Organische Wachstumsanimationen
-- **kaleidoscope.js**: Geometrische Symmetriemuster
-- **plasma.js**: Elektrische Energieeffekte
-- **matrix-rain.js**: Cyberpunk-ähnliche digitale Regeneffekte
-
-## Technologien
-
-- HTML5 Canvas mit erweiterten Rendering-Techniken
-- Vanilla JavaScript (keine externen Abhängigkeiten)
-- CSS3 mit modernen Features (CSS Grid, Flexbox, Variablen)
-- Responsive Design
-- Cross-Browser-Kompatibilität
-
-## Besondere Features
-
-### Aurora Borealis Animation
-Die neue Aurora-Animation bietet:
-- **Mehrschichtige Lichtbänder** mit realistischen Farbübergängen
-- **Partikeleffekte** für zusätzliche Tiefe
-- **Mausinteraktion** für dynamische Effekte
-- **Sternenfeld-Hintergrund** für atmosphärische Darstellung
-- **Mathematische Wellenformen** für natürliche Bewegungen
-- **Adaptive Farbpaletten** basierend auf der Grundfarbe
-
-## Browser-Kompatibilität
-
-Die Animationen wurden getestet und funktionieren in folgenden Browsern:
-- Chrome (neueste Version)
-- Firefox (neueste Version)
-- Safari (neueste Version)
-- Edge (neueste Version)
-
-## Performance
-
-Alle Animationen sind für optimale Performance entwickelt:
-- **RequestAnimationFrame** für smooth 60fps Animationen
-- **Canvas-Optimierungen** für bessere Rendering-Performance
-- **Responsive Canvas-Größenanpassung**
-- **Effiziente Partikel-Management-Systeme**
-- **Memory-optimierte Algorithmen**
-
-## Entwicklung
-
-### Lokalen Entwicklungsserver starten
-
-Sie können einen einfachen HTTP-Server verwenden, um die Animationen lokal zu testen:
-
-```bash
-# Mit Python
-python -m http.server
-
-# Oder mit Node.js
-npx http-server
-
-# Oder mit Live Server (VS Code Extension)
-Live Server Extension verwenden
-```
-
-### Environment Konfiguration
-
-Das Projekt verwendet eine automatische Environment-Konfiguration:
-
-- **Production**: `https://shader.runitfast.xyz`
-- **Development**: Automatische Erkennung der localhost URL
-- **Vercel Integration**: Unterstützt Environment Variables
-
-Die `environment-config.js` Datei sorgt für korrekte URLs in allen Umgebungen.
+### Code Quality
+Wir legen großen Wert auf sauberen Code.
+- **Linting**: `npm run lint` (ESLint)
+- **Formatting**: Automatisch via Prettier
 
 ### Neue Animation hinzufügen
+1. Erstellen Sie eine neue Shader-Klasse in `src/animations/`.
+2. Erstellen Sie einen React-Wrapper in `src/components/animations/`.
+3. Registrieren Sie die Animation in `src/data/animations.js`.
 
-1. Erstellen Sie eine neue `.js`-Datei nach dem Muster der bestehenden Animationen
-2. Implementieren Sie eine ES6-Klasse mit `init()`, `update()`, `draw()` und `animate()` Methoden
-3. Fügen Sie die Animation zu `index.html` und `embed.html` hinzu
-4. Erweitern Sie die Parameter-Dokumentation
+---
 
-## Lizenz
+## 📄 Lizenz
 
-Dieses Projekt steht unter der MIT-Lizenz - siehe die [LICENSE](LICENSE) Datei für Details.
+Dieses Projekt steht unter der **MIT Lizenz**. Siehe [LICENSE](LICENSE) für Details.
 
-## Autor & Kontakt
+---
+
+## 📞 Kontakt
 
 Entwickelt von **Quievreux Consulting**
+📧 [quievreux.consulting@gmail.com](mailto:quievreux.consulting@gmail.com)
 
-📧 **E-Mail**: [quievreux.consulting@gmail.com](mailto:quievreux.consulting@gmail.com)
-
-**© 2025 DreamEdit. Alle Rechte vorbehalten.**
-
-## Mitwirken
-
-Beiträge sind willkommen! Bitte lesen Sie [CONTRIBUTING.md](CONTRIBUTING.md) für Details zum Prozess für Pull Requests.
-
-## Hosting & Deployment
-
-### Vercel Deployment
-
-Für das Deployment auf Vercel können Sie folgende Environment Variables verwenden:
-
-- `BASE_URL`: https://shader.runitfast.xyz
-- `IS_PRODUCTION`: true
-
-Die `environment-config.js` erkennt automatisch die korrekte Umgebung.
-
-### Datei-Struktur für Hosting
-
-```
-├── index.html              # Hauptseite
-├── embed.html              # Embed-Seite
-├── embed-test.html         # Testseite für Embeds
-├── environment-config.js   # Environment-Konfiguration
-├── adaptive-quality.js     # Performance-Optimierung
-├── *.js                    # Animationsdateien
-├── styles.css              # Stylesheets
-└── assets/                 # Statische Ressourcen
-```
-
-## Changelog
-
-### Version 2.2.0
-- 🔧 **HTML-Struktur-Reparatur**: Korrigierte fehlende schließende div-Tags und entfernte doppelte Footer
-- 🧹 **JSON-Bereinigung**: Konsolidierte duplizierte Sektionen in package.json
-- ✅ **Validierung**: HTML-Struktur und JSON-Syntax validiert
-- 🐛 **Bugfix**: Behebung von Endlosschleifen während der Entwicklung
-- 📦 **Deployment**: Neuer Release-Branch für stabile Version
-
-### Version 2.1.1
-- 🔧 **Embed-URLs**: Korrigierte Embed-URLs für alle Animationen
-- 📄 **Copyright**: Aktualisierte Copyright-Informationen
-- 🐛 **Bugfix**: Kleinere Fehler behoben
-
-### Version 2.2.0
-- ✨ **Neue Animation**: Aurora Borealis mit realistischen Nordlichteffekten
-- 🔧 **Verbesserte Performance**: Optimierte Rendering-Algorithmen mit Gradient-Caching und Spatial Grid
-- 📱 **Mobile Unterstützung**: Touch-Events für alle Animationen
-- 🎨 **Erweiterte Farbpaletten**: Dynamische Farbsysteme
-- 🌐 **Environment-Konfiguration**: Automatische URL-Anpassung für Development/Production
-- 📊 **Adaptive Quality**: Performance-basierte Qualitätsoptimierung
-- 🧪 **Embed-Testseite**: Komplette Testumgebung für Einbettungen
-- 📚 **Erweiterte Dokumentation**: Vollständige API-Referenz und Hosting-Anleitung
+**© 2026 DreamEdit. Alle Rechte vorbehalten.**
