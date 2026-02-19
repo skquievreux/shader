@@ -1,4 +1,3 @@
-import React from 'react';
 import { Settings2 } from 'lucide-react';
 
 export function AnimationControls({ controls, config, onConfigChange }) {

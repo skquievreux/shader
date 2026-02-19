@@ -178,6 +178,7 @@ function App() {
             </footer>
 
             <EmbedModal
+                key={`${selectedAnimation?.id || 'none'}-${isModalOpen}`}
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
                 animationId={selectedAnimation?.id}

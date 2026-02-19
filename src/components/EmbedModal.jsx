@@ -1,30 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { X, Code, Download, FileCode, Play } from 'lucide-react';
+import { useState } from 'react';
+import { X, Code, Download, Play } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AnimationComponents } from './animations';
 import { AnimationControls } from './AnimationControls';
 import { ANIMATION_REGISTRY } from '../data/animations';
 
 export function EmbedModal({ isOpen, onClose, animationId, animationName }) {
-    const [activeTab, setActiveTab] = React.useState('preview');
-    const [copyStatus, setCopyStatus] = React.useState('');
-    const [config, setConfig] = useState({});
+    const [activeTab, setActiveTab] = useState('preview');
+    const [copyStatus, setCopyStatus] = useState('');
 
-    // Reset config when animation changes
-    useEffect(() => {
-        if (isOpen && animationId) {
-            const registryEntry = ANIMATION_REGISTRY[animationId];
-            if (registryEntry && registryEntry.controls) {
-                // Initialize default values
-                const defaults = {};
-                registryEntry.controls.forEach(c => defaults[c.id] = c.defaultValue);
-                setConfig(defaults);
-            } else {
-                setConfig({});
-            }
-            setActiveTab('preview');
+    const [config, setConfig] = useState(() => {
+        if (!animationId) return {};
+        const registryEntry = ANIMATION_REGISTRY[animationId];
+        const defaults = {};
+        if (registryEntry && registryEntry.controls) {
+            registryEntry.controls.forEach(c => defaults[c.id] = c.defaultValue);
         }
-    }, [isOpen, animationId]);
+        return defaults;
+    });
 
     const handleConfigChange = (key, value) => {
         setConfig(prev => ({ ...prev, [key]: value }));
@@ -197,7 +190,7 @@ export function EmbedModal({ isOpen, onClose, animationId, animationName }) {
                                         <div className="text-sm text-slate-400 space-y-4">
                                             <p>Nutzen Sie diesen Code, um die Animation mit den aktuellen Einstellungen in Ihre Webseite einzubetten.</p>
                                             <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg text-blue-200 text-xs">
-                                                Tipp: Der "iFrame" Tab (oben im Code-Fenster) ist am einfachsten für Baukästen wie Wordpress.
+                                                Tipp: Der &quot;iFrame&quot; Tab (oben im Code-Fenster) ist am einfachsten für Baukästen wie Wordpress.
                                             </div>
                                         </div>
                                     )}
