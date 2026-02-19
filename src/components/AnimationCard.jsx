@@ -38,11 +38,7 @@ export function AnimationCard({
             if (animationInstance.current) {
                 if (animationInstance.current.pause) animationInstance.current.pause();
                 else if (animationInstance.current.stop) animationInstance.current.stop();
-                else if (animationInstance.current.destroy && false) {
-                    // Destroy is too aggressive usually, better to just pause loop
-                    animationInstance.current.destroy();
-                    animationInstance.current = null;
-                }
+
             }
         }
 

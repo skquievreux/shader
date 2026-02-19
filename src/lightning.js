@@ -3,6 +3,8 @@
  * Erzeugt dynamische Blitzelektrische Entladungen mit Verzweigungen
  */
 
+import { AdaptiveQuality } from './adaptive-quality.js';
+
 export class Lightning {
     constructor(canvasOrId) {
         // Canvas einrichten
@@ -143,8 +145,8 @@ export class Lightning {
         const distance = Math.sqrt(dx * dx + dy * dy);
         const segmentCount = Math.floor(distance / this.segmentLength);
 
-        let currentX = startX;
-        let currentY = startY;
+        let currentX;
+        let currentY;
 
         for (let i = 0; i <= segmentCount; i++) {
             const progress = i / segmentCount;
@@ -357,7 +359,7 @@ export class Lightning {
         this.canvas.addEventListener('click', (e) => {
             const rect = this.canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+
 
             const bolt = this.createBolt(x, 0, x, this.canvas.height);
             this.bolts.push(bolt);
@@ -370,7 +372,7 @@ export class Lightning {
             const rect = this.canvas.getBoundingClientRect();
             const touch = e.touches[0];
             const x = touch.clientX - rect.left;
-            const y = touch.clientY - rect.top;
+
 
             const bolt = this.createBolt(x, 0, x, this.canvas.height);
             this.bolts.push(bolt);
@@ -443,12 +445,4 @@ export class Lightning {
     }
 }
 
-// Globale Initialisierungsfunktion
-function initLightning(canvasId) {
-    return new Lightning(canvasId);
-}
 
-// Export für Module-Systeme
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { Lightning, initLightning };
-}

@@ -28,7 +28,7 @@ export function EmbedModal({ isOpen, onClose, animationId, animationName }) {
             await navigator.clipboard.writeText(getCode());
             setCopyStatus('Kopiert!');
             setTimeout(() => setCopyStatus(''), 2000);
-        } catch (err) {
+        } catch {
             setCopyStatus('Fehler Beim Kopieren');
         }
     };

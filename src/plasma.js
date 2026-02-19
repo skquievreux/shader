@@ -3,6 +3,8 @@
  * Erzeugt elektrische Energieeffekte mit mathematischen Plasma-Funktionen
  */
 
+import { AdaptiveQuality } from './adaptive-quality.js';
+
 export class Plasma {
     constructor(canvasOrId) {
         // Canvas einrichten
@@ -422,12 +424,4 @@ export class Plasma {
     }
 }
 
-// Globale Initialisierungsfunktion
-function initPlasma(canvasId) {
-    return new Plasma(canvasId);
-}
 
-// Export für Module-Systeme
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { Plasma, initPlasma };
-}

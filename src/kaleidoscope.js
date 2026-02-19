@@ -3,6 +3,8 @@
  * Erzeugt geometrische Symmetriemuster mit interaktiver Mustererzeugung
  */
 
+import { AdaptiveQuality } from './adaptive-quality.js';
+
 export class Kaleidoscope {
     constructor(canvasOrId) {
         // Canvas einrichten
@@ -490,12 +492,4 @@ export class Kaleidoscope {
     }
 }
 
-// Globale Initialisierungsfunktion
-function initKaleidoscope(canvasId) {
-    return new Kaleidoscope(canvasId);
-}
 
-// Export für Module-Systeme
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { Kaleidoscope, initKaleidoscope };
-}

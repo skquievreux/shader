@@ -1,5 +1,4 @@
-import { Search, SlidersHorizontal, Shuffle } from 'lucide-react';
-import React from 'react';
+import { Search, Shuffle } from 'lucide-react';
 
 export function SearchFilterBar({
     searchQuery,

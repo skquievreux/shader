@@ -20,7 +20,7 @@ const ANIMATION_REGISTRY = {
         tags: ['particles', 'interactive', 'energy', 'colorful'],
         difficulty: 'beginner'
     },
-    
+
     'blue-sky': {
         name: 'Blauer Himmel',
         category: 'nature',
@@ -36,7 +36,7 @@ const ANIMATION_REGISTRY = {
         tags: ['nature', 'clouds', 'relaxing', 'weather'],
         difficulty: 'beginner'
     },
-    
+
     'firework': {
         name: 'Feuerwerk',
         category: 'particles',
@@ -52,7 +52,7 @@ const ANIMATION_REGISTRY = {
         tags: ['particles', 'explosions', 'celebration', 'colorful'],
         difficulty: 'beginner'
     },
-    
+
     'water-waves': {
         name: 'Wasserwellen',
         category: 'nature',
@@ -68,7 +68,7 @@ const ANIMATION_REGISTRY = {
         tags: ['nature', 'water', 'waves', 'relaxing'],
         difficulty: 'beginner'
     },
-    
+
     'aurora': {
         name: 'Aurora Borealis',
         category: 'nature',
@@ -84,7 +84,7 @@ const ANIMATION_REGISTRY = {
         tags: ['nature', 'aurora', 'northern-lights', 'atmospheric'],
         difficulty: 'intermediate'
     },
-    
+
     'chakra-animation': {
         name: 'Chakra Animation',
         category: 'geometric',
@@ -100,7 +100,7 @@ const ANIMATION_REGISTRY = {
         tags: ['geometric', 'spiritual', 'meditation', 'symbols'],
         difficulty: 'beginner'
     },
-    
+
     // Neue Animationen
     'star-field': {
         name: 'Star Field',
@@ -118,7 +118,7 @@ const ANIMATION_REGISTRY = {
         tags: ['cosmic', 'stars', 'parallax', 'meteors', 'space'],
         difficulty: 'intermediate'
     },
-    
+
     'rain': {
         name: 'Rain',
         category: 'weather',
@@ -135,7 +135,7 @@ const ANIMATION_REGISTRY = {
         tags: ['weather', 'rain', 'splashes', 'puddles', 'realistic'],
         difficulty: 'intermediate'
     },
-    
+
     'lightning': {
         name: 'Lightning',
         category: 'weather',
@@ -152,7 +152,7 @@ const ANIMATION_REGISTRY = {
         tags: ['weather', 'lightning', 'thunder', 'storms', 'dramatic'],
         difficulty: 'advanced'
     },
-    
+
     'smoke': {
         name: 'Smoke',
         category: 'particles',
@@ -169,7 +169,7 @@ const ANIMATION_REGISTRY = {
         tags: ['particles', 'smoke', 'turbulence', 'wind', 'realistic'],
         difficulty: 'advanced'
     },
-    
+
     'fractal-tree': {
         name: 'Fractal Tree',
         category: 'organic',
@@ -187,7 +187,7 @@ const ANIMATION_REGISTRY = {
         tags: ['organic', 'fractal', 'tree', 'growth', 'nature'],
         difficulty: 'advanced'
     },
-    
+
     'kaleidoscope': {
         name: 'Kaleidoscope',
         category: 'geometric',
@@ -204,7 +204,7 @@ const ANIMATION_REGISTRY = {
         tags: ['geometric', 'symmetry', 'patterns', 'interactive', 'colorful'],
         difficulty: 'intermediate'
     },
-    
+
     'plasma': {
         name: 'Plasma',
         category: 'abstract',
@@ -221,7 +221,7 @@ const ANIMATION_REGISTRY = {
         tags: ['abstract', 'plasma', 'energy', 'mathematical', 'colorful'],
         difficulty: 'advanced'
     },
-    
+
     'matrix-rain': {
         name: 'Matrix Rain',
         category: 'abstract',
@@ -315,12 +315,12 @@ class AnimationRegistry {
         this.loadedAnimations = new Set();
         this.activeAnimations = new Map();
     }
-    
+
     // Animation nach ID abrufen
     getAnimation(id) {
         return this.animations[id] || null;
     }
-    
+
     // Alle Animationen abrufen
     getAllAnimations() {
         return Object.entries(this.animations).map(([id, animation]) => ({
@@ -328,49 +328,48 @@ class AnimationRegistry {
             ...animation
         }));
     }
-    
+
     // Animationen nach Kategorie filtern
     getAnimationsByCategory(category) {
         return this.getAllAnimations().filter(animation => animation.category === category);
     }
-    
+
     // Animationen nach Tag filtern
     getAnimationsByTag(tag) {
-        return this.getAllAnimations().filter(animation => 
+        return this.getAllAnimations().filter(animation =>
             animation.tags && animation.tags.includes(tag)
         );
     }
-    
+
     // Animationen nach Schwierigkeit filtern
     getAnimationsByDifficulty(difficulty) {
-        return this.getAllAnimations().filter(animation => 
+        return this.getAllAnimations().filter(animation =>
             animation.difficulty === difficulty
         );
     }
-    
+
     // Animation suchen
     searchAnimations(query) {
         const lowerQuery = query.toLowerCase();
-        return this.getAllAnimations().filter(animation => 
-            animation.name.toLowerCase().includes(lowerQuery) ||
+        return this.getAllAnimations().filter(animation =>
             animation.description.toLowerCase().includes(lowerQuery) ||
             (animation.tags && animation.tags.some(tag => tag.toLowerCase().includes(lowerQuery)))
         );
     }
-    
+
     // Animation initialisieren
     async initializeAnimation(id, canvasId) {
         const animation = this.getAnimation(id);
         if (!animation) {
             throw new Error(`Animation mit ID '${id}' nicht gefunden`);
         }
-        
+
         // Prüfen ob Animation bereits geladen ist
         if (!this.loadedAnimations.has(id)) {
             await this.loadAnimationScript(animation.file);
             this.loadedAnimations.add(id);
         }
-        
+
         // Animation initialisieren
         try {
             if (typeof window[animation.initFunction] === 'function') {
@@ -385,7 +384,7 @@ class AnimationRegistry {
             throw error;
         }
     }
-    
+
     // Animation-Skript laden
     async loadAnimationScript(filename) {
         return new Promise((resolve, reject) => {
@@ -394,7 +393,7 @@ class AnimationRegistry {
                 resolve();
                 return;
             }
-            
+
             const script = document.createElement('script');
             script.src = filename;
             script.onload = () => resolve();
@@ -402,7 +401,7 @@ class AnimationRegistry {
             document.head.appendChild(script);
         });
     }
-    
+
     // Animation beenden
     destroyAnimation(id) {
         const instance = this.activeAnimations.get(id);
@@ -411,24 +410,24 @@ class AnimationRegistry {
             this.activeAnimations.delete(id);
         }
     }
-    
+
     // Alle aktiven Animationen beenden
     destroyAllAnimations() {
-        for (const [id, instance] of this.activeAnimations) {
+        for (const instance of this.activeAnimations.values()) {
             if (typeof instance.destroy === 'function') {
                 instance.destroy();
             }
         }
         this.activeAnimations.clear();
     }
-    
+
     // Zufällige Animation auswählen
     getRandomAnimation() {
         const animations = this.getAllAnimations();
         const randomIndex = Math.floor(Math.random() * animations.length);
         return animations[randomIndex];
     }
-    
+
     // Animation-Statistiken
     getStatistics() {
         const animations = this.getAllAnimations();
@@ -439,24 +438,24 @@ class AnimationRegistry {
             loaded: this.loadedAnimations.size,
             active: this.activeAnimations.size
         };
-        
+
         animations.forEach(animation => {
             stats.byCategory[animation.category] = (stats.byCategory[animation.category] || 0) + 1;
             stats.byDifficulty[animation.difficulty] = (stats.byDifficulty[animation.difficulty] || 0) + 1;
         });
-        
+
         return stats;
     }
-    
+
     // Export-Konfiguration für Embedding
     getEmbedConfig(id, customParams = {}) {
         const animation = this.getAnimation(id);
         if (!animation) {
             throw new Error(`Animation mit ID '${id}' nicht gefunden`);
         }
-        
+
         const baseUrl = window.ShaderConfig ? window.ShaderConfig.getBaseUrl() : '';
-        
+
         return {
             animationId: id,
             name: animation.name,
@@ -486,14 +485,3 @@ window.ANIMATION_REGISTRY = ANIMATION_REGISTRY;
 window.ANIMATION_CATEGORIES = ANIMATION_CATEGORIES;
 window.DIFFICULTY_LEVELS = DIFFICULTY_LEVELS;
 window.animationRegistry = animationRegistry;
-
-// Export für Module-Systeme
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        ANIMATION_REGISTRY,
-        ANIMATION_CATEGORIES,
-        DIFFICULTY_LEVELS,
-        AnimationRegistry,
-        animationRegistry
-    };
-}

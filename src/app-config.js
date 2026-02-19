@@ -11,16 +11,16 @@ class AppConfig {
         this.description = 'Eine erweiterte Sammlung von HTML5-Canvas-Animationen mit Aurora Borealis';
         this.author = 'Quievreux Consulting';
         this.copyright = '© 2025 DreamEdit. Alle Rechte vorbehalten.';
-        
+
         // App-Informatione n in Console ausgeben
         this.logAppInfo();
     }
-    
+
     logAppInfo() {
         const style = 'color: #2b5797; font-weight: bold; font-size: 14px;';
         const versionStyle = 'color: #4dabf7; font-size: 12px;';
         const authorStyle = 'color: #28a745; font-size: 11px;';
-        
+
         console.log('%c=====================================', style);
         console.log(`%c${this.appName}`, style);
         console.log(`%cVersion: ${this.version}`, versionStyle);
@@ -29,7 +29,7 @@ class AppConfig {
         console.log(`%c${this.copyright}`, 'color: #999; font-size: 10px;');
         console.log('%c=====================================', style);
     }
-    
+
     // App-Informatione n für andere Skripte verfügbar machen
     getAppInfo() {
         return {
@@ -44,8 +44,3 @@ class AppConfig {
 
 // Globale App-Instanz erstellen
 window.AppConfig = new AppConfig();
-
-// Export für Module
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = AppConfig;
-}

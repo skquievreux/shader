@@ -3,6 +3,8 @@
  * Erzeugt realistischen Regen mit Splash-Effekten und Windeinfluss
  */
 
+import { AdaptiveQuality } from './adaptive-quality.js';
+
 export class Rain {
     constructor(canvasOrId) {
         // Canvas einrichten
@@ -443,12 +445,4 @@ export class Rain {
     }
 }
 
-// Globale Initialisierungsfunktion
-function initRain(canvasId) {
-    return new Rain(canvasId);
-}
 
-// Export für Module-Systeme
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { Rain, initRain };
-}

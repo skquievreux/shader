@@ -12,10 +12,10 @@ class EmergencyMode {
             critical: 'critical',
             emergency: 'emergency'
         };
-        
+
         // Aktuelle Zustand
         this.currentState = this.states.normal;
-        
+
         // Trigger-Schwellenwerte
         this.triggers = {
             fps: { critical: 15, emergency: 10 },
@@ -24,14 +24,14 @@ class EmergencyMode {
             errors: { critical: 0.1, emergency: 0.2 },
             users: { critical: 500, emergency: 1000 }
         };
-        
+
         // Emergency-Aktionen
         this.actions = {
             warning: ['reduce_quality', 'limit_animations'],
             critical: ['pause_heavy_animations', 'clear_caches'],
             emergency: ['emergency_shutdown', 'show_warning']
         };
-        
+
         // Status-Tracking
         this.metrics = {
             emergencyActivations: 0,
@@ -40,55 +40,55 @@ class EmergencyMode {
             lastActivation: null,
             totalDowntime: 0
         };
-        
+
         // Callbacks
         this.callbacks = {
             onStateChange: [],
             onEmergency: [],
             onRecovery: []
         };
-        
+
         // Monitoring-Intervalle
         this.checkInterval = 1000; // 1 Sekunde
         this.recoveryInterval = 5000; // 5 Sekunden
-        
+
         // Timer für Recovery
         this.recoveryTimer = null;
         this.emergencyStartTime = null;
-        
+
         // UI-Elemente
         this.uiElements = {
             warningBanner: null,
             emergencyOverlay: null,
             statusIndicator: null
         };
-        
+
         // Initialisierung
         this.initializeEmergencyMode();
     }
-    
+
     /**
      * Initialisiert den Emergency Mode
      */
     initializeEmergencyMode() {
         console.log('🚨 Emergency Mode initialisiert');
-        
+
         // 1. UI-Elemente erstellen
         this.createUIElements();
-        
+
         // 2. Monitoring starten
         this.startMonitoring();
-        
+
         // 3. Performance Monitor Integration
         this.setupPerformanceMonitoring();
-        
+
         // 4. User Count Detection Integration
         this.setupUserCountMonitoring();
-        
+
         // 5. Page Visibility API
         this.setupVisibilityAPI();
     }
-    
+
     /**
      * Erstellt UI-Elemente für Emergency Mode
      */
@@ -96,19 +96,19 @@ class EmergencyMode {
         // Warning Banner
         this.uiElements.warningBanner = this.createWarningBanner();
         document.body.appendChild(this.uiElements.warningBanner);
-        
+
         // Emergency Overlay
         this.uiElements.emergencyOverlay = this.createEmergencyOverlay();
         document.body.appendChild(this.uiElements.emergencyOverlay);
-        
+
         // Status Indicator
         this.uiElements.statusIndicator = this.createStatusIndicator();
         document.body.appendChild(this.uiElements.statusIndicator);
-        
+
         // Initial verstecken
         this.hideAllUIElements();
     }
-    
+
     /**
      * Erstellt Warning Banner
      */
@@ -126,10 +126,10 @@ class EmergencyMode {
                 <button class="banner-close" onclick="window.EmergencyMode.dismissWarning()">✕</button>
             </div>
         `;
-        
+
         return banner;
     }
-    
+
     /**
      * Erstellt Emergency Overlay
      */
@@ -166,10 +166,10 @@ class EmergencyMode {
                 </div>
             </div>
         `;
-        
+
         return overlay;
     }
-    
+
     /**
      * Erstellt Status Indicator
      */
@@ -181,10 +181,10 @@ class EmergencyMode {
             <div class="status-dot" id="status-dot"></div>
             <div class="status-text" id="status-text">Normal</div>
         `;
-        
+
         return indicator;
     }
-    
+
     /**
      * Startet das Emergency Monitoring
      */
@@ -193,22 +193,22 @@ class EmergencyMode {
             this.checkEmergencyConditions();
         }, this.checkInterval);
     }
-    
+
     /**
      * Prüft Emergency-Bedingungen
      */
     checkEmergencyConditions() {
         const metrics = this.collectMetrics();
         const newState = this.evaluateEmergencyState(metrics);
-        
+
         if (newState !== this.currentState) {
             this.handleStateChange(newState, metrics);
         }
-        
+
         // UI-Metriken aktualisieren
         this.updateUIMetrics(metrics);
     }
-    
+
     /**
      * Sammelt aktuelle Metriken
      */
@@ -220,7 +220,7 @@ class EmergencyMode {
             errors: 0,
             users: 1
         };
-        
+
         // Performance Monitor Metriken
         if (window.PerformanceMonitor) {
             const monitorMetrics = window.PerformanceMonitor.getMetrics();
@@ -228,22 +228,22 @@ class EmergencyMode {
             metrics.memory = monitorMetrics.memoryUsage;
             metrics.errors = monitorMetrics.errorRate;
         }
-        
+
         // User Count Metriken
         if (window.UserCountDetector) {
             const userMetrics = window.UserCountDetector.getMetrics();
             metrics.users = userMetrics.currentUsers;
         }
-        
+
         return metrics;
     }
-    
+
     /**
      * Bewertet den Emergency-Zustand
      */
     evaluateEmergencyState(metrics) {
         let state = this.states.normal;
-        
+
         // Emergency-Bedingungen prüfen
         if (metrics.fps <= this.triggers.fps.emergency ||
             metrics.memory >= this.triggers.memory.emergency ||
@@ -253,57 +253,57 @@ class EmergencyMode {
         }
         // Critical-Bedingungen prüfen
         else if (metrics.fps <= this.triggers.fps.critical ||
-                 metrics.memory >= this.triggers.memory.critical ||
-                 metrics.errors >= this.triggers.errors.critical ||
-                 metrics.users >= this.triggers.users.critical) {
+            metrics.memory >= this.triggers.memory.critical ||
+            metrics.errors >= this.triggers.errors.critical ||
+            metrics.users >= this.triggers.users.critical) {
             state = this.states.critical;
         }
         // Warning-Bedingungen prüfen
         else if (metrics.fps <= 25 ||
-                 metrics.memory >= 0.7 ||
-                 metrics.errors >= 0.05 ||
-                 metrics.users >= 50) {
+            metrics.memory >= 0.7 ||
+            metrics.errors >= 0.05 ||
+            metrics.users >= 50) {
             state = this.states.warning;
         }
-        
+
         return state;
     }
-    
+
     /**
      * Behandelt Zustandsänderungen
      */
     handleStateChange(newState, metrics) {
         const oldState = this.currentState;
         this.currentState = newState;
-        
+
         console.log(`🚨 Emergency Status-Änderung: ${oldState} → ${newState}`, metrics);
-        
+
         // Metriken aktualisieren
         this.updateStateMetrics(newState);
-        
+
         // Aktionen ausführen
         this.executeStateActions(newState, oldState);
-        
+
         // UI aktualisieren
         this.updateUI(newState);
-        
+
         // Callbacks auslösen
         this.triggerCallbacks('onStateChange', {
             oldState,
             newState,
             metrics
         });
-        
+
         // Recovery-Timer starten/stoppen
         this.handleRecoveryTimer(newState);
     }
-    
+
     /**
      * Aktualisiert Zustands-Metriken
      */
     updateStateMetrics(state) {
         const now = Date.now();
-        
+
         switch (state) {
             case this.states.warning:
                 this.metrics.warningActivations++;
@@ -318,49 +318,49 @@ class EmergencyMode {
                 break;
         }
     }
-    
+
     /**
      * Führt Zustands-Aktionen aus
      */
-    executeStateActions(newState, oldState) {
+    executeStateActions(newState) {
         const actions = this.actions[newState] || [];
-        
+
         actions.forEach(action => {
-            this.executeAction(action, newState, oldState);
+            this.executeAction(action);
         });
     }
-    
+
     /**
      * Führt einzelne Aktion aus
      */
-    executeAction(action, newState, oldState) {
+    executeAction(action) {
         switch (action) {
             case 'reduce_quality':
                 this.reduceQuality();
                 break;
-                
+
             case 'limit_animations':
                 this.limitAnimations();
                 break;
-                
+
             case 'pause_heavy_animations':
                 this.pauseHeavyAnimations();
                 break;
-                
+
             case 'clear_caches':
                 this.clearCaches();
                 break;
-                
+
             case 'emergency_shutdown':
                 this.emergencyShutdown();
                 break;
-                
+
             case 'show_warning':
                 this.showWarningUI();
                 break;
         }
     }
-    
+
     /**
      * Reduziert die Qualität
      */
@@ -370,14 +370,14 @@ class EmergencyMode {
             console.log('🔽 Qualität aufgrund von Warning reduziert');
         }
     }
-    
+
     /**
      * Begrenzt die Anzahl aktiver Animationen
      */
     limitAnimations() {
         const maxAnimations = 2;
         const containers = document.querySelectorAll('.animation-container');
-        
+
         containers.forEach((container, index) => {
             if (index >= maxAnimations) {
                 // Animation pausieren
@@ -385,23 +385,23 @@ class EmergencyMode {
                 if (playBtn && container.dataset.playing === 'true') {
                     playBtn.click();
                 }
-                
+
                 // Container deaktivieren
                 container.classList.add('disabled');
                 container.style.opacity = '0.5';
                 container.style.pointerEvents = 'none';
             }
         });
-        
+
         console.log(`📉 Animationen auf ${maxAnimations} begrenzt`);
     }
-    
+
     /**
      * Pausiert schwere Animationen
      */
     pauseHeavyAnimations() {
         const heavyAnimations = ['energy-field', 'aurora', 'quantum-field'];
-        
+
         heavyAnimations.forEach(animationName => {
             const container = document.querySelector(`[data-animation="${animationName}"]`);
             if (container && container.dataset.playing === 'true') {
@@ -411,10 +411,10 @@ class EmergencyMode {
                 }
             }
         });
-        
+
         console.log('⏸️ Schwere Animationen pausiert');
     }
-    
+
     /**
      * Leert Caches
      */
@@ -423,7 +423,7 @@ class EmergencyMode {
         if (window.ResourceManager) {
             window.ResourceManager.emergencyCleanup();
         }
-        
+
         // Browser Cache leeren (falls möglich)
         if ('caches' in window) {
             caches.keys().then(names => {
@@ -432,21 +432,21 @@ class EmergencyMode {
                 });
             });
         }
-        
+
         // Garbage Collection anfordern
         if (window.gc) {
             window.gc();
         }
-        
+
         console.log('🧹 Caches geleert');
     }
-    
+
     /**
      * Führt Notfall-Herunterfahren durch
      */
     emergencyShutdown() {
         console.log('🚨 Emergency Shutdown eingeleitet');
-        
+
         // Alle Animationen stoppen
         const containers = document.querySelectorAll('.animation-container');
         containers.forEach(container => {
@@ -455,31 +455,31 @@ class EmergencyMode {
                 playBtn.click();
             }
         });
-        
+
         // Emergency Overlay anzeigen
         this.showEmergencyUI();
-        
+
         // Callback auslösen
         this.triggerCallbacks('onEmergency', {
             timestamp: Date.now(),
             metrics: this.collectMetrics()
         });
     }
-    
+
     /**
      * Aktualisiert die UI
      */
     updateUI(state) {
         // Status Indicator aktualisieren
         this.updateStatusIndicator(state);
-        
+
         // Warning Banner anzeigen/verstecken
         if (state === this.states.warning) {
             this.showWarningUI();
         } else {
             this.hideWarningUI();
         }
-        
+
         // Emergency Overlay anzeigen/verstecken
         if (state === this.states.emergency) {
             this.showEmergencyUI();
@@ -487,7 +487,7 @@ class EmergencyMode {
             this.hideEmergencyUI();
         }
     }
-    
+
     /**
      * Aktualisiert Status Indicator
      */
@@ -495,10 +495,10 @@ class EmergencyMode {
         const indicator = this.uiElements.statusIndicator;
         const dot = indicator.querySelector('#status-dot');
         const text = indicator.querySelector('#status-text');
-        
+
         // Klassen entfernen
         dot.className = 'status-dot';
-        
+
         switch (state) {
             case this.states.normal:
                 dot.classList.add('status-normal');
@@ -518,21 +518,21 @@ class EmergencyMode {
                 break;
         }
     }
-    
+
     /**
      * Zeigt Warning UI
      */
     showWarningUI() {
         this.uiElements.warningBanner.classList.remove('hidden');
     }
-    
+
     /**
      * Versteckt Warning UI
      */
     hideWarningUI() {
         this.uiElements.warningBanner.classList.add('hidden');
     }
-    
+
     /**
      * Zeigt Emergency UI
      */
@@ -540,7 +540,7 @@ class EmergencyMode {
         this.uiElements.emergencyOverlay.classList.remove('hidden');
         document.body.classList.add('emergency-active');
     }
-    
+
     /**
      * Versteckt Emergency UI
      */
@@ -548,7 +548,7 @@ class EmergencyMode {
         this.uiElements.emergencyOverlay.classList.add('hidden');
         document.body.classList.remove('emergency-active');
     }
-    
+
     /**
      * Versteckt alle UI-Elemente
      */
@@ -556,7 +556,7 @@ class EmergencyMode {
         this.hideWarningUI();
         this.hideEmergencyUI();
     }
-    
+
     /**
      * Aktualisiert UI-Metriken
      */
@@ -565,112 +565,112 @@ class EmergencyMode {
         const fpsElement = document.getElementById('emergency-fps');
         const memoryElement = document.getElementById('emergency-memory');
         const usersElement = document.getElementById('emergency-users');
-        
+
         if (fpsElement) fpsElement.textContent = Math.round(metrics.fps);
         if (memoryElement) memoryElement.textContent = Math.round(metrics.memory * 100) + '%';
         if (usersElement) usersElement.textContent = metrics.users;
     }
-    
+
     /**
      * Behandelt Recovery-Timer
      */
-    handleRecoveryTimer(state) {
+    handleRecoveryTimer() {
         // Timer stoppen bei Emergency
-        if (state === this.states.emergency) {
+        if (this.currentState === this.states.emergency) {
             if (this.recoveryTimer) {
                 clearTimeout(this.recoveryTimer);
                 this.recoveryTimer = null;
             }
             return;
         }
-        
+
         // Timer starten bei Verbesserung
-        if (state !== this.states.emergency && !this.recoveryTimer) {
+        if (this.currentState !== this.states.emergency && !this.recoveryTimer) {
             this.recoveryTimer = setTimeout(() => {
                 this.attemptRecovery();
             }, this.recoveryInterval);
         }
     }
-    
+
     /**
      * Versucht die Wiederherstellung
      */
     attemptRecovery() {
         console.log('🔄 Wiederherstellung wird versucht...');
-        
+
         const metrics = this.collectMetrics();
         const potentialState = this.evaluateEmergencyState(metrics);
-        
+
         if (potentialState === this.states.normal) {
             this.handleStateChange(this.states.normal, metrics);
             this.triggerCallbacks('onRecovery', {
                 timestamp: Date.now(),
                 metrics,
-                downtime: this.emergencyStartTime ? 
+                downtime: this.emergencyStartTime ?
                     Date.now() - this.emergencyStartTime : 0
             });
-            
+
             console.log('✅ Wiederherstellung erfolgreich');
         } else {
             console.log('❌ Wiederherstellung fehlgeschlagen, bleibe im aktuellen Zustand');
         }
     }
-    
+
     /**
      * Verwirft die Warnung
      */
     dismissWarning() {
         this.hideWarningUI();
     }
-    
+
     /**
      * Zeigt Diagnose-Informationen
      */
     showDiagnostics() {
         const metrics = this.collectMetrics();
         const report = this.generateDiagnosticsReport(metrics);
-        
+
         console.group('🔍 Emergency Mode Diagnostics');
         console.log('Current State:', this.currentState);
         console.log('Metrics:', metrics);
         console.log('History:', this.metrics);
         console.log('Recommendations:', report.recommendations);
         console.groupEnd();
-        
+
         // Diagnose in UI anzeigen (optional)
         alert(`Diagnose:\n\nZustand: ${this.currentState}\nFPS: ${Math.round(metrics.fps)}\nMemory: ${Math.round(metrics.memory * 100)}%\nNutzer: ${metrics.users}`);
     }
-    
+
     /**
      * Setup für Performance Monitoring
      */
     setupPerformanceMonitoring() {
         if (window.PerformanceMonitor) {
-            window.PerformanceMonitor.onAlert('lowFPS', (data) => {
+            window.PerformanceMonitor.onAlert('lowFPS', () => {
                 this.checkEmergencyConditions();
             });
-            
-            window.PerformanceMonitor.onAlert('memoryExhausted', (data) => {
+
+            window.PerformanceMonitor.onAlert('memoryExhausted', () => {
                 this.checkEmergencyConditions();
             });
-            
-            window.PerformanceMonitor.onAlert('highErrorRate', (data) => {
+
+            window.PerformanceMonitor.onAlert('highErrorRate', () => {
                 this.checkEmergencyConditions();
             });
         }
     }
-    
+
     /**
      * Setup für User Count Monitoring
      */
     setupUserCountMonitoring() {
         if (window.UserCountDetector) {
-            window.UserCountDetector.on('onUserCountChange', (data) => {
+            window.UserCountDetector.on('onUserCountChange', () => {
                 this.checkEmergencyConditions();
             });
         }
     }
-    
+
     /**
      * Setup für Page Visibility API
      */
@@ -684,7 +684,7 @@ class EmergencyMode {
             }
         });
     }
-    
+
     /**
      * Generiert Diagnostics-Report
      */
@@ -698,13 +698,13 @@ class EmergencyMode {
             recommendations: this.generateRecommendations(metrics)
         };
     }
-    
+
     /**
      * Generiert Empfehlungen
      */
     generateRecommendations(metrics) {
         const recommendations = [];
-        
+
         if (metrics.fps < 20) {
             recommendations.push({
                 type: 'performance',
@@ -713,7 +713,7 @@ class EmergencyMode {
                 action: 'close_tabs'
             });
         }
-        
+
         if (metrics.memory > 0.9) {
             recommendations.push({
                 type: 'memory',
@@ -722,7 +722,7 @@ class EmergencyMode {
                 action: 'restart_app'
             });
         }
-        
+
         if (metrics.users > 100) {
             recommendations.push({
                 type: 'scalability',
@@ -731,10 +731,10 @@ class EmergencyMode {
                 action: 'upgrade_infrastructure'
             });
         }
-        
+
         return recommendations;
     }
-    
+
     /**
      * Registriert Callback
      */
@@ -743,7 +743,7 @@ class EmergencyMode {
             this.callbacks[eventType].push(callback);
         }
     }
-    
+
     /**
      * Entfernt Callback
      */
@@ -755,7 +755,7 @@ class EmergencyMode {
             }
         }
     }
-    
+
     /**
      * Löst Callbacks aus
      */
@@ -768,14 +768,14 @@ class EmergencyMode {
             }
         });
     }
-    
+
     /**
      * Gibt aktuellen Zustand zurück
      */
     getCurrentState() {
         return this.currentState;
     }
-    
+
     /**
      * Gibt alle Metriken zurück
      */
@@ -786,18 +786,18 @@ class EmergencyMode {
             triggers: this.triggers
         };
     }
-    
+
     /**
      * Stoppt den Emergency Mode
      */
     stop() {
         console.log('🛑 Emergency Mode gestoppt');
-        
+
         clearInterval(this.monitoringInterval);
         if (this.recoveryTimer) {
             clearTimeout(this.recoveryTimer);
         }
-        
+
         // UI aufräumen
         this.hideAllUIElements();
     }
@@ -805,8 +805,3 @@ class EmergencyMode {
 
 // Globale Instanz erstellen
 window.EmergencyMode = new EmergencyMode();
-
-// Export für Module
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = EmergencyMode;
-}

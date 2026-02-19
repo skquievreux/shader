@@ -100,6 +100,8 @@ class ParticlePool {
     }
 }
 
+import { AdaptiveQuality } from './adaptive-quality.js';
+
 export class Firework {
     constructor(canvasOrId) {
         // Canvas einrichten
@@ -424,23 +426,3 @@ export class Firework {
         }
     }
 }
-
-// Funktion zum Initialisieren der Animation
-function initFirework(canvasId) {
-    return new Firework(canvasId);
-}
-
-// Automatische Initialisierung bei DOM-Bereitschaft
-document.addEventListener('DOMContentLoaded', function () {
-    const canvas = document.getElementById('firework-canvas');
-    if (canvas) {
-        console.log('Firework canvas found, initializing animation...');
-        try {
-            window.fireworkAnimation = initFirework('firework-canvas');
-        } catch (e) {
-            console.error('Error initializing firework animation:', e);
-        }
-    } else {
-        console.error('Firework canvas element not found');
-    }
-});

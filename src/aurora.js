@@ -3,6 +3,8 @@
  * Erzeugt fließende, farbige Lichtbänder wie das Nordlicht
  */
 
+import { AdaptiveQuality } from './adaptive-quality.js';
+
 export class Aurora {
     constructor(canvasOrId) {
         // Canvas einrichten
@@ -303,8 +305,8 @@ export class Aurora {
         this.drawStars();
 
         // Aurora-Wellen zeichnen
-        this.waves.forEach((wave, index) => {
-            this.drawWave(wave, index);
+        this.waves.forEach((wave) => {
+            this.drawWave(wave);
         });
 
         // Partikel zeichnen
@@ -326,7 +328,7 @@ export class Aurora {
         }
     }
 
-    drawWave(wave, index) {
+    drawWave(wave) {
         if (wave.points.length < 2) return;
 
         const color = this.gradientColors[wave.colorIndex];
@@ -439,22 +441,4 @@ export class Aurora {
     }
 }
 
-// Funktion zum Initialisieren der Animation
-function initAurora(canvasId) {
-    return new Aurora(canvasId);
-}
 
-// Automatische Initialisierung bei DOM-Bereitschaft
-document.addEventListener('DOMContentLoaded', function () {
-    const canvas = document.getElementById('aurora-canvas');
-    if (canvas) {
-        console.log('Aurora canvas found, initializing animation...');
-        try {
-            window.auroraAnimation = initAurora('aurora-canvas');
-        } catch (e) {
-            console.error('Error initializing aurora animation:', e);
-        }
-    } else {
-        console.error('Aurora canvas element not found');
-    }
-});

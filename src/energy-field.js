@@ -46,6 +46,8 @@ class SpatialGrid {
     }
 }
 
+import { AdaptiveQuality } from './adaptive-quality.js';
+
 export class EnergyField {
     constructor(canvasOrId) {
         // Canvas einrichten
@@ -345,23 +347,3 @@ export class EnergyField {
         }
     }
 }
-
-// Funktion zum Initialisieren der Animation
-function initEnergyField(canvasId) {
-    return new EnergyField(canvasId);
-}
-
-// Automatische Initialisierung bei DOM-Bereitschaft
-document.addEventListener('DOMContentLoaded', function () {
-    const canvas = document.getElementById('energy-field-canvas');
-    if (canvas) {
-        console.log('Energy field canvas found, initializing animation...');
-        try {
-            window.energyFieldAnimation = initEnergyField('energy-field-canvas');
-        } catch (e) {
-            console.error('Error initializing energy field animation:', e);
-        }
-    } else {
-        console.error('Energy field canvas element not found');
-    }
-});

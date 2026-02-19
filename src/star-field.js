@@ -3,6 +3,8 @@
  * Erzeugt ein kosmisches Sternenfeld mit Parallax-Effekt und Sternschnuppen
  */
 
+import { AdaptiveQuality } from './adaptive-quality.js';
+
 export class StarField {
     constructor(canvasOrId) {
         // Canvas einrichten
@@ -418,14 +420,4 @@ export class StarField {
             this.animate();
         }
     }
-}
-
-// Globale Initialisierungsfunktion
-function initStarField(canvasId) {
-    return new StarField(canvasId);
-}
-
-// Export für Module-Systeme
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { StarField, initStarField };
 }

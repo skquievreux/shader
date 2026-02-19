@@ -3,6 +3,8 @@
  * Erzeugt cyberpunk-ähnliche digitale Regeneffekte mit Zeichenfällen
  */
 
+import { AdaptiveQuality } from './adaptive-quality.js';
+
 export class MatrixRain {
     constructor(canvasOrId) {
         // Canvas einrichten
@@ -127,8 +129,7 @@ export class MatrixRain {
 
     createDrop(columnIndex, yOffset = 0) {
         const column = this.columns[columnIndex];
-        const characterSet = column.characterSet;
-        const colors = column.colors;
+
 
         return {
             y: -yOffset,
@@ -259,6 +260,7 @@ export class MatrixRain {
 
                     this.ctx.restore();
                 });
+
             });
         });
     }
@@ -469,12 +471,4 @@ export class MatrixRain {
     }
 }
 
-// Globale Initialisierungsfunktion
-function initMatrixRain(canvasId) {
-    return new MatrixRain(canvasId);
-}
 
-// Export für Module-Systeme
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { MatrixRain, initMatrixRain };
-}

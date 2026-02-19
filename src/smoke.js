@@ -3,6 +3,8 @@
  * Erzeugt realistische Rauchsimulation mit Partikelphysik und Windeinfluss
  */
 
+import { AdaptiveQuality } from './adaptive-quality.js';
+
 export class Smoke {
     constructor(canvasOrId) {
         // Canvas einrichten
@@ -413,14 +415,4 @@ export class Smoke {
             this.animate();
         }
     }
-}
-
-// Globale Initialisierungsfunktion
-function initSmoke(canvasId) {
-    return new Smoke(canvasId);
-}
-
-// Export für Module-Systeme
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { Smoke, initSmoke };
 }

@@ -3,6 +3,8 @@
  * Erzeugt organische Wachstumsanimationen mit rekursiver Baumgenerierung
  */
 
+import { AdaptiveQuality } from './adaptive-quality.js';
+
 export class FractalTree {
     constructor(canvasOrId) {
         // Canvas einrichten
@@ -494,14 +496,4 @@ export class FractalTree {
             this.animate();
         }
     }
-}
-
-// Globale Initialisierungsfunktion
-function initFractalTree(canvasId) {
-    return new FractalTree(canvasId);
-}
-
-// Export für Module-Systeme
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { FractalTree, initFractalTree };
 }

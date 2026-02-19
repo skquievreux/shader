@@ -3,7 +3,7 @@
  * Passt die Rendering-Qualität basierend auf der Performance an
  */
 
-class AdaptiveQuality {
+export class AdaptiveQuality {
     constructor() {
         this.fps = 60;
         this.frameCount = 0;
@@ -17,25 +17,25 @@ class AdaptiveQuality {
         this.adjustmentInterval = 2000; // Alle 2 Sekunden anpassen
         this.lastAdjustment = 0;
     }
-    
+
     update() {
         const now = performance.now();
         this.frameCount++;
-        
+
         // FPS alle 100ms berechnen
         if (now - this.lastTime >= 100) {
             this.fps = Math.round((this.frameCount * 1000) / (now - this.lastTime));
             this.frameCount = 0;
             this.lastTime = now;
         }
-        
+
         // Qualität alle adjustmentInterval anpassen
         if (now - this.lastAdjustment >= this.adjustmentInterval) {
             this.adjustQuality();
             this.lastAdjustment = now;
         }
     }
-    
+
     adjustQuality() {
         if (this.fps < 25) {
             this.quality = 'low';
@@ -45,30 +45,25 @@ class AdaptiveQuality {
             this.quality = 'high';
         }
     }
-    
+
     shouldSkipFrame() {
         const currentLevel = this.qualityLevels[this.quality];
         return this.frameCount % currentLevel.frameSkip !== 0;
     }
-    
+
     getParticleMultiplier() {
         return this.qualityLevels[this.quality].particleMultiplier;
     }
-    
+
     getDetailLevel() {
         return this.qualityLevels[this.quality].detailLevel;
     }
-    
+
     getCurrentQuality() {
         return this.quality;
     }
-    
+
     getFPS() {
         return this.fps;
     }
-}
-
-// Export für Verwendung in anderen Animationen
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = AdaptiveQuality;
 }

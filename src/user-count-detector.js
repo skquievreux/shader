@@ -13,7 +13,7 @@ class UserCountDetector {
             averageSessionDuration: 0,
             userDistribution: {}
         };
-        
+
         // Detection-Methoden
         this.methods = {
             localStorage: true,
@@ -22,7 +22,7 @@ class UserCountDetector {
             serviceWorker: true,
             websocket: false // Optional für Server-Side
         };
-        
+
         // Storage-Keys
         this.storageKeys = {
             userCount: 'shader_user_count',
@@ -30,14 +30,14 @@ class UserCountDetector {
             peakUsers: 'shader_peak_users',
             lastSeen: 'shader_last_seen'
         };
-        
+
         // Update-Intervalle
         this.intervals = {
             heartbeat: 5000,    // 5 Sekunden
             cleanup: 30000,    // 30 Sekunden
             analytics: 60000     // 1 Minute
         };
-        
+
         // Callbacks
         this.callbacks = {
             onUserCountChange: [],
@@ -45,7 +45,7 @@ class UserCountDetector {
             onUserJoin: [],
             onUserLeave: []
         };
-        
+
         // Session-Informationen
         this.session = {
             id: this.generateSessionId(),
@@ -53,42 +53,42 @@ class UserCountDetector {
             lastHeartbeat: Date.now(),
             isActive: true
         };
-        
+
         // Detection initialisieren
         this.initializeDetection();
     }
-    
+
     /**
      * Initialisiert die User Detection
      */
     initializeDetection() {
         console.log('👥 User Count Detector initialisiert');
-        
+
         // 1. Session registrieren
         this.registerSession();
-        
+
         // 2. Aktuelle Nutzeranzahl ermitteln
         this.updateCurrentUserCount();
-        
+
         // 3. Heartbeat starten
         this.startHeartbeat();
-        
+
         // 4. Cleanup starten
         this.startCleanup();
-        
+
         // 5. Analytics starten
         this.startAnalytics();
-        
+
         // 6. Page Visibility API einrichten
         this.setupVisibilityAPI();
-        
+
         // 7. Broadcast Channel einrichten
         this.setupBroadcastChannel();
-        
+
         // 8. Service Worker einrichten
         this.setupServiceWorker();
     }
-    
+
     /**
      * Registriert die aktuelle Session
      */
@@ -103,84 +103,84 @@ class UserCountDetector {
             },
             timestamp: Date.now()
         };
-        
+
         // Session in localStorage speichern
         localStorage.setItem(this.storageKeys.userSession, JSON.stringify(sessionData));
-        
+
         // Nutzerzähler erhöhen
         this.incrementUserCount();
-        
+
         console.log(`👤 Session registriert: ${this.session.id}`);
     }
-    
+
     /**
      * Erhöht die Nutzeranzahl
      */
     incrementUserCount() {
         const currentCount = this.getUserCountFromStorage();
         const newCount = currentCount + 1;
-        
+
         localStorage.setItem(this.storageKeys.userCount, newCount.toString());
         this.metrics.currentUsers = newCount;
-        
+
         // Peak aktualisieren
         if (newCount > this.metrics.peakUsers) {
             this.metrics.peakUsers = newCount;
             localStorage.setItem(this.storageKeys.peakUsers, newCount.toString());
             this.triggerCallbacks('onPeakUsers', { count: newCount });
         }
-        
+
         // Callback auslösen
-        this.triggerCallbacks('onUserJoin', { 
+        this.triggerCallbacks('onUserJoin', {
             sessionId: this.session.id,
-            totalUsers: newCount 
+            totalUsers: newCount
         });
-        
-        this.triggerCallbacks('onUserCountChange', { 
+
+        this.triggerCallbacks('onUserCountChange', {
             oldCount: currentCount,
             newCount: newCount,
             change: 1
         });
-        
+
         console.log(`📈 Nutzer beigetreten. Aktuelle Anzahl: ${newCount}`);
     }
-    
+
     /**
      * Verringert die Nutzeranzahl
      */
     decrementUserCount() {
         const currentCount = this.getUserCountFromStorage();
         const newCount = Math.max(0, currentCount - 1);
-        
+
         localStorage.setItem(this.storageKeys.userCount, newCount.toString());
         this.metrics.currentUsers = newCount;
-        
+
         // Callback auslösen
-        this.triggerCallbacks('onUserLeave', { 
+        this.triggerCallbacks('onUserLeave', {
             sessionId: this.session.id,
-            totalUsers: newCount 
+            totalUsers: newCount
         });
-        
-        this.triggerCallbacks('onUserCountChange', { 
+
+        this.triggerCallbacks('onUserCountChange', {
             oldCount: currentCount,
             newCount: newCount,
             change: -1
         });
-        
+
         console.log(`📉 Nutzer verlassen. Aktuelle Anzahl: ${newCount}`);
     }
-    
+
     /**
      * Aktualisiert die aktuelle Nutzeranzahl
      */
     updateCurrentUserCount() {
         const count = this.getUserCountFromStorage();
         this.metrics.currentUsers = count;
-        
+
         // Session als aktiv markieren
         localStorage.setItem(this.storageKeys.lastSeen, Date.now().toString());
     }
-    
+
     /**
      * Holt Nutzeranzahl aus Storage
      */
@@ -188,7 +188,7 @@ class UserCountDetector {
         const count = localStorage.getItem(this.storageKeys.userCount);
         return count ? parseInt(count, 10) : 1;
     }
-    
+
     /**
      * Startet den Heartbeat-Mechanismus
      */
@@ -197,17 +197,17 @@ class UserCountDetector {
             this.sendHeartbeat();
         }, this.intervals.heartbeat);
     }
-    
+
     /**
      * Sendet Heartbeat
      */
     sendHeartbeat() {
         const now = Date.now();
         this.session.lastHeartbeat = now;
-        
+
         // Letzte Aktivität aktualisieren
         localStorage.setItem(this.storageKeys.lastSeen, now.toString());
-        
+
         // Broadcast Message senden
         if (this.broadcastChannel) {
             this.broadcastChannel.postMessage({
@@ -217,7 +217,7 @@ class UserCountDetector {
             });
         }
     }
-    
+
     /**
      * Startet den Cleanup-Prozess
      */
@@ -226,24 +226,24 @@ class UserCountDetector {
             this.performCleanup();
         }, this.intervals.cleanup);
     }
-    
+
     /**
      * Führt Cleanup durch
      */
     performCleanup() {
         const now = Date.now();
         const timeout = 60000; // 1 Minute Timeout
-        
+
         // Alte Sessions entfernen
         const lastSeen = localStorage.getItem(this.storageKeys.lastSeen);
         if (lastSeen && (now - parseInt(lastSeen)) > timeout) {
             this.cleanupInactiveSessions();
         }
-        
+
         // Storage aufräumen
         this.cleanupStorage();
     }
-    
+
     /**
      * Räumt inaktive Sessions auf
      */
@@ -254,7 +254,7 @@ class UserCountDetector {
                 const session = JSON.parse(sessionData);
                 const now = Date.now();
                 const timeout = 300000; // 5 Minuten Timeout
-                
+
                 if ((now - session.startTime) > timeout) {
                     // Session ist abgelaufen
                     this.decrementUserCount();
@@ -266,7 +266,7 @@ class UserCountDetector {
             }
         }
     }
-    
+
     /**
      * Räumt Storage auf
      */
@@ -274,24 +274,24 @@ class UserCountDetector {
         const keys = Object.keys(localStorage);
         const now = Date.now();
         const maxAge = 86400000; // 24 Stunden
-        
+
         keys.forEach(key => {
             if (key.startsWith('shader_')) {
                 try {
                     const value = localStorage.getItem(key);
                     const data = JSON.parse(value);
-                    
+
                     if (data.timestamp && (now - data.timestamp) > maxAge) {
                         localStorage.removeItem(key);
                     }
-                } catch (error) {
+                } catch {
                     // Ungültige Daten entfernen
                     localStorage.removeItem(key);
                 }
             }
         });
     }
-    
+
     /**
      * Startet Analytics
      */
@@ -300,35 +300,35 @@ class UserCountDetector {
             this.updateAnalytics();
         }, this.intervals.analytics);
     }
-    
+
     /**
      * Aktualisiert Analytics-Daten
      */
     updateAnalytics() {
         // Durchschnittliche Session-Dauer berechnen
         this.calculateAverageSessionDuration();
-        
+
         // Nutzer-Verteilung analysieren
         this.analyzeUserDistribution();
-        
+
         // Analytics Event senden
         this.sendAnalyticsEvent();
     }
-    
+
     /**
      * Berechnet durchschnittliche Session-Dauer
      */
     calculateAverageSessionDuration() {
         const sessions = this.getSessionHistory();
         if (sessions.length === 0) return;
-        
+
         const totalDuration = sessions.reduce((sum, session) => {
             return sum + (session.endTime || Date.now()) - session.startTime;
         }, 0);
-        
+
         this.metrics.averageSessionDuration = totalDuration / sessions.length;
     }
-    
+
     /**
      * Analysiert Nutzer-Verteilung
      */
@@ -340,18 +340,18 @@ class UserCountDetector {
             large: 0,
             massive: 0
         };
-        
+
         const userCount = this.metrics.currentUsers;
-        
+
         if (userCount === 1) distribution.single = 1;
         else if (userCount <= 10) distribution.small = 1;
         else if (userCount <= 50) distribution.medium = 1;
         else if (userCount <= 100) distribution.large = 1;
         else distribution.massive = 1;
-        
+
         this.metrics.userDistribution = distribution;
     }
-    
+
     /**
      * Sendet Analytics Event
      */
@@ -366,7 +366,7 @@ class UserCountDetector {
             });
         }
     }
-    
+
     /**
      * Setup für Page Visibility API
      */
@@ -382,26 +382,26 @@ class UserCountDetector {
                 this.sendHeartbeat();
             }
         });
-        
+
         // Page Unload behandeln
         window.addEventListener('beforeunload', () => {
             this.cleanup();
         });
     }
-    
+
     /**
      * Setup für Broadcast Channel
      */
     setupBroadcastChannel() {
         if ('BroadcastChannel' in window) {
             this.broadcastChannel = new BroadcastChannel('shader_animations');
-            
+
             this.broadcastChannel.addEventListener('message', (event) => {
                 this.handleBroadcastMessage(event.data);
             });
         }
     }
-    
+
     /**
      * Behandelt Broadcast Messages
      */
@@ -409,37 +409,37 @@ class UserCountDetector {
         if (data.sessionId === this.session.id) {
             return; // Eigene Nachrichten ignorieren
         }
-        
+
         switch (data.type) {
             case 'heartbeat':
                 // Andere Nutzer sind aktiv
                 this.updateCurrentUserCount();
                 break;
-                
+
             case 'user_join':
                 this.incrementUserCount();
                 break;
-                
+
             case 'user_leave':
                 this.decrementUserCount();
                 break;
-                
+
             case 'quality_change':
                 // Qualitätsänderung von anderen Nutzern
                 this.handleQualityChange(data);
                 break;
         }
     }
-    
+
     /**
      * Setup für Service Worker
      */
     setupServiceWorker() {
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/service-worker.js')
-                .then(registration => {
+                .then(() => {
                     console.log('Service Worker registriert');
-                    
+
                     // Message Handler einrichten
                     navigator.serviceWorker.addEventListener('message', (event) => {
                         this.handleServiceWorkerMessage(event.data);
@@ -450,7 +450,7 @@ class UserCountDetector {
                 });
         }
     }
-    
+
     /**
      * Behandelt Service Worker Messages
      */
@@ -465,7 +465,7 @@ class UserCountDetector {
                 break;
         }
     }
-    
+
     /**
      * Behandelt Qualitätsänderungen
      */
@@ -475,14 +475,14 @@ class UserCountDetector {
             window.EnhancedAdaptiveQuality.handleExternalQualityChange(data);
         }
     }
-    
+
     /**
      * Generiert eindeutige Session-ID
      */
     generateSessionId() {
         return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
-    
+
     /**
      * Holt Session-Historie
      */
@@ -490,7 +490,7 @@ class UserCountDetector {
         const history = localStorage.getItem('shader_session_history');
         return history ? JSON.parse(history) : [];
     }
-    
+
     /**
      * Registriert Callback
      */
@@ -499,7 +499,7 @@ class UserCountDetector {
             this.callbacks[eventType].push(callback);
         }
     }
-    
+
     /**
      * Entfernt Callback
      */
@@ -511,7 +511,7 @@ class UserCountDetector {
             }
         }
     }
-    
+
     /**
      * Löst Callbacks aus
      */
@@ -524,21 +524,21 @@ class UserCountDetector {
             }
         });
     }
-    
+
     /**
      * Gibt aktuelle Nutzeranzahl zurück
      */
     getCurrentUserCount() {
         return this.metrics.currentUsers;
     }
-    
+
     /**
      * Gibt Peak-Nutzeranzahl zurück
      */
     getPeakUserCount() {
         return this.metrics.peakUsers;
     }
-    
+
     /**
      * Gibt alle Metriken zurück
      */
@@ -549,44 +549,44 @@ class UserCountDetector {
             methods: this.methods
         };
     }
-    
+
     /**
      * Simuliert Nutzer-Beitritt (für Testing)
      */
     simulateUserJoin() {
         this.incrementUserCount();
     }
-    
+
     /**
      * Simuliert Nutzer-Austritt (für Testing)
      */
     simulateUserLeave() {
         this.decrementUserCount();
     }
-    
+
     /**
      * Cleanup bei Session-Ende
      */
     cleanup() {
         console.log('🧹 User Count Cleanup gestartet');
-        
+
         // Intervalle stoppen
         clearInterval(this.heartbeatInterval);
         clearInterval(this.cleanupInterval);
         clearInterval(this.analyticsInterval);
-        
+
         // Nutzeranzahl reduzieren
         this.decrementUserCount();
-        
+
         // Session-Daten speichern
         this.saveSessionData();
-        
+
         // Broadcast Channel schließen
         if (this.broadcastChannel) {
             this.broadcastChannel.close();
         }
     }
-    
+
     /**
      * Speichert Session-Daten
      */
@@ -598,19 +598,19 @@ class UserCountDetector {
             duration: Date.now() - this.session.startTime,
             userAgent: navigator.userAgent
         };
-        
+
         // Zur Historie hinzufügen
         const history = this.getSessionHistory();
         history.push(sessionData);
-        
+
         // Nur letzte 100 Sessions speichern
         if (history.length > 100) {
             history.shift();
         }
-        
+
         localStorage.setItem('shader_session_history', JSON.stringify(history));
     }
-    
+
     /**
      * Generiert User Count Report
      */
@@ -622,13 +622,13 @@ class UserCountDetector {
             recommendations: this.generateRecommendations()
         };
     }
-    
+
     /**
      * Generiert Empfehlungen
      */
     generateRecommendations() {
         const recommendations = [];
-        
+
         if (this.metrics.currentUsers > 100) {
             recommendations.push({
                 type: 'performance',
@@ -637,7 +637,7 @@ class UserCountDetector {
                 action: 'monitor_performance'
             });
         }
-        
+
         if (this.metrics.averageSessionDuration < 30000) {
             recommendations.push({
                 type: 'engagement',
@@ -646,15 +646,10 @@ class UserCountDetector {
                 action: 'improve_engagement'
             });
         }
-        
+
         return recommendations;
     }
 }
 
 // Globale Instanz erstellen
 window.UserCountDetector = new UserCountDetector();
-
-// Export für Module
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = UserCountDetector;
-}

@@ -3,6 +3,8 @@
  * Erzeugt eine Wellenanimation, die den Ozean darstellt
  */
 
+import { AdaptiveQuality } from './adaptive-quality.js';
+
 export class WaterWaves {
     constructor(canvasOrId) {
         // Canvas einrichten
@@ -435,22 +437,3 @@ export class WaterWaves {
     }
 }
 
-// Funktion zum Initialisieren der Animation
-function initWaterWaves(canvasId) {
-    return new WaterWaves(canvasId);
-}
-
-// Automatische Initialisierung bei DOM-Bereitschaft
-document.addEventListener('DOMContentLoaded', function () {
-    const canvas = document.getElementById('water-waves-canvas');
-    if (canvas) {
-        console.log('Water waves canvas found, initializing animation...');
-        try {
-            window.waterWavesAnimation = initWaterWaves('water-waves-canvas');
-        } catch (e) {
-            console.error('Error initializing water waves animation:', e);
-        }
-    } else {
-        console.error('Water waves canvas element not found');
-    }
-});

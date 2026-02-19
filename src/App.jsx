@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SearchFilterBar } from './components/SearchFilterBar';
 import { EmbedModal } from './components/EmbedModal';
@@ -16,7 +16,7 @@ function App() {
         setSelectedDifficulty,
         totalCount,
         filteredCount,
-        onRandom
+
     } = useAnimations();
 
     const [selectedAnimation, setSelectedAnimation] = useState(null);

@@ -57,7 +57,7 @@ class ProgressiveLoader {
                 loading: false
             }
         };
-        
+
         // Loading-Zustände
         this.loadingStates = {
             idle: 'idle',
@@ -65,12 +65,12 @@ class ProgressiveLoader {
             loaded: 'loaded',
             error: 'error'
         };
-        
+
         // Loading-Queue
         this.loadingQueue = [];
         this.loadingBatchSize = 2; // Gleichzeitig laden
         this.currentLoading = new Set();
-        
+
         // Performance-Metriken
         this.metrics = {
             totalAnimations: 0,
@@ -78,7 +78,7 @@ class ProgressiveLoader {
             loadingTime: 0,
             errorCount: 0
         };
-        
+
         // Callbacks
         this.callbacks = {
             onProgress: [],
@@ -86,49 +86,49 @@ class ProgressiveLoader {
             onError: [],
             onCategoryLoaded: []
         };
-        
+
         // Intersection Observer für Lazy Loading
         this.intersectionObserver = null;
         this.setupIntersectionObserver();
-        
+
         // Initiales Loading starten
         this.initializeProgressiveLoading();
     }
-    
+
     /**
      * Initialisiert das progressive Loading
      */
     initializeProgressiveLoading() {
         console.log('🚀 Progressive Loader initialisiert');
-        
+
         // 1. Zufällige Animation pro Kategorie laden
         this.loadRandomAnimationsPerCategory();
-        
+
         // 2. Viewport-basiertes Loading starten
         this.startViewportBasedLoading();
-        
+
         // 3. Performance-basiertes Loading starten
         this.startPerformanceBasedLoading();
     }
-    
+
     /**
      * Lädt zufällige Animationen pro Kategorie
      */
     async loadRandomAnimationsPerCategory() {
         console.log('🎲 Lade zufällige Animationen pro Kategorie');
-        
+
         const loadPromises = [];
-        
+
         Object.entries(this.categories).forEach(([categoryKey, category]) => {
             const randomAnimation = category.animations[
                 Math.floor(Math.random() * category.animations.length)
             ];
-            
+
             loadPromises.push(
                 this.loadAnimation(categoryKey, randomAnimation, 'initial')
             );
         });
-        
+
         try {
             await Promise.all(loadPromises);
             console.log('✅ Initiale Animationen geladen');
@@ -136,51 +136,51 @@ class ProgressiveLoader {
             console.error('❌ Fehler beim Laden der initialen Animationen:', error);
         }
     }
-    
+
     /**
      * Lädt eine einzelne Animation
      */
     async loadAnimation(category, animationName, loadType = 'user') {
         const cacheKey = `${category}-${animationName}`;
-        
+
         // Prüfen ob bereits geladen
         if (this.categories[category].loaded.has(animationName)) {
             return this.getAnimationElement(animationName);
         }
-        
+
         // Prüfen ob aktuell am Laden
         if (this.currentLoading.has(cacheKey)) {
             return this.waitForLoading(cacheKey);
         }
-        
+
         console.log(`📥 Lade Animation: ${animationName} (${category})`);
-        
+
         this.currentLoading.add(cacheKey);
         this.categories[category].loading = true;
-        
+
         const startTime = performance.now();
-        
+
         try {
             // 1. JavaScript-Datei laden
             await this.loadAnimationScript(animationName);
-            
+
             // 2. Animation-Element erstellen
             const animationElement = await this.createAnimationElement(
                 category, animationName, loadType
             );
-            
+
             // 3. In DOM einfügen
             this.insertAnimationIntoDOM(animationElement, category);
-            
+
             // 4. Als geladen markieren
             this.categories[category].loaded.add(animationName);
             this.categories[category].loading = false;
             this.currentLoading.delete(cacheKey);
-            
+
             // 5. Metriken aktualisieren
             const loadTime = performance.now() - startTime;
             this.updateMetrics(animationName, loadTime, true);
-            
+
             // 6. Callbacks auslösen
             this.triggerCallbacks('onProgress', {
                 category,
@@ -188,35 +188,35 @@ class ProgressiveLoader {
                 loadType,
                 loadTime
             });
-            
+
             this.triggerCallbacks('onCategoryLoaded', {
                 category,
                 animation: animationName,
                 totalLoaded: this.categories[category].loaded.size,
                 totalInCategory: this.categories[category].animations.length
             });
-            
+
             console.log(`✅ Animation geladen: ${animationName} (${loadTime.toFixed(2)}ms)`);
-            
+
             return animationElement;
-            
+
         } catch (error) {
             console.error(`❌ Fehler beim Laden von ${animationName}:`, error);
-            
+
             this.categories[category].loading = false;
             this.currentLoading.delete(cacheKey);
             this.updateMetrics(animationName, 0, false);
-            
+
             this.triggerCallbacks('onError', {
                 category,
                 animation: animationName,
                 error
             });
-            
+
             throw error;
         }
     }
-    
+
     /**
      * Lädt Animation-Script
      */
@@ -227,19 +227,19 @@ class ProgressiveLoader {
                 resolve();
                 return;
             }
-            
+
             const script = document.createElement('script');
             script.src = `${animationName}.js`;
             script.dataset.animation = animationName;
             script.async = true;
-            
+
             script.onload = () => resolve();
             script.onerror = () => reject(new Error(`Script nicht gefunden: ${animationName}.js`));
-            
+
             document.head.appendChild(script);
         });
     }
-    
+
     /**
      * Erstellt Animation-Element
      */
@@ -249,7 +249,7 @@ class ProgressiveLoader {
         section.dataset.category = category;
         section.dataset.animation = animationName;
         section.dataset.loadType = loadType;
-        
+
         // Header
         const header = document.createElement('div');
         header.className = 'animation-header';
@@ -264,18 +264,18 @@ class ProgressiveLoader {
                 </button>
             </div>
         `;
-        
+
         // Canvas Wrapper
         const canvasWrapper = document.createElement('div');
         canvasWrapper.className = 'canvas-wrapper collapsed';
-        
+
         const canvas = document.createElement('canvas');
         canvas.id = `${animationName}-canvas`;
         canvas.width = 800;
         canvas.height = 400;
-        
+
         canvasWrapper.appendChild(canvas);
-        
+
         // Loading Skeleton
         const skeleton = document.createElement('div');
         skeleton.className = 'loading-skeleton';
@@ -283,25 +283,25 @@ class ProgressiveLoader {
             <div class="skeleton-shimmer"></div>
             <div class="skeleton-text">Lade Animation...</div>
         `;
-        
+
         canvasWrapper.appendChild(skeleton);
-        
+
         // Controls Panel
         const controls = document.createElement('div');
         controls.className = 'controls collapsed';
         controls.innerHTML = this.generateControlsHTML(animationName);
-        
+
         // Zusammenbauen
         section.appendChild(header);
         section.appendChild(canvasWrapper);
         section.appendChild(controls);
-        
+
         // Event Listener hinzufügen
         this.setupAnimationEventListeners(section);
-        
+
         return section;
     }
-    
+
     /**
      * Fügt Animation in DOM ein
      */
@@ -314,7 +314,7 @@ class ProgressiveLoader {
             document.querySelector('main').appendChild(animationElement);
         }
     }
-    
+
     /**
      * Setup für Intersection Observer
      */
@@ -334,7 +334,7 @@ class ProgressiveLoader {
             }
         );
     }
-    
+
     /**
      * Startet viewport-basiertes Loading
      */
@@ -347,12 +347,12 @@ class ProgressiveLoader {
                         const element = entry.target;
                         const category = element.dataset.category;
                         const animation = element.dataset.animation;
-                        
+
                         // Animation laden falls noch nicht geschehen
                         if (!this.categories[category].loaded.has(animation)) {
                             this.loadAnimation(category, animation, 'viewport');
                         }
-                        
+
                         // Observer für dieses Element stoppen
                         observer.unobserve(element);
                     }
@@ -360,13 +360,13 @@ class ProgressiveLoader {
             },
             { rootMargin: '100px' }
         );
-        
+
         // Placeholder-Elemente beobachten
         document.querySelectorAll('.animation-placeholder').forEach(placeholder => {
             observer.observe(placeholder);
         });
     }
-    
+
     /**
      * Startet performance-basiertes Loading
      */
@@ -375,15 +375,15 @@ class ProgressiveLoader {
             this.adjustLoadingBasedOnPerformance();
         }, 5000); // Alle 5 Sekunden prüfen
     }
-    
+
     /**
      * Passt Loading an Performance an
      */
     adjustLoadingBasedOnPerformance() {
         if (!window.PerformanceMonitor) return;
-        
+
         const metrics = window.PerformanceMonitor.getMetrics();
-        
+
         // Bei niedriger Performance Loading verlangsamen
         if (metrics.fps < 30) {
             this.loadingBatchSize = 1;
@@ -392,55 +392,55 @@ class ProgressiveLoader {
         } else {
             this.loadingBatchSize = 3;
         }
-        
+
         // Loading Queue verarbeiten
         this.processLoadingQueue();
     }
-    
+
     /**
      * Verarbeitet Loading Queue
      */
     async processLoadingQueue() {
         if (this.loadingQueue.length === 0) return;
-        
+
         const batch = this.loadingQueue.splice(0, this.loadingBatchSize);
-        const loadPromises = batch.map(item => 
+        const loadPromises = batch.map(item =>
             this.loadAnimation(item.category, item.animation, 'queue')
         );
-        
+
         try {
             await Promise.all(loadPromises);
         } catch (error) {
             console.error('Fehler bei Batch-Loading:', error);
         }
     }
-    
+
     /**
      * Behandelt Animation im Viewport
      */
     handleAnimationInView(element) {
         const category = element.dataset.category;
         const animation = element.dataset.animation;
-        
+
         // Animation initialisieren falls noch nicht geschehen
         if (!element.dataset.initialized) {
             this.initializeAnimation(element, category, animation);
             element.dataset.initialized = 'true';
         }
     }
-    
+
     /**
      * Initialisiert eine Animation
      */
     initializeAnimation(element, category, animation) {
         const canvas = element.querySelector('canvas');
         const skeleton = element.querySelector('.loading-skeleton');
-        
+
         // Skeleton entfernen
         if (skeleton) {
             skeleton.remove();
         }
-        
+
         // Animation starten
         try {
             // Globale Initialisierungsfunktion aufrufen
@@ -449,7 +449,7 @@ class ProgressiveLoader {
                 initFunction(canvas.id);
                 element.classList.remove('loading');
                 element.classList.add('loaded');
-                
+
                 console.log(`🎬 Animation gestartet: ${animation}`);
             }
         } catch (error) {
@@ -457,7 +457,7 @@ class ProgressiveLoader {
             element.classList.add('error');
         }
     }
-    
+
     /**
      * Gibt Initialisierungsfunktion zurück
      */
@@ -469,39 +469,38 @@ class ProgressiveLoader {
             'water-waves': window.initWaterWaves,
             'aurora': window.initAurora
         };
-        
+
         return functionMap[animationName];
     }
-    
+
     /**
      * Setup für Animation Event Listener
      */
     setupAnimationEventListeners(element) {
         const playBtn = element.querySelector('.play-btn');
         const expandBtn = element.querySelector('.expand-btn');
-        const canvasWrapper = element.querySelector('.canvas-wrapper');
-        const controls = element.querySelector('.controls');
-        
+
+
         // Play/Pause Button
         if (playBtn) {
             playBtn.addEventListener('click', () => {
                 this.toggleAnimation(element);
             });
         }
-        
+
         // Expand/Collapse Button
         if (expandBtn) {
             expandBtn.addEventListener('click', () => {
                 this.toggleAnimationExpansion(element);
             });
         }
-        
+
         // Intersection Observer für Lazy Loading
         if (this.intersectionObserver) {
             this.intersectionObserver.observe(element);
         }
     }
-    
+
     /**
      * Schaltet Animation ein/aus
      */
@@ -509,12 +508,12 @@ class ProgressiveLoader {
         const isPlaying = element.dataset.playing === 'true';
         const playBtn = element.querySelector('.play-btn');
         const canvas = element.querySelector('canvas');
-        
+
         if (isPlaying) {
             // Animation pausieren
             element.dataset.playing = 'false';
             playBtn.innerHTML = '<span class="icon">▶</span>';
-            
+
             // Canvas leeren
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -522,7 +521,7 @@ class ProgressiveLoader {
             // Animation starten
             element.dataset.playing = 'true';
             playBtn.innerHTML = '<span class="icon">⏸</span>';
-            
+
             // Animation initialisieren falls nötig
             if (!element.dataset.initialized) {
                 const category = element.dataset.category;
@@ -531,7 +530,7 @@ class ProgressiveLoader {
             }
         }
     }
-    
+
     /**
      * Schaltet Animation-Erweiterung ein/aus
      */
@@ -540,7 +539,7 @@ class ProgressiveLoader {
         const controls = element.querySelector('.controls');
         const expandBtn = element.querySelector('.expand-btn');
         const isExpanded = canvasWrapper.classList.contains('expanded');
-        
+
         if (isExpanded) {
             // Einklappen
             canvasWrapper.classList.remove('expanded');
@@ -557,7 +556,7 @@ class ProgressiveLoader {
             controls.classList.add('expanded');
             expandBtn.innerHTML = '<span class="icon">⛶</span>';
             element.classList.add('expanded');
-            
+
             // Animation initialisieren falls nötig
             if (!element.dataset.initialized) {
                 const category = element.dataset.category;
@@ -566,13 +565,13 @@ class ProgressiveLoader {
             }
         }
     }
-    
+
     /**
      * Generiert Controls HTML
      */
     generateControlsHTML(animationName) {
         const controls = this.getAnimationControls(animationName);
-        
+
         return controls.map(control => `
             <div class="control-group">
                 <label for="${control.id}">${control.label}</label>
@@ -588,7 +587,7 @@ class ProgressiveLoader {
         <button class="copy-code-btn" data-animation="${animationName}">Code kopieren</button>
         `;
     }
-    
+
     /**
      * Gibt Animation-Controls zurück
      */
@@ -620,10 +619,10 @@ class ProgressiveLoader {
                 { id: 'aurora-color', label: 'Farbe', type: 'color', min: null, max: null, value: '#00ff88' }
             ]
         };
-        
+
         return controlMap[animationName] || [];
     }
-    
+
     /**
      * Gibt Display-Name für Animation zurück
      */
@@ -650,10 +649,10 @@ class ProgressiveLoader {
             'smoke-mirrors': 'Rauch & Spiegel',
             'chromatic-aberration': 'Chromatische Aberration'
         };
-        
+
         return nameMap[animationName] || animationName;
     }
-    
+
     /**
      * Wartet auf Loading-Vervollständigung
      */
@@ -669,13 +668,13 @@ class ProgressiveLoader {
             checkLoading();
         });
     }
-    
+
     /**
      * Aktualisiert Metriken
      */
     updateMetrics(animationName, loadTime, success) {
         this.metrics.totalAnimations++;
-        
+
         if (success) {
             this.metrics.loadedAnimations++;
             this.metrics.loadingTime += loadTime;
@@ -683,7 +682,7 @@ class ProgressiveLoader {
             this.metrics.errorCount++;
         }
     }
-    
+
     /**
      * Löst Callbacks aus
      */
@@ -696,7 +695,7 @@ class ProgressiveLoader {
             }
         });
     }
-    
+
     /**
      * Registriert Callback
      */
@@ -705,7 +704,7 @@ class ProgressiveLoader {
             this.callbacks[eventType].push(callback);
         }
     }
-    
+
     /**
      * Entfernt Callback
      */
@@ -717,13 +716,13 @@ class ProgressiveLoader {
             }
         }
     }
-    
+
     /**
      * Gibt Lade-Status zurück
      */
     getLoadingStatus() {
         const status = {};
-        
+
         Object.entries(this.categories).forEach(([key, category]) => {
             status[key] = {
                 name: category.name,
@@ -734,25 +733,25 @@ class ProgressiveLoader {
                 progress: (category.loaded.size / category.animations.length) * 100
             };
         });
-        
+
         return {
             categories: status,
             overall: {
                 total: this.metrics.totalAnimations,
                 loaded: this.metrics.loadedAnimations,
                 errors: this.metrics.errorCount,
-                averageLoadTime: this.metrics.loadedAnimations > 0 ? 
+                averageLoadTime: this.metrics.loadedAnimations > 0 ?
                     this.metrics.loadingTime / this.metrics.loadedAnimations : 0
             }
         };
     }
-    
+
     /**
      * Generiert Loading Report
      */
     generateReport() {
         const status = this.getLoadingStatus();
-        
+
         return {
             timestamp: new Date().toISOString(),
             status: status,
@@ -764,14 +763,14 @@ class ProgressiveLoader {
             }
         };
     }
-    
+
     /**
      * Generiert Empfehlungen
      */
     generateRecommendations(status) {
         const recommendations = [];
-        
-        Object.entries(status.categories).forEach(([key, category]) => {
+
+        Object.values(status.categories).forEach((category) => {
             if (category.progress < 50) {
                 recommendations.push({
                     type: 'loading',
@@ -782,7 +781,7 @@ class ProgressiveLoader {
                 });
             }
         });
-        
+
         if (status.overall.errors > 0) {
             recommendations.push({
                 type: 'errors',
@@ -791,15 +790,10 @@ class ProgressiveLoader {
                 action: 'check_console'
             });
         }
-        
+
         return recommendations;
     }
 }
 
 // Globale Instanz erstellen
 window.ProgressiveLoader = new ProgressiveLoader();
-
-// Export für Module
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = ProgressiveLoader;
-}

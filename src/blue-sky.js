@@ -3,6 +3,8 @@
  * Erzeugt eine Wolkenanimation, die den Himmel darstellt
  */
 
+import { AdaptiveQuality } from './adaptive-quality.js';
+
 export class BlueSky {
     constructor(canvasOrId) {
         // Canvas einrichten
@@ -292,23 +294,3 @@ export class BlueSky {
         }
     }
 }
-
-// Funktion zum Initialisieren der Animation
-function initBlueSky(canvasId) {
-    return new BlueSky(canvasId);
-}
-
-// Automatische Initialisierung bei DOM-Bereitschaft
-document.addEventListener('DOMContentLoaded', function () {
-    const canvas = document.getElementById('blue-sky-canvas');
-    if (canvas) {
-        console.log('Blue sky canvas found, initializing animation...');
-        try {
-            window.blueSkyAnimation = initBlueSky('blue-sky-canvas');
-        } catch (e) {
-            console.error('Error initializing blue sky animation:', e);
-        }
-    } else {
-        console.error('Blue sky canvas element not found');
-    }
-});
