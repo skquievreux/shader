@@ -157,9 +157,21 @@ export class EnergyField {
         if (colorPicker) {
             colorPicker.addEventListener('input', () => {
                 this.baseColor = colorPicker.value;
+                this.updateColor();
             });
         }
     }
+
+    updateParticles() {
+        if (this.particles) {
+            this.init();
+        }
+    }
+
+    updateColor() {
+        // Color is used directly in draw, no specific update needed other than property set
+    }
+
 
     // Gradient-Caching für Performance
     getCachedGradient(type, x1, y1, x2, y2, colors) {

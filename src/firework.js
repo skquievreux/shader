@@ -167,9 +167,23 @@ export class Firework {
         if (colorPicker) {
             colorPicker.addEventListener('input', () => {
                 this.baseColor = colorPicker.value;
+                this.updateColor();
             });
         }
     }
+
+    updateFrequency() {
+        // Logic dependent on frequency is handled in animate loop
+    }
+
+    updateParticles() {
+        // Particle size affects new fireworks
+    }
+
+    updateColor() {
+        // Affects new fireworks
+    }
+
 
     // Rakete an zufälliger Position starten
     createRandomRocket() {

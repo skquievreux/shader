@@ -1,6 +1,12 @@
 import { AnimationCard } from '../AnimationCard';
 import { Kaleidoscope } from '../../kaleidoscope';
 
-export function KaleidoscopeWrapper() {
-    return <AnimationCard animationClass={Kaleidoscope} canvasId="kaleidoscope-canvas" />;
+export function KaleidoscopeWrapper({ config, canvasId = "kaleidoscope-canvas" }) {
+    return (
+        <AnimationCard
+            animationClass={Kaleidoscope}
+            canvasId={canvasId}
+            config={config}
+        />
+    );
 }

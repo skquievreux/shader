@@ -6,7 +6,12 @@ export const ANIMATION_REGISTRY = {
         thumbnail: 'thumbnails/energy-field.png',
         component: 'EnergyFieldWrapper',
         tags: ['particles', 'interactive', 'energy', 'colorful'],
-        difficulty: 'beginner'
+        difficulty: 'beginner',
+        controls: [
+            { id: 'particles', type: 'range', label: 'Anzahl Partikel', min: 50, max: 500, defaultValue: 200 },
+            { id: 'speed', type: 'range', label: 'Geschwindigkeit', min: 1, max: 10, defaultValue: 5 },
+            { id: 'color', type: 'color', label: 'Farbe', defaultValue: '#ff6b6b' }
+        ]
     },
     'blue-sky': {
         name: 'Blauer Himmel',
@@ -15,7 +20,12 @@ export const ANIMATION_REGISTRY = {
         thumbnail: 'thumbnails/blue-sky.png',
         component: 'BlueSkyWrapper',
         tags: ['nature', 'clouds', 'relaxing', 'weather'],
-        difficulty: 'beginner'
+        difficulty: 'beginner',
+        controls: [
+            { id: 'clouds', type: 'range', label: 'Wolkendichte', min: 5, max: 30, defaultValue: 15 },
+            { id: 'speed', type: 'range', label: 'Windgeschwindigkeit', min: 1, max: 10, defaultValue: 3 },
+            { id: 'color', type: 'color', label: 'Himmelsfarbe', defaultValue: '#4dabf7' }
+        ]
     },
     'firework': {
         name: 'Feuerwerk',
@@ -24,7 +34,12 @@ export const ANIMATION_REGISTRY = {
         thumbnail: 'thumbnails/firework.png',
         component: 'FireworkWrapper',
         tags: ['particles', 'explosions', 'celebration', 'colorful'],
-        difficulty: 'beginner'
+        difficulty: 'beginner',
+        controls: [
+            { id: 'frequency', type: 'range', label: 'Häufigkeit', min: 1, max: 10, defaultValue: 5 },
+            { id: 'particles', type: 'range', label: 'Partikelgröße', min: 20, max: 200, defaultValue: 100 },
+            { id: 'color', type: 'color', label: 'Grundfarbe', defaultValue: '#cc5de8' }
+        ]
     },
     'water-waves': {
         name: 'Wasserwellen',
@@ -33,7 +48,12 @@ export const ANIMATION_REGISTRY = {
         thumbnail: 'thumbnails/water-waves.png',
         component: 'WaterWavesWrapper',
         tags: ['nature', 'water', 'waves', 'relaxing'],
-        difficulty: 'beginner'
+        difficulty: 'beginner',
+        controls: [
+            { id: 'height', type: 'range', label: 'Wellenhöhe', min: 1, max: 50, defaultValue: 20 },
+            { id: 'speed', type: 'range', label: 'Geschwindigkeit', min: 1, max: 10, defaultValue: 3 },
+            { id: 'color', type: 'color', label: 'Wasserfarbe', defaultValue: '#15aabf' }
+        ]
     },
     'aurora': {
         name: 'Aurora Borealis',
@@ -42,7 +62,12 @@ export const ANIMATION_REGISTRY = {
         thumbnail: 'thumbnails/aurora.png',
         component: 'AuroraWrapper',
         tags: ['nature', 'aurora', 'northern-lights', 'atmospheric'],
-        difficulty: 'intermediate'
+        difficulty: 'intermediate',
+        controls: [
+            { id: 'intensity', type: 'range', label: 'Intensität', min: 1, max: 10, defaultValue: 5 },
+            { id: 'speed', type: 'range', label: 'Geschwindigkeit', min: 1, max: 10, defaultValue: 3 },
+            { id: 'baseColor', type: 'color', label: 'Grundfarbe', defaultValue: '#00ff88' }
+        ]
     },
     'chakra-animation': {
         name: 'Chakra Animation',
@@ -51,7 +76,11 @@ export const ANIMATION_REGISTRY = {
         thumbnail: 'thumbnails/chakra-animation.png',
         component: 'ChakraAnimationWrapper',
         tags: ['geometric', 'spiritual', 'meditation', 'symbols'],
-        difficulty: 'beginner'
+        difficulty: 'beginner',
+        controls: [
+            { id: 'rotationSpeed', type: 'range', label: 'Rotationsgeschwindigkeit', min: 1, max: 20, defaultValue: 5 },
+            { id: 'scale', type: 'range', label: 'Größe', min: 0.5, max: 2, step: 0.1, defaultValue: 1 }
+        ]
     },
     'star-field': {
         name: 'Star Field',
@@ -60,7 +89,11 @@ export const ANIMATION_REGISTRY = {
         thumbnail: 'thumbnails/star-field.png',
         component: 'StarFieldWrapper',
         tags: ['cosmic', 'stars', 'parallax', 'meteors', 'space'],
-        difficulty: 'intermediate'
+        difficulty: 'intermediate',
+        controls: [
+            { id: 'speed', type: 'range', label: 'Geschwindigkeit', min: 1, max: 20, defaultValue: 5 },
+            { id: 'starCount', type: 'range', label: 'Anzahl Sterne', min: 100, max: 2000, defaultValue: 800 }
+        ]
     },
     'rain': {
         name: 'Rain',
@@ -69,7 +102,12 @@ export const ANIMATION_REGISTRY = {
         thumbnail: 'thumbnails/rain.png',
         component: 'RainWrapper',
         tags: ['weather', 'rain', 'splashes', 'puddles', 'realistic'],
-        difficulty: 'intermediate'
+        difficulty: 'intermediate',
+        controls: [
+            { id: 'intensity', type: 'range', label: 'Intensität', min: 1, max: 50, defaultValue: 20 },
+            { id: 'wind', type: 'range', label: 'Wind', min: -10, max: 10, defaultValue: 0 },
+            { id: 'speed', type: 'range', label: 'Fallgeschwindigkeit', min: 5, max: 30, defaultValue: 15 }
+        ]
     },
     'lightning': {
         name: 'Lightning',
@@ -78,7 +116,11 @@ export const ANIMATION_REGISTRY = {
         thumbnail: 'thumbnails/lightning.png',
         component: 'LightningWrapper',
         tags: ['weather', 'lightning', 'thunder', 'storms', 'dramatic'],
-        difficulty: 'advanced'
+        difficulty: 'advanced',
+        controls: [
+            { id: 'frequency', type: 'range', label: 'Gewitter-Häufigkeit', min: 1, max: 10, defaultValue: 2 },
+            { id: 'intensity', type: 'range', label: 'Blitz-Intensität', min: 1, max: 5, defaultValue: 3 }
+        ]
     },
     'smoke': {
         name: 'Smoke',
@@ -87,7 +129,11 @@ export const ANIMATION_REGISTRY = {
         thumbnail: 'thumbnails/smoke.png',
         component: 'SmokeWrapper',
         tags: ['particles', 'smoke', 'turbulence', 'wind', 'realistic'],
-        difficulty: 'advanced'
+        difficulty: 'advanced',
+        controls: [
+            { id: 'density', type: 'range', label: 'Dichte', min: 1, max: 20, defaultValue: 5 },
+            { id: 'wind', type: 'range', label: 'Wind', min: -5, max: 5, defaultValue: 1 }
+        ]
     },
     'fractal-tree': {
         name: 'Fractal Tree',
@@ -96,7 +142,11 @@ export const ANIMATION_REGISTRY = {
         thumbnail: 'thumbnails/fractal-tree.png',
         component: 'FractalTreeWrapper',
         tags: ['organic', 'fractal', 'tree', 'growth', 'nature'],
-        difficulty: 'advanced'
+        difficulty: 'advanced',
+        controls: [
+            { id: 'angle', type: 'range', label: 'Verzweigungswinkel', min: 10, max: 90, defaultValue: 25 },
+            { id: 'depth', type: 'range', label: 'Tiefe', min: 5, max: 12, defaultValue: 10 }
+        ]
     },
     'kaleidoscope': {
         name: 'Kaleidoscope',
@@ -105,7 +155,11 @@ export const ANIMATION_REGISTRY = {
         thumbnail: 'thumbnails/kaleidoscope.png',
         component: 'KaleidoscopeWrapper',
         tags: ['geometric', 'symmetry', 'patterns', 'interactive', 'colorful'],
-        difficulty: 'intermediate'
+        difficulty: 'intermediate',
+        controls: [
+            { id: 'segments', type: 'range', label: 'Segmente', min: 4, max: 24, defaultValue: 12 },
+            { id: 'rotationSpeed', type: 'range', label: 'Rotation', min: 0, max: 10, defaultValue: 2 }
+        ]
     },
     'plasma': {
         name: 'Plasma',
@@ -114,7 +168,11 @@ export const ANIMATION_REGISTRY = {
         thumbnail: 'thumbnails/plasma.png',
         component: 'PlasmaWrapper',
         tags: ['abstract', 'plasma', 'energy', 'mathematical', 'colorful'],
-        difficulty: 'advanced'
+        difficulty: 'advanced',
+        controls: [
+            { id: 'scale', type: 'range', label: 'Zoom', min: 10, max: 100, defaultValue: 40 },
+            { id: 'speed', type: 'range', label: 'Geschwindigkeit', min: 1, max: 10, defaultValue: 2 }
+        ]
     },
     'matrix-rain': {
         name: 'Matrix Rain',
@@ -123,7 +181,12 @@ export const ANIMATION_REGISTRY = {
         thumbnail: 'thumbnails/matrix-rain.png',
         component: 'MatrixRainWrapper',
         tags: ['abstract', 'matrix', 'cyberpunk', 'digital', 'text'],
-        difficulty: 'intermediate'
+        difficulty: 'intermediate',
+        controls: [
+            { id: 'density', type: 'range', label: 'Dichte', min: 10, max: 50, defaultValue: 20 },
+            { id: 'speed', type: 'range', label: 'Fallgeschwindigkeit', min: 1, max: 10, defaultValue: 5 },
+            { id: 'color', type: 'color', label: 'Matrix Farbe', defaultValue: '#00ff00' }
+        ]
     }
 };
 
@@ -179,3 +242,4 @@ export const DIFFICULTY_LEVELS = {
         color: '#e74c3c'
     }
 };
+
