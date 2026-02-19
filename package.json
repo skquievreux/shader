@@ -13,7 +13,8 @@
     "version:minor": "npm version minor",
     "version:major": "npm version major",
     "release": "npm version patch && git push && git push --tags",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "verify": "npm run lint"
   },
   "keywords": [
     "canvas",
