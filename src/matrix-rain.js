@@ -3,18 +3,22 @@
  * Erzeugt cyberpunk-ähnliche digitale Regeneffekte mit Zeichenfällen
  */
 
-class MatrixRain {
-    constructor(canvasId) {
+export class MatrixRain {
+    constructor(canvasOrId) {
         // Canvas einrichten
-        this.canvas = document.getElementById(canvasId);
+        if (typeof canvasOrId === 'string') {
+            this.canvas = document.getElementById(canvasOrId);
+        } else {
+            this.canvas = canvasOrId;
+        }
         this.ctx = this.canvas.getContext('2d', { willReadFrequently: true });
-        
+
         // Performance-Optimierungen
         this.gradientCache = new Map();
         this.frameSkip = 0;
         this.lastMatrixUpdate = 0;
         this.adaptiveQuality = new AdaptiveQuality();
-        
+
         // Parameter mit Standardwerten
         this.columns = [];
         this.config = {
@@ -27,7 +31,7 @@ class MatrixRain {
             characterDensity: 0.8,
             glowIntensity: 0.8
         };
-        
+
         // Zeichen-Sets für verschiedene Effekte
         this.characterSets = {
             matrix: 'ｱｲｳｴﾵﾶﾷｸｹｺｻｼﾽﾾ﾿0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
@@ -36,7 +40,7 @@ class MatrixRain {
             rainbow: '★☆♠♣♥♦♪♫☀☁☂☃☄☽☾◐◑◒◓◔◕◖◗◘◙◚◛◜◝◞◟◠◡◢◣◤◥◦◧◨◩',
             cyber: '░▒▓│┤╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▀▐█▌▄▌▐▀▄▌▄▌▐▀▄▌▄▌▐▀▄▌▄▌▐▀▄▌▄▌▐▀▄▌▄▌▐▀▄▌'
         };
-        
+
         // Farbschemata
         this.colorSchemes = {
             matrix: {
@@ -75,35 +79,35 @@ class MatrixRain {
                 text: '#FFFFFF'
             }
         };
-        
+
         // Zeit für Animationen
         this.time = 0;
-        
+
         // Initialisierung
         this.init();
         this.setupEventListeners();
         this.animate();
     }
-    
+
     init() {
         this.resize();
         this.createColumns();
         this.createGradientCache();
     }
-    
+
     resize() {
         const parent = this.canvas.parentElement;
         this.canvas.width = parent.clientWidth;
         this.canvas.height = parent.clientHeight;
-        
+
         // Spalten bei Größenänderung neu erstellen
         this.createColumns();
     }
-    
+
     createColumns() {
         this.columns = [];
         const columnWidth = this.canvas.width / this.config.columnCount;
-        
+
         for (let i = 0; i < this.config.columnCount; i++) {
             this.columns.push({
                 x: i * columnWidth,
@@ -112,7 +116,7 @@ class MatrixRain {
                 characterSet: this.characterSets[this.config.colorScheme],
                 colors: this.colorSchemes[this.config.colorScheme]
             });
-            
+
             // Initiale Tropfen erstellen
             const dropCount = Math.floor(Math.random() * 3) + 1;
             for (let j = 0; j < dropCount; j++) {
@@ -120,12 +124,12 @@ class MatrixRain {
             }
         }
     }
-    
+
     createDrop(columnIndex, yOffset = 0) {
         const column = this.columns[columnIndex];
         const characterSet = column.characterSet;
         const colors = column.colors;
-        
+
         return {
             y: -yOffset,
             speed: column.speed + (Math.random() - 0.5) * 0.5,
@@ -136,13 +140,13 @@ class MatrixRain {
             glowSpeed: Math.random() * 0.1 + 0.05
         };
     }
-    
+
     createGradientCache() {
         // Glow-Gradienten für verschiedene Farbschemata
         Object.keys(this.colorSchemes).forEach(scheme => {
             const colors = this.colorSchemes[scheme];
             const key = `glow_${scheme}`;
-            
+
             if (!this.gradientCache.has(key)) {
                 const gradient = this.ctx.createLinearGradient(0, 0, 0, 50);
                 gradient.addColorStop(0, colors.glow);
@@ -152,19 +156,19 @@ class MatrixRain {
             }
         });
     }
-    
+
     updateColumns() {
         this.columns.forEach((column, columnIndex) => {
             // Neue Tropfen erstellen
             if (Math.random() < this.config.characterDensity * 0.02) {
                 column.drops.push(this.createDrop(columnIndex));
             }
-            
+
             // Bestehende Tropfen aktualisieren
             column.drops = column.drops.filter(drop => {
                 // Position aktualisieren
                 drop.y += drop.speed;
-                
+
                 // Zeichen generieren
                 if (drop.characters.length < drop.length) {
                     if (Math.random() < this.config.characterDensity) {
@@ -177,22 +181,22 @@ class MatrixRain {
                         });
                     }
                 }
-                
+
                 // Zeichen-Opacity aktualisieren (Fade-Effekt)
                 drop.characters.forEach((char, index) => {
                     const age = drop.characters.length - index;
                     char.opacity = Math.max(0, 1 - (age / drop.length) * this.config.fadeSpeed);
                 });
-                
+
                 // Glow-Animation
                 drop.glowPhase += drop.glowSpeed;
-                
+
                 // Tropfen entfernen wenn außerhalb des Bildschirms
                 return drop.y < this.canvas.height + 50;
             });
         });
     }
-    
+
     getCharacterColor(colors, position) {
         if (position === 0) {
             return colors.text; // Erste Zeichen leuchten
@@ -204,150 +208,151 @@ class MatrixRain {
             return colors.tertiary; // Ältere Zeichen tertiärfarbe
         }
     }
-    
+
     drawBackground() {
         // Schwarzer Hintergrund mit leichtem Gradient
         const gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
         gradient.addColorStop(0, '#000000');
         gradient.addColorStop(0.5, '#0a0a0a');
         gradient.addColorStop(1, '#000000');
-        
+
         this.ctx.fillStyle = gradient;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
-    
+
     drawColumns() {
         this.columns.forEach(column => {
             column.drops.forEach(drop => {
                 drop.characters.forEach((charData, index) => {
                     const y = charData.y;
                     const x = column.x;
-                    
+
                     // Zeichen zeichnen
                     this.ctx.save();
-                    
+
                     // Glow-Effekt
                     if (index === 0) { // Nur für das erste Zeichen
                         const glowIntensity = Math.sin(drop.glowPhase) * 0.3 + 0.7;
                         this.ctx.globalAlpha = charData.opacity * glowIntensity * this.config.glowIntensity;
-                        
+
                         const glowKey = `glow_${this.config.colorScheme}`;
                         const gradient = this.gradientCache.get(glowKey);
-                        
+
                         if (gradient) {
                             this.ctx.fillStyle = gradient;
                             this.ctx.fillRect(x - 10, y - 10, 20, 50);
                         }
                     }
-                    
+
                     // Zeichen selbst
                     this.ctx.globalAlpha = charData.opacity;
                     this.ctx.fillStyle = charData.color;
                     this.ctx.font = `${this.config.fontSize}px monospace`;
                     this.ctx.textAlign = 'center';
                     this.ctx.textBaseline = 'middle';
-                    
+
                     // Zeichen mit leichtem Schatten
                     this.ctx.shadowBlur = 2;
                     this.ctx.shadowColor = charData.color;
-                    
+
                     this.ctx.fillText(charData.char, x, y);
-                    
+
                     this.ctx.restore();
                 });
             });
         });
     }
-    
+
     drawScanlines() {
         // Subtile Scanline-Effekte für retro Look
         this.ctx.save();
         this.ctx.globalAlpha = 0.1;
         this.ctx.strokeStyle = '#00FF00';
         this.ctx.lineWidth = 1;
-        
+
         for (let y = 0; y < this.canvas.height; y += 3) {
             this.ctx.beginPath();
             this.ctx.moveTo(0, y);
             this.ctx.lineTo(this.canvas.width, y);
             this.ctx.stroke();
         }
-        
+
         this.ctx.restore();
     }
-    
+
     drawDigitalNoise() {
         // Leichtes digitales Rauschen
         this.ctx.save();
         this.ctx.globalAlpha = 0.05;
-        
+
         for (let i = 0; i < 50; i++) {
             const x = Math.random() * this.canvas.width;
             const y = Math.random() * this.canvas.height;
             const brightness = Math.random();
-            
+
             this.ctx.fillStyle = brightness > 0.5 ? '#00FF00' : '#000000';
             this.ctx.fillRect(x, y, 2, 2);
         }
-        
+
         this.ctx.restore();
     }
-    
+
     update() {
         this.time += 0.016; // ~60fps
         this.updateColumns();
     }
-    
+
     draw() {
         this.drawBackground();
         this.drawColumns();
-        
+
         // Optionale Effekte basierend auf Zeit
         if (Math.sin(this.time * 0.5) > 0) {
             this.drawScanlines();
         }
-        
+
         if (Math.random() < 0.1) {
             this.drawDigitalNoise();
         }
     }
-    
+
     animate() {
         if (this.adaptiveQuality && this.adaptiveQuality.shouldSkipFrame()) {
             requestAnimationFrame(() => this.animate());
             return;
         }
-        
+
         this.update();
         this.draw();
-        
-        requestAnimationFrame(() => this.animate());
+
+        this.isRunning = true;
+        this.animationId = requestAnimationFrame(() => this.animate());
     }
-    
+
     setupEventListeners() {
         // Maus-Interaktion für Geschwindigkeitsänderung
         this.canvas.addEventListener('mousemove', (e) => {
             const rect = this.canvas.getBoundingClientRect();
             const mouseY = e.clientY - rect.top;
             const speedFactor = mouseY / this.canvas.height;
-            
+
             this.columns.forEach(column => {
                 column.speed = this.config.dropSpeed * (0.5 + speedFactor * 2);
             });
         });
-        
+
         this.canvas.addEventListener('mouseleave', () => {
             this.columns.forEach(column => {
                 column.speed = this.config.dropSpeed;
             });
         });
-        
+
         // Klick für neue Tropfen-Welle
         this.canvas.addEventListener('click', (e) => {
             const rect = this.canvas.getBoundingClientRect();
             const clickX = e.clientX - rect.left;
             const columnIndex = Math.floor(clickX / (this.canvas.width / this.config.columnCount));
-            
+
             if (columnIndex >= 0 && columnIndex < this.columns.length) {
                 // Mehrere Tropfen gleichzeitig erstellen
                 for (let i = 0; i < 5; i++) {
@@ -355,7 +360,7 @@ class MatrixRain {
                 }
             }
         });
-        
+
         // Touch-Events für Mobile
         this.canvas.addEventListener('touchmove', (e) => {
             e.preventDefault();
@@ -363,37 +368,37 @@ class MatrixRain {
             const touch = e.touches[0];
             const touchY = touch.clientY - rect.top;
             const speedFactor = touchY / this.canvas.height;
-            
+
             this.columns.forEach(column => {
                 column.speed = this.config.dropSpeed * (0.5 + speedFactor * 2);
             });
         });
-        
+
         this.canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
             const rect = this.canvas.getBoundingClientRect();
             const touch = e.touches[0];
             const touchX = touch.clientX - rect.left;
             const columnIndex = Math.floor(touchX / (this.canvas.width / this.config.columnCount));
-            
+
             if (columnIndex >= 0 && columnIndex < this.columns.length) {
                 for (let i = 0; i < 3; i++) {
                     this.columns[columnIndex].drops.push(this.createDrop(columnIndex, i * 10));
                 }
             }
         });
-        
+
         // Window-Resize
         window.addEventListener('resize', () => {
             this.resize();
         });
-        
+
         // Performance-Monitoring
         if (window.PerformanceMonitor) {
             window.PerformanceMonitor.registerAnimation('matrix-rain', this);
         }
     }
-    
+
     // Steuerungsmethoden
     setColorScheme(scheme) {
         if (this.characterSets[scheme] && this.colorSchemes[scheme]) {
@@ -402,49 +407,65 @@ class MatrixRain {
             this.createGradientCache();
         }
     }
-    
+
     setDropSpeed(speed) {
         this.config.dropSpeed = Math.max(0.5, Math.min(10, speed));
         this.columns.forEach(column => {
             column.speed = this.config.dropSpeed;
         });
     }
-    
+
     setFontSize(size) {
         this.config.fontSize = Math.max(8, Math.min(30, size));
     }
-    
+
     setColumnCount(count) {
         this.config.columnCount = Math.max(20, Math.min(200, count));
         this.createColumns();
     }
-    
+
     setCharacterDensity(density) {
         this.config.characterDensity = Math.max(0.1, Math.min(1, density));
     }
-    
+
     setGlowIntensity(intensity) {
         this.config.glowIntensity = Math.max(0, Math.min(2, intensity));
     }
-    
+
     // Cleanup-Methode
     destroy() {
         if (this.animationId) {
             cancelAnimationFrame(this.animationId);
+            this.animationId = null;
         }
-        
+        this.isRunning = false;
+
         // Event-Listener entfernen
         this.canvas.removeEventListener('mousemove', this.handleMouseMove);
         this.canvas.removeEventListener('click', this.handleClick);
         this.canvas.removeEventListener('touchmove', this.handleTouchMove);
         this.canvas.removeEventListener('touchstart', this.handleTouchStart);
         window.removeEventListener('resize', this.handleResize);
-        
+
         // Cache leeren
         this.gradientCache.clear();
-        
+
         // Arrays leeren
         this.columns = [];
+    }
+
+    pause() {
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+            this.animationId = null;
+        }
+        this.isRunning = false;
+    }
+
+    resume() {
+        if (!this.isRunning) {
+            this.animate();
+        }
     }
 }
 
